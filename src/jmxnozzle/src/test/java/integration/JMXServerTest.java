@@ -22,9 +22,9 @@ public class JMXServerTest {
 
     String uri = String.format(
       "service:jmx:rmi://%s:%d/jndi/rmi://%s:%d/jmxrmi",
-      "127.0.0.1",
+      "0.0.0.0",
       44445,
-      "127.0.0.1",
+      "0.0.0.0",
       44444
     );
     JmxClient client = new JmxClient(uri);

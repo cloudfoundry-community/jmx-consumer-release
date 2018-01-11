@@ -3,4 +3,6 @@ name: jmx-nozzle
 
 dependencies: []
 
-files: []
+files:
+- openjdk/openjdk-*.tar.gz
+- jmxnozzle/**/*

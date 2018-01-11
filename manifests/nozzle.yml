@@ -1,0 +1,28 @@
+name: jmx-nozzle
+
+releases:
+- name: jmx-nozzle
+  version: latest
+
+stemcells:
+- os: ubuntu-trusty
+  alias: ubuntu
+  version: latest
+
+instance_groups:
+- name: jmx-nozzle
+  jobs:
+  - name: jmx-nozzle
+    release: jmx-nozzle
+  instances: 1
+  stemcell: ubuntu
+  azs: [z1]
+  vm_type: default
+  networks:
+  - name: default
+
+update:
+  canaries: 1
+  max_in_flight: 3
+  canary_watch_time: 30000-600000
+  update_watch_time: 5000-600000

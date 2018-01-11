@@ -3,6 +3,6 @@ name: jmx-nozzle
 
 templates: {}
 
-packages: []
+packages: ['jmx-nozzle']
 
 properties: {}

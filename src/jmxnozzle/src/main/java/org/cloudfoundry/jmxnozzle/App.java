@@ -8,6 +8,9 @@ import javax.management.JMException;
 public class App {
 
   public static void main(String[] args) throws JMException {
+//    System.setProperty("com.sun.management.jmxremote", "true");
+//    System.setProperty("com.sun.management.jmxremote.local.only", "false");
+    System.setProperty("java.rmi.server.hostname", "0.0.0.0");
     JmxServer server = new JmxServer(Config.getRegistryPort(),Config.getServerPort());
     server.start();
 
