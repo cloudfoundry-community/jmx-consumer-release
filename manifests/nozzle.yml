@@ -11,10 +11,10 @@ stemcells:
 
 instance_groups:
 - name: jmx-nozzle
+  instances: 1
   jobs:
   - name: jmx-nozzle
     release: jmx-nozzle
-  instances: 1
   stemcell: ubuntu
   azs: [z1]
   vm_type: default

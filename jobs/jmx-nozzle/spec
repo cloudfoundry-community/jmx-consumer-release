@@ -1,8 +1,10 @@
 ---
 name: jmx-nozzle
 
-templates: {}
+templates:
+  nozzle_ctl.erb: bin/nozzle_ctl
 
-packages: ['jmx-nozzle']
+packages:
+- jmx-nozzle
 
 properties: {}
