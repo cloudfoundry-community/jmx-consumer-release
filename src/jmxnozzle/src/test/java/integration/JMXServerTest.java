@@ -2,6 +2,7 @@ package integration;
 
 import com.j256.simplejmx.client.JmxClient;
 import org.cloudfoundry.jmxnozzle.App;
+import org.junit.Before;
 import org.junit.Test;
 
 import javax.management.ObjectName;
@@ -14,9 +15,13 @@ public class JMXServerTest {
     App.main(new String[]{});
   }
 
+  @Before
+  public void setupConnectionTest() throws Exception {
+    serverStart();
+  }
+
   @Test
   public void thatTheServerAcceptsConnections() throws Exception {
-    serverStart();
 
     String uri = String.format(
       "service:jmx:rmi://%s:%d/jndi/rmi://%s:%d/jmxrmi",
