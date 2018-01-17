@@ -1,0 +1,3 @@
+[submodule "src/jmxnozzle/src/main/resources/loggregator-api"]
+	path = src/jmxnozzle/src/main/resources/loggregator-api
+	url = https://github.com/cloudfoundry/loggregator-api

@@ -1,31 +1,30 @@
 package org.cloudfoundry.jmxnozzle;
 
-import com.j256.simplejmx.common.JmxAttributeField;
-import com.j256.simplejmx.common.JmxResource;
-import com.j256.simplejmx.server.JmxServer;
+import org.cloudfoundry.jmxnozzle.jmx.JmxNozzleServer;
 
-import java.net.InetAddress;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 
 public class App {
+    private static Config config = new Config();
 
-  public static void main(String[] args) throws Exception {
-    Arrays.stream(LogManager.getLogManager().getLogger("").getHandlers()).forEach(h -> h.setLevel(Level.FINER));
-    InetAddress host = InetAddress.getByName(System.getProperty("java.rmi.server.hostname", "localhost"));
-    System.out.println("binding to: " + host.toString());
-    JmxServer server = new JmxServer(host, Config.getRegistryPort(), Config.getServerPort());
-    server.start();
+    public static void main(String[] args) throws Exception {
+        JmxNozzleServer jmxServer = new JmxNozzleServer();
+        Arrays.stream(LogManager.getLogManager().getLogger("").getHandlers()).forEach(h -> h.setLevel(Level.FINER));
 
-    JmxBean iAmJmxServer = new JmxBean();
-    server.register(iAmJmxServer);
-  }
+        jmxServer.start(config);
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            public void run() {
+                jmxServer.stop();
+            }
+        }, "Shutdown-thread"));
 
-  @JmxResource(domainName="org.cloudfoundry",beanName="i.am.a.jmx.server")
-  private static class JmxBean {
+        Nozzle nozzle = new Nozzle(config.getRLPHost(), config.getRLPPort());
+        nozzle.start();
 
-    @JmxAttributeField(description = "i.am.jmx.field description")
-    private final String name = "Hello, World";
-  }
+        while (true) {
+            jmxServer.addMetric(nozzle.getNextMetric());
+        }
+    }
 }
