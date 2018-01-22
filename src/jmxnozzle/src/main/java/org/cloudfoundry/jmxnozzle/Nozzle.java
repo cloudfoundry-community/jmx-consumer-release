@@ -40,9 +40,15 @@ public class Nozzle {
     public Metric getNextMetric() {
         while (envelopes.hasNext()) {
             LoggregatorEnvelope.Envelope envelope = envelopes.next();
-            Map<String, LoggregatorEnvelope.GaugeValue> metricsMap = envelope.getGauge().getMetricsMap();
-            Map.Entry<String, LoggregatorEnvelope.GaugeValue> first = metricsMap.entrySet().iterator().next();
-            return new Metric(first.getKey(), first.getValue().getValue());
+            switch(envelope.getMessageCase()) {
+                case GAUGE:
+                    Map<String, LoggregatorEnvelope.GaugeValue> metricsMap = envelope.getGauge().getMetricsMap();
+                    Map.Entry<String, LoggregatorEnvelope.GaugeValue> first = metricsMap.entrySet().iterator().next();
+                    return new Metric(first.getKey(), first.getValue().getValue());
+                case COUNTER:
+                    return new Metric(envelope.getCounter().getName(), (double) envelope.getCounter().getTotal());
+            }
+
         }
         return null;
     }
@@ -50,8 +56,18 @@ public class Nozzle {
     public void start() {
         blockingStub = EgressGrpc.newBlockingStub(channel);
 
-        LoggregatorEgress.EgressRequest request = LoggregatorEgress.EgressRequest.newBuilder().
-                build();
+        LoggregatorEgress.EgressRequest request = LoggregatorEgress.EgressRequest.newBuilder()
+                .addSelectors(getCounterSelector())
+                .addSelectors(getGaugeSelector())
+                .build();
         envelopes = blockingStub.receiver(request);
+    }
+
+    private LoggregatorEgress.Selector getGaugeSelector() {
+        return LoggregatorEgress.Selector.newBuilder().setGauge(LoggregatorEgress.GaugeSelector.newBuilder().build()).build();
+    }
+
+    private LoggregatorEgress.Selector getCounterSelector() {
+        return LoggregatorEgress.Selector.newBuilder().setCounter(LoggregatorEgress.CounterSelector.newBuilder().build()).build();
     }
 }
