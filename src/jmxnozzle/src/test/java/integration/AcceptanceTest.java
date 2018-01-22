@@ -36,13 +36,13 @@ public class AcceptanceTest {
             assertThat(beanNames).contains(name);
             Thread.sleep(1000);
 
-            Object attribute = client.getAttribute(name, "fakeMetricName1");
+            Object attribute = client.getAttribute(name, "fakeGaugeMetricName0");
+            assertThat(attribute).isNotNull();
+            assertThat((Double) attribute).isEqualTo(0d);
+
+            attribute = client.getAttribute(name, "fakeCounterMetricName1");
             assertThat(attribute).isNotNull();
             assertThat((Double) attribute).isEqualTo(1d);
-
-            attribute = client.getAttribute(name, "fakeMetricName2");
-            assertThat(attribute).isNotNull();
-            assertThat((Double) attribute).isEqualTo(2d);
         } finally {
             process.destroyForcibly().waitFor();
             fakeLoggregator.stop();

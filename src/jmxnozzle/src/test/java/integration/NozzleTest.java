@@ -2,6 +2,7 @@ package integration;
 
 import org.cloudfoundry.jmxnozzle.Metric;
 import org.cloudfoundry.jmxnozzle.Nozzle;
+import org.cloudfoundry.loggregator.v2.LoggregatorEgress;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,13 +40,22 @@ public class NozzleTest {
         Metric metric = nozzle.getNextMetric();
 
         assertThat(metric).isInstanceOfAny(Metric.class);
-        assertThat(metric.getName()).isEqualTo("fakeMetricName1");
-        assertThat(metric.getValue()).isEqualTo(1d);
+        assertThat(metric.getName()).isEqualTo("fakeGaugeMetricName0");
+        assertThat(metric.getValue()).isEqualTo(0d);
 
         metric = nozzle.getNextMetric();
 
         assertThat(metric).isInstanceOfAny(Metric.class);
-        assertThat(metric.getName()).isEqualTo("fakeMetricName2");
-        assertThat(metric.getValue()).isEqualTo(2d);
+        assertThat(metric.getName()).isEqualTo("fakeCounterMetricName1");
+        assertThat(metric.getValue()).isEqualTo(1d);
+    }
+
+    @Test
+    public void onlyRequestsGaugeAndCounterValues() {
+        nozzle.getNextMetric();
+        assertThat(fakeLoggregator.getEgressRequest().getSelectorsList()).contains(
+                LoggregatorEgress.Selector.newBuilder().setCounter(LoggregatorEgress.CounterSelector.newBuilder().build()).build(),
+                LoggregatorEgress.Selector.newBuilder().setGauge(LoggregatorEgress.GaugeSelector.newBuilder().build()).build()
+        );
     }
 }

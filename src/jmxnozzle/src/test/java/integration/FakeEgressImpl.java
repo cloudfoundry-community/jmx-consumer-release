@@ -15,44 +15,58 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class FakeEgressImpl extends EgressGrpc.EgressImplBase {
-  Server server = null;
+    Server server = null;
+    LoggregatorEgress.EgressRequest egressRequest = null;
 
-  @Override
-  public void receiver(LoggregatorEgress.EgressRequest request,
-                       StreamObserver<LoggregatorEnvelope.Envelope> responseObserver) {
+    @Override
+    public void receiver(LoggregatorEgress.EgressRequest request,
+                         StreamObserver<LoggregatorEnvelope.Envelope> responseObserver) {
 
 
+        egressRequest = request;
+        for (int i = 0; ; i++) {
+            LoggregatorEnvelope.Envelope envelope;
+            if (i % 2 == 0) {
+                LoggregatorEnvelope.Gauge gauge = LoggregatorEnvelope.Gauge.newBuilder()
+                        .putMetrics(
+                                String.format("fakeGaugeMetricName%d", i),
+                                LoggregatorEnvelope.GaugeValue.newBuilder().setValue(new Double(i)).build()
+                        )
+                        .build();
+                envelope = LoggregatorEnvelope.Envelope.newBuilder().setGauge(gauge).build();
+            } else {
+                LoggregatorEnvelope.Counter counter = LoggregatorEnvelope.Counter.newBuilder()
+                        .setName(String.format("fakeCounterMetricName%d", i))
+                        .setTotal(i)
+                        .build();
+                envelope = LoggregatorEnvelope.Envelope.newBuilder().setCounter(counter).build();
+            }
 
-    for(int i = 1; ; i++) {
-      LoggregatorEnvelope.Gauge gauge = LoggregatorEnvelope.Gauge.newBuilder()
-              .putMetrics(
-                      String.format("fakeMetricName%d", i),
-                      LoggregatorEnvelope.GaugeValue.newBuilder().setValue(new Double(i)).build()
-              )
-              .build();
-      LoggregatorEnvelope.Envelope envelope = LoggregatorEnvelope.Envelope.newBuilder().setGauge(gauge).build();
-
-      responseObserver.onNext(envelope);
+            responseObserver.onNext(envelope);
+        }
     }
-  }
 
-  public void start() throws IOException {
-    server = NettyServerBuilder.forPort(12345)
-            .addService(this)
-            .sslContext(
-                    GrpcSslContexts.forServer(new File( "src/test/resources/metrics-server.pem"), new File("src/test/resources/metrics-server.key"))
-                            .trustManager(new File("src/test/resources/metrics-ca.pem"))
-                            .clientAuth(ClientAuth.REQUIRE)
-                            .startTls(true)
-                            .ciphers(Arrays.asList("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"))
-                            .build()
-            )
-            .build()
-            .start();
+    public void start() throws IOException {
+        server = NettyServerBuilder.forPort(12345)
+                .addService(this)
+                .sslContext(
+                        GrpcSslContexts.forServer(new File("src/test/resources/metrics-server.pem"), new File("src/test/resources/metrics-server.key"))
+                                .trustManager(new File("src/test/resources/metrics-ca.pem"))
+                                .clientAuth(ClientAuth.REQUIRE)
+                                .startTls(true)
+                                .ciphers(Arrays.asList("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"))
+                                .build()
+                )
+                .build()
+                .start();
 
-  }
+    }
 
-  public void stop() {
-    server.shutdownNow();
-  }
+    public void stop() {
+        server.shutdownNow();
+    }
+
+    public LoggregatorEgress.EgressRequest getEgressRequest() {
+        return egressRequest;
+    }
 }
