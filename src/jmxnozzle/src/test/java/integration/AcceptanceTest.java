@@ -1,17 +1,10 @@
 package integration;
 
 import com.j256.simplejmx.client.JmxClient;
-import io.grpc.Server;
-import io.grpc.ServerBuilder;
-import io.grpc.netty.GrpcSslContexts;
-import io.grpc.netty.NettyServerBuilder;
-import io.netty.handler.ssl.ClientAuth;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.management.JMException;
 import javax.management.ObjectName;
-import java.io.File;
-import java.util.Arrays;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;

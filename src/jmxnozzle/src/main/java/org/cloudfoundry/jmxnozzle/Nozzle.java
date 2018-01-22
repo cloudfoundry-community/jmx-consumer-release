@@ -22,18 +22,18 @@ public class Nozzle {
     private EgressGrpc.EgressBlockingStub blockingStub;
     private Iterator<LoggregatorEnvelope.Envelope> envelopes;
 
-    public Nozzle(String host, int port) throws SSLException {
+    public Nozzle(String host, int port, String certFile, String keyFile, String caCertFile, String authority) throws SSLException {
         List<String> ciphers = new ArrayList<>();
         ciphers.add("TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384");
         this.channel = NettyChannelBuilder.forAddress(host, port)
                 .negotiationType(NegotiationType.TLS)
                 .sslContext(GrpcSslContexts.forClient()
                         .clientAuth(ClientAuth.REQUIRE)
-                        .keyManager(new File("src/test/resources/metrics-server.pem"), new File("src/test/resources/metrics-server.key"))
-                        .trustManager(new File("src/test/resources/metrics-ca.pem"))
+                        .keyManager(new File(certFile), new File(keyFile))
+                        .trustManager(new File(caCertFile))
                         .ciphers(ciphers, SupportedCipherSuiteFilter.INSTANCE)
                         .build())
-                .overrideAuthority("metrics")
+                .overrideAuthority(authority)
                 .build();
     }
 

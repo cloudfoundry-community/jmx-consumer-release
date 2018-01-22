@@ -1,52 +1,51 @@
 package integration;
 
-import io.grpc.Server;
-import io.grpc.ServerBuilder;
-import io.grpc.netty.GrpcSslContexts;
-import io.grpc.netty.NettyServerBuilder;
-import io.netty.handler.ssl.ClientAuth;
 import org.cloudfoundry.jmxnozzle.Metric;
 import org.cloudfoundry.jmxnozzle.Nozzle;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.io.File;
-import java.util.Arrays;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class NozzleTest {
+    private Nozzle nozzle;
+    private FakeEgressImpl fakeLoggregator;
 
-  private Nozzle nozzle;
-  private FakeEgressImpl fakeLoggregator;
+    @BeforeEach
+    public void setupRetrievalTest() throws Exception {
+        fakeLoggregator = new FakeEgressImpl();
+        fakeLoggregator.start();
 
-  @Before
-  public void setupRetrievalTest() throws Exception {
-    fakeLoggregator = new FakeEgressImpl();
-    fakeLoggregator.start();
+        nozzle = new Nozzle(
+                "localhost",
+                12345,
+                "src/test/resources/metrics-server.pem",
+                "src/test/resources/metrics-server.key",
+                "src/test/resources/metrics-ca.pem",
+                "metrics"
 
-    nozzle = new Nozzle("localhost", 12345);
-    nozzle.start();
-  }
+        );
+        nozzle.start();
+    }
 
-  @After
-  public void cleanupServers() {
-    fakeLoggregator.stop();
-  }
+    @AfterEach
+    public void cleanupServers() {
+        fakeLoggregator.stop();
+    }
 
-  @Test
-  public void thatTheServerCanRetrieveMetrics() throws Exception {
-    Metric metric = nozzle.getNextMetric();
+    @Test
+    public void thatTheServerCanRetrieveMetrics() throws Exception {
+        Metric metric = nozzle.getNextMetric();
 
-    assertThat(metric).isInstanceOfAny(Metric.class);
-    assertThat(metric.getName()).isEqualTo("fakeMetricName1");
-    assertThat(metric.getValue()).isEqualTo(1d);
+        assertThat(metric).isInstanceOfAny(Metric.class);
+        assertThat(metric.getName()).isEqualTo("fakeMetricName1");
+        assertThat(metric.getValue()).isEqualTo(1d);
 
-    metric = nozzle.getNextMetric();
+        metric = nozzle.getNextMetric();
 
-    assertThat(metric).isInstanceOfAny(Metric.class);
-    assertThat(metric.getName()).isEqualTo("fakeMetricName2");
-    assertThat(metric.getValue()).isEqualTo(2d);
-  }
+        assertThat(metric).isInstanceOfAny(Metric.class);
+        assertThat(metric.getName()).isEqualTo("fakeMetricName2");
+        assertThat(metric.getValue()).isEqualTo(2d);
+    }
 }
