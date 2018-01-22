@@ -5,9 +5,9 @@ import org.cloudfoundry.jmxnozzle.App;
 import org.cloudfoundry.jmxnozzle.Config;
 import org.cloudfoundry.jmxnozzle.Metric;
 import org.cloudfoundry.jmxnozzle.jmx.JmxNozzleServer;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.management.JMException;
 import javax.management.ObjectName;
@@ -19,13 +19,13 @@ public class JMXServerTest {
 
   JmxNozzleServer server;
 
-  @Before
+  @BeforeEach
   public void startTheServer() throws Exception {
-    server = new JmxNozzleServer();
-    server.start(new Config());
+    server = new JmxNozzleServer(44444, 44445);
+    server.start();
   }
 
-  @After
+  @AfterEach
   public void stopTheServer() {
     server.stop();
   }

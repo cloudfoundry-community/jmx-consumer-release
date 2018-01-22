@@ -7,20 +7,25 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 
 public class App {
-    private static Config config = new Config();
-
     public static void main(String[] args) throws Exception {
-        JmxNozzleServer jmxServer = new JmxNozzleServer();
+        JmxNozzleServer jmxServer = new JmxNozzleServer(Config.getRegistryPort(), Config.getServerPort());
         Arrays.stream(LogManager.getLogManager().getLogger("").getHandlers()).forEach(h -> h.setLevel(Level.FINER));
 
-        jmxServer.start(config);
+        jmxServer.start();
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
                 jmxServer.stop();
             }
         }, "Shutdown-thread"));
 
-        Nozzle nozzle = new Nozzle(config.getRLPHost(), config.getRLPPort());
+        Nozzle nozzle = new Nozzle(
+                Config.getRLPHost(),
+                Config.getRLPPort(),
+                Config.getCertFile(),
+                Config.getKeyFile(),
+                Config.getCACertFile(),
+                Config.getAuthority()
+        );
         nozzle.start();
 
         while (true) {

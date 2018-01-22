@@ -12,29 +12,38 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 public class JmxNozzleServer {
-  private JmxServer server= null;
-  private DynamicJmxBean dynamicJmxBean;
+    private int registryPort;
+    private int serverPort;
+    private JmxServer server = null;
+    private DynamicJmxBean dynamicJmxBean;
 
-  public boolean start(Config config) throws JMException, UnknownHostException {
-    InetAddress host = InetAddress.getByName(System.getProperty("java.rmi.server.hostname", "localhost"));
-    System.out.println("binding to: " + host.toString());
-    server = new JmxServer(host, config.getRegistryPort(), config.getServerPort());
-    server.start();
+    private JmxNozzleServer() {}
 
-    server.setUsePlatformMBeanServer(true);
-    dynamicJmxBean = new DynamicJmxBean("deployment", "job", "0", "0.0.0.0");
+    public JmxNozzleServer(int registryPort, int serverPort) {
+        this.registryPort = registryPort;
+        this.serverPort = serverPort;
+    }
 
-    MBeanServer platformMBeanServer = ManagementFactory.getPlatformMBeanServer();
-    platformMBeanServer.registerMBean(dynamicJmxBean, new ObjectName(dynamicJmxBean.getName()));
+    public boolean start() throws JMException, UnknownHostException {
+        InetAddress host = InetAddress.getByName(System.getProperty("java.rmi.server.hostname", "localhost"));
+        System.out.println("binding to: " + host.toString());
+        server = new JmxServer(host, registryPort, serverPort);
+        server.start();
 
-    return(true);
-  }
+        server.setUsePlatformMBeanServer(true);
+        dynamicJmxBean = new DynamicJmxBean("deployment", "job", "0", "0.0.0.0");
 
-  public void addMetric(Metric metric) throws AttributeNotFoundException, MBeanException, ReflectionException, InvalidAttributeValueException {
-    dynamicJmxBean.setAttribute(new Attribute(metric.getName(), metric.getValue()));
-  }
+        MBeanServer platformMBeanServer = ManagementFactory.getPlatformMBeanServer();
+        platformMBeanServer.registerMBean(dynamicJmxBean, new ObjectName(dynamicJmxBean.getName()));
 
-  public void stop() {
-    server.stop();
-  }
+        return (true);
+    }
+
+    public void addMetric(Metric metric) throws AttributeNotFoundException, MBeanException, ReflectionException, InvalidAttributeValueException {
+        dynamicJmxBean.setAttribute(new Attribute(metric.getName(), metric.getValue()));
+    }
+
+    public void stop() {
+        server.stop();
+    }
 }
