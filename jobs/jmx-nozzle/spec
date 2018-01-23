@@ -3,8 +3,30 @@ name: jmx-nozzle
 
 templates:
   nozzle_ctl.erb: bin/nozzle_ctl
+  cert.erb: config/cert
+  key.erb: config/key
+  ca_cert.erb: config/ca_cert
 
 packages:
 - jmx-nozzle
 
-properties: {}
+consumes:
+- name: reverse_log_proxy
+  type: reverse_log_proxy
+
+properties:
+  jmx.server.port:
+    description: Port used for serving JMX
+    default: 44445
+  jmx.registry.port:
+    description: Port used for serving JMX Registry
+    default: 44444
+  tls.nozzle.cert:
+    description: Cert file for connecting to RLP.
+  tls.nozzle.key:
+    description: Key file for connecting to RLP.
+  tls.ca_cert:
+    description: CA cert for connecting to RLP.
+  tls.authority:
+    description: Common name of the authority for RLP.
+    default: reverselogproxy

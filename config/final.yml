@@ -1,1 +1,6 @@
 name: jmx-nozzle
+blobstore:
+  provider: gcs
+  options:
+    bucket_name: jmx-nozzle-release
+    credentials_source: static

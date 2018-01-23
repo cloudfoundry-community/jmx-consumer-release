@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Nozzle {
     private final ManagedChannel channel;
@@ -33,6 +34,8 @@ public class Nozzle {
                         .trustManager(new File(caCertFile))
                         .ciphers(ciphers, SupportedCipherSuiteFilter.INSTANCE)
                         .build())
+                .keepAliveTime(30, TimeUnit.SECONDS)
+                .idleTimeout(30, TimeUnit.SECONDS)
                 .overrideAuthority(authority)
                 .build();
     }
