@@ -28,7 +28,9 @@ protobuf {
     }
     generateProtoTasks {
         all()*.plugins {
-            grpc {}
+            grpc {
+                outputSubDir = "java"
+            }
         }
     }
     generatedFilesBaseDir = "$projectDir/src"
@@ -62,12 +64,6 @@ jar {
     }
 
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-}
-
-idea {
-    module {
-        sourceDirs += file("${projectDir}/src/main/grpc")
-    }
 }
 
 sourceSets {
