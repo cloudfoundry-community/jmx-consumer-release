@@ -44,3 +44,6 @@ variables:
   options:
     ca: loggregator_ca
     common_name: jmx-nozzle
+    extended_key_usage:
+    - client_auth
+    - server_auth
