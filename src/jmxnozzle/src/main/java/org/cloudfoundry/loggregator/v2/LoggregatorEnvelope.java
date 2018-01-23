@@ -114,12 +114,20 @@ public final class LoggregatorEnvelope {
     /**
      * <code>.loggregator.v2.Log log = 4;</code>
      */
+    boolean hasLog();
+    /**
+     * <code>.loggregator.v2.Log log = 4;</code>
+     */
     org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Log getLog();
     /**
      * <code>.loggregator.v2.Log log = 4;</code>
      */
     org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.LogOrBuilder getLogOrBuilder();
 
+    /**
+     * <code>.loggregator.v2.Counter counter = 5;</code>
+     */
+    boolean hasCounter();
     /**
      * <code>.loggregator.v2.Counter counter = 5;</code>
      */
@@ -132,6 +140,10 @@ public final class LoggregatorEnvelope {
     /**
      * <code>.loggregator.v2.Gauge gauge = 6;</code>
      */
+    boolean hasGauge();
+    /**
+     * <code>.loggregator.v2.Gauge gauge = 6;</code>
+     */
     org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Gauge getGauge();
     /**
      * <code>.loggregator.v2.Gauge gauge = 6;</code>
@@ -141,12 +153,20 @@ public final class LoggregatorEnvelope {
     /**
      * <code>.loggregator.v2.Timer timer = 7;</code>
      */
+    boolean hasTimer();
+    /**
+     * <code>.loggregator.v2.Timer timer = 7;</code>
+     */
     org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Timer getTimer();
     /**
      * <code>.loggregator.v2.Timer timer = 7;</code>
      */
     org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.TimerOrBuilder getTimerOrBuilder();
 
+    /**
+     * <code>.loggregator.v2.Event event = 10;</code>
+     */
+    boolean hasEvent();
     /**
      * <code>.loggregator.v2.Event event = 10;</code>
      */
@@ -165,6 +185,7 @@ public final class LoggregatorEnvelope {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:loggregator.v2.Envelope)
       EnvelopeOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Envelope.newBuilder() to construct.
     private Envelope(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -178,14 +199,19 @@ public final class LoggregatorEnvelope {
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Envelope(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -195,7 +221,8 @@ public final class LoggregatorEnvelope {
               done = true;
               break;
             default: {
-              if (!input.skipField(tag)) {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -321,6 +348,7 @@ public final class LoggregatorEnvelope {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -627,6 +655,12 @@ public final class LoggregatorEnvelope {
     /**
      * <code>.loggregator.v2.Log log = 4;</code>
      */
+    public boolean hasLog() {
+      return messageCase_ == 4;
+    }
+    /**
+     * <code>.loggregator.v2.Log log = 4;</code>
+     */
     public org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Log getLog() {
       if (messageCase_ == 4) {
          return (org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Log) message_;
@@ -644,6 +678,12 @@ public final class LoggregatorEnvelope {
     }
 
     public static final int COUNTER_FIELD_NUMBER = 5;
+    /**
+     * <code>.loggregator.v2.Counter counter = 5;</code>
+     */
+    public boolean hasCounter() {
+      return messageCase_ == 5;
+    }
     /**
      * <code>.loggregator.v2.Counter counter = 5;</code>
      */
@@ -667,6 +707,12 @@ public final class LoggregatorEnvelope {
     /**
      * <code>.loggregator.v2.Gauge gauge = 6;</code>
      */
+    public boolean hasGauge() {
+      return messageCase_ == 6;
+    }
+    /**
+     * <code>.loggregator.v2.Gauge gauge = 6;</code>
+     */
     public org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Gauge getGauge() {
       if (messageCase_ == 6) {
          return (org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Gauge) message_;
@@ -687,6 +733,12 @@ public final class LoggregatorEnvelope {
     /**
      * <code>.loggregator.v2.Timer timer = 7;</code>
      */
+    public boolean hasTimer() {
+      return messageCase_ == 7;
+    }
+    /**
+     * <code>.loggregator.v2.Timer timer = 7;</code>
+     */
     public org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Timer getTimer() {
       if (messageCase_ == 7) {
          return (org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Timer) message_;
@@ -704,6 +756,12 @@ public final class LoggregatorEnvelope {
     }
 
     public static final int EVENT_FIELD_NUMBER = 10;
+    /**
+     * <code>.loggregator.v2.Event event = 10;</code>
+     */
+    public boolean hasEvent() {
+      return messageCase_ == 10;
+    }
     /**
      * <code>.loggregator.v2.Event event = 10;</code>
      */
@@ -771,6 +829,7 @@ public final class LoggregatorEnvelope {
       if (messageCase_ == 10) {
         output.writeMessage(10, (org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Event) message_);
       }
+      unknownFields.writeTo(output);
     }
 
     public int getSerializedSize() {
@@ -828,11 +887,11 @@ public final class LoggregatorEnvelope {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(10, (org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Event) message_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -881,6 +940,7 @@ public final class LoggregatorEnvelope {
         case 0:
         default:
       }
+      result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
 
@@ -1172,7 +1232,7 @@ public final class LoggregatorEnvelope {
       }
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       public Builder clearField(
@@ -1185,12 +1245,12 @@ public final class LoggregatorEnvelope {
       }
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -1244,6 +1304,7 @@ public final class LoggregatorEnvelope {
             break;
           }
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
@@ -1701,6 +1762,12 @@ public final class LoggregatorEnvelope {
       /**
        * <code>.loggregator.v2.Log log = 4;</code>
        */
+      public boolean hasLog() {
+        return messageCase_ == 4;
+      }
+      /**
+       * <code>.loggregator.v2.Log log = 4;</code>
+       */
       public org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Log getLog() {
         if (logBuilder_ == null) {
           if (messageCase_ == 4) {
@@ -1828,6 +1895,12 @@ public final class LoggregatorEnvelope {
 
       private com.google.protobuf.SingleFieldBuilderV3<
           org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Counter, org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Counter.Builder, org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.CounterOrBuilder> counterBuilder_;
+      /**
+       * <code>.loggregator.v2.Counter counter = 5;</code>
+       */
+      public boolean hasCounter() {
+        return messageCase_ == 5;
+      }
       /**
        * <code>.loggregator.v2.Counter counter = 5;</code>
        */
@@ -1961,6 +2034,12 @@ public final class LoggregatorEnvelope {
       /**
        * <code>.loggregator.v2.Gauge gauge = 6;</code>
        */
+      public boolean hasGauge() {
+        return messageCase_ == 6;
+      }
+      /**
+       * <code>.loggregator.v2.Gauge gauge = 6;</code>
+       */
       public org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Gauge getGauge() {
         if (gaugeBuilder_ == null) {
           if (messageCase_ == 6) {
@@ -2088,6 +2167,12 @@ public final class LoggregatorEnvelope {
 
       private com.google.protobuf.SingleFieldBuilderV3<
           org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Timer, org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Timer.Builder, org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.TimerOrBuilder> timerBuilder_;
+      /**
+       * <code>.loggregator.v2.Timer timer = 7;</code>
+       */
+      public boolean hasTimer() {
+        return messageCase_ == 7;
+      }
       /**
        * <code>.loggregator.v2.Timer timer = 7;</code>
        */
@@ -2221,6 +2306,12 @@ public final class LoggregatorEnvelope {
       /**
        * <code>.loggregator.v2.Event event = 10;</code>
        */
+      public boolean hasEvent() {
+        return messageCase_ == 10;
+      }
+      /**
+       * <code>.loggregator.v2.Event event = 10;</code>
+       */
       public org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Event getEvent() {
         if (eventBuilder_ == null) {
           if (messageCase_ == 10) {
@@ -2347,12 +2438,12 @@ public final class LoggregatorEnvelope {
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -2375,7 +2466,7 @@ public final class LoggregatorEnvelope {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Envelope(input, extensionRegistry);
+        return new Envelope(input, extensionRegistry);
       }
     };
 
@@ -2429,6 +2520,7 @@ public final class LoggregatorEnvelope {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:loggregator.v2.EnvelopeBatch)
       EnvelopeBatchOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use EnvelopeBatch.newBuilder() to construct.
     private EnvelopeBatch(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -2440,14 +2532,19 @@ public final class LoggregatorEnvelope {
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private EnvelopeBatch(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -2457,7 +2554,8 @@ public final class LoggregatorEnvelope {
               done = true;
               break;
             default: {
-              if (!input.skipField(tag)) {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -2482,6 +2580,7 @@ public final class LoggregatorEnvelope {
         if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
           batch_ = java.util.Collections.unmodifiableList(batch_);
         }
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -2547,6 +2646,7 @@ public final class LoggregatorEnvelope {
       for (int i = 0; i < batch_.size(); i++) {
         output.writeMessage(1, batch_.get(i));
       }
+      unknownFields.writeTo(output);
     }
 
     public int getSerializedSize() {
@@ -2558,11 +2658,11 @@ public final class LoggregatorEnvelope {
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, batch_.get(i));
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -2576,6 +2676,7 @@ public final class LoggregatorEnvelope {
       boolean result = true;
       result = result && getBatchList()
           .equals(other.getBatchList());
+      result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
 
@@ -2767,7 +2868,7 @@ public final class LoggregatorEnvelope {
       }
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       public Builder clearField(
@@ -2780,12 +2881,12 @@ public final class LoggregatorEnvelope {
       }
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -2825,6 +2926,7 @@ public final class LoggregatorEnvelope {
             }
           }
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
@@ -3093,12 +3195,12 @@ public final class LoggregatorEnvelope {
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -3121,7 +3223,7 @@ public final class LoggregatorEnvelope {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new EnvelopeBatch(input, extensionRegistry);
+        return new EnvelopeBatch(input, extensionRegistry);
       }
     };
 
@@ -3173,6 +3275,7 @@ public final class LoggregatorEnvelope {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:loggregator.v2.Value)
       ValueOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Value.newBuilder() to construct.
     private Value(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -3183,14 +3286,19 @@ public final class LoggregatorEnvelope {
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Value(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -3200,7 +3308,8 @@ public final class LoggregatorEnvelope {
               done = true;
               break;
             default: {
-              if (!input.skipField(tag)) {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -3229,6 +3338,7 @@ public final class LoggregatorEnvelope {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -3372,6 +3482,7 @@ public final class LoggregatorEnvelope {
         output.writeDouble(
             3, (double)((java.lang.Double) data_));
       }
+      unknownFields.writeTo(output);
     }
 
     public int getSerializedSize() {
@@ -3392,11 +3503,11 @@ public final class LoggregatorEnvelope {
           .computeDoubleSize(
               3, (double)((java.lang.Double) data_));
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -3429,6 +3540,7 @@ public final class LoggregatorEnvelope {
         case 0:
         default:
       }
+      result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
 
@@ -3629,7 +3741,7 @@ public final class LoggregatorEnvelope {
       }
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       public Builder clearField(
@@ -3642,12 +3754,12 @@ public final class LoggregatorEnvelope {
       }
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -3680,6 +3792,7 @@ public final class LoggregatorEnvelope {
             break;
           }
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
@@ -3862,12 +3975,12 @@ public final class LoggregatorEnvelope {
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -3890,7 +4003,7 @@ public final class LoggregatorEnvelope {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Value(input, extensionRegistry);
+        return new Value(input, extensionRegistry);
       }
     };
 
@@ -3934,6 +4047,7 @@ public final class LoggregatorEnvelope {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:loggregator.v2.Log)
       LogOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Log.newBuilder() to construct.
     private Log(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -3946,14 +4060,19 @@ public final class LoggregatorEnvelope {
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Log(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -3963,7 +4082,8 @@ public final class LoggregatorEnvelope {
               done = true;
               break;
             default: {
-              if (!input.skipField(tag)) {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -3987,6 +4107,7 @@ public final class LoggregatorEnvelope {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -4143,6 +4264,7 @@ public final class LoggregatorEnvelope {
       if (type_ != org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Log.Type.OUT.getNumber()) {
         output.writeEnum(2, type_);
       }
+      unknownFields.writeTo(output);
     }
 
     public int getSerializedSize() {
@@ -4158,11 +4280,11 @@ public final class LoggregatorEnvelope {
         size += com.google.protobuf.CodedOutputStream
           .computeEnumSize(2, type_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -4177,6 +4299,7 @@ public final class LoggregatorEnvelope {
       result = result && getPayload()
           .equals(other.getPayload());
       result = result && type_ == other.type_;
+      result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
 
@@ -4357,7 +4480,7 @@ public final class LoggregatorEnvelope {
       }
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       public Builder clearField(
@@ -4370,12 +4493,12 @@ public final class LoggregatorEnvelope {
       }
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -4395,6 +4518,7 @@ public final class LoggregatorEnvelope {
         if (other.type_ != 0) {
           setTypeValue(other.getTypeValue());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
@@ -4495,12 +4619,12 @@ public final class LoggregatorEnvelope {
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -4523,7 +4647,7 @@ public final class LoggregatorEnvelope {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Log(input, extensionRegistry);
+        return new Log(input, extensionRegistry);
       }
     };
 
@@ -4573,6 +4697,7 @@ public final class LoggregatorEnvelope {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:loggregator.v2.Counter)
       CounterOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Counter.newBuilder() to construct.
     private Counter(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -4586,14 +4711,19 @@ public final class LoggregatorEnvelope {
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Counter(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -4603,7 +4733,8 @@ public final class LoggregatorEnvelope {
               done = true;
               break;
             default: {
-              if (!input.skipField(tag)) {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -4632,6 +4763,7 @@ public final class LoggregatorEnvelope {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -4720,6 +4852,7 @@ public final class LoggregatorEnvelope {
       if (total_ != 0L) {
         output.writeUInt64(3, total_);
       }
+      unknownFields.writeTo(output);
     }
 
     public int getSerializedSize() {
@@ -4738,11 +4871,11 @@ public final class LoggregatorEnvelope {
         size += com.google.protobuf.CodedOutputStream
           .computeUInt64Size(3, total_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -4760,6 +4893,7 @@ public final class LoggregatorEnvelope {
           == other.getDelta());
       result = result && (getTotal()
           == other.getTotal());
+      result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
 
@@ -4947,7 +5081,7 @@ public final class LoggregatorEnvelope {
       }
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       public Builder clearField(
@@ -4960,12 +5094,12 @@ public final class LoggregatorEnvelope {
       }
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -4989,6 +5123,7 @@ public final class LoggregatorEnvelope {
         if (other.getTotal() != 0L) {
           setTotal(other.getTotal());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
@@ -5137,12 +5272,12 @@ public final class LoggregatorEnvelope {
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -5165,7 +5300,7 @@ public final class LoggregatorEnvelope {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Counter(input, extensionRegistry);
+        return new Counter(input, extensionRegistry);
       }
     };
 
@@ -5229,6 +5364,7 @@ public final class LoggregatorEnvelope {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:loggregator.v2.Gauge)
       GaugeOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Gauge.newBuilder() to construct.
     private Gauge(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -5239,14 +5375,19 @@ public final class LoggregatorEnvelope {
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Gauge(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -5256,7 +5397,8 @@ public final class LoggregatorEnvelope {
               done = true;
               break;
             default: {
-              if (!input.skipField(tag)) {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -5282,6 +5424,7 @@ public final class LoggregatorEnvelope {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -5402,6 +5545,7 @@ public final class LoggregatorEnvelope {
           internalGetMetrics(),
           MetricsDefaultEntryHolder.defaultEntry,
           1);
+      unknownFields.writeTo(output);
     }
 
     public int getSerializedSize() {
@@ -5419,11 +5563,11 @@ public final class LoggregatorEnvelope {
         size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(1, metrics__);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -5437,6 +5581,7 @@ public final class LoggregatorEnvelope {
       boolean result = true;
       result = result && internalGetMetrics().equals(
           other.internalGetMetrics());
+      result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
 
@@ -5637,7 +5782,7 @@ public final class LoggregatorEnvelope {
       }
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       public Builder clearField(
@@ -5650,12 +5795,12 @@ public final class LoggregatorEnvelope {
       }
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -5671,6 +5816,7 @@ public final class LoggregatorEnvelope {
         if (other == org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Gauge.getDefaultInstance()) return this;
         internalGetMutableMetrics().mergeFrom(
             other.internalGetMetrics());
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
@@ -5822,12 +5968,12 @@ public final class LoggregatorEnvelope {
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -5850,7 +5996,7 @@ public final class LoggregatorEnvelope {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Gauge(input, extensionRegistry);
+        return new Gauge(input, extensionRegistry);
       }
     };
 
@@ -5895,6 +6041,7 @@ public final class LoggregatorEnvelope {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:loggregator.v2.GaugeValue)
       GaugeValueOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use GaugeValue.newBuilder() to construct.
     private GaugeValue(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -5907,14 +6054,19 @@ public final class LoggregatorEnvelope {
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private GaugeValue(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -5924,7 +6076,8 @@ public final class LoggregatorEnvelope {
               done = true;
               break;
             default: {
-              if (!input.skipField(tag)) {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -5948,6 +6101,7 @@ public final class LoggregatorEnvelope {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -6024,6 +6178,7 @@ public final class LoggregatorEnvelope {
       if (value_ != 0D) {
         output.writeDouble(2, value_);
       }
+      unknownFields.writeTo(output);
     }
 
     public int getSerializedSize() {
@@ -6038,11 +6193,11 @@ public final class LoggregatorEnvelope {
         size += com.google.protobuf.CodedOutputStream
           .computeDoubleSize(2, value_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -6060,6 +6215,7 @@ public final class LoggregatorEnvelope {
           java.lang.Double.doubleToLongBits(getValue())
           == java.lang.Double.doubleToLongBits(
               other.getValue()));
+      result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
 
@@ -6241,7 +6397,7 @@ public final class LoggregatorEnvelope {
       }
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       public Builder clearField(
@@ -6254,12 +6410,12 @@ public final class LoggregatorEnvelope {
       }
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -6280,6 +6436,7 @@ public final class LoggregatorEnvelope {
         if (other.getValue() != 0D) {
           setValue(other.getValue());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
@@ -6402,12 +6559,12 @@ public final class LoggregatorEnvelope {
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -6430,7 +6587,7 @@ public final class LoggregatorEnvelope {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new GaugeValue(input, extensionRegistry);
+        return new GaugeValue(input, extensionRegistry);
       }
     };
 
@@ -6480,6 +6637,7 @@ public final class LoggregatorEnvelope {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:loggregator.v2.Timer)
       TimerOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Timer.newBuilder() to construct.
     private Timer(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -6493,14 +6651,19 @@ public final class LoggregatorEnvelope {
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Timer(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -6510,7 +6673,8 @@ public final class LoggregatorEnvelope {
               done = true;
               break;
             default: {
-              if (!input.skipField(tag)) {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -6539,6 +6703,7 @@ public final class LoggregatorEnvelope {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -6627,6 +6792,7 @@ public final class LoggregatorEnvelope {
       if (stop_ != 0L) {
         output.writeInt64(3, stop_);
       }
+      unknownFields.writeTo(output);
     }
 
     public int getSerializedSize() {
@@ -6645,11 +6811,11 @@ public final class LoggregatorEnvelope {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(3, stop_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -6667,6 +6833,7 @@ public final class LoggregatorEnvelope {
           == other.getStart());
       result = result && (getStop()
           == other.getStop());
+      result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
 
@@ -6854,7 +7021,7 @@ public final class LoggregatorEnvelope {
       }
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       public Builder clearField(
@@ -6867,12 +7034,12 @@ public final class LoggregatorEnvelope {
       }
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -6896,6 +7063,7 @@ public final class LoggregatorEnvelope {
         if (other.getStop() != 0L) {
           setStop(other.getStop());
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
@@ -7044,12 +7212,12 @@ public final class LoggregatorEnvelope {
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -7072,7 +7240,7 @@ public final class LoggregatorEnvelope {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Timer(input, extensionRegistry);
+        return new Timer(input, extensionRegistry);
       }
     };
 
@@ -7122,6 +7290,7 @@ public final class LoggregatorEnvelope {
       com.google.protobuf.GeneratedMessageV3 implements
       // @@protoc_insertion_point(message_implements:loggregator.v2.Event)
       EventOrBuilder {
+  private static final long serialVersionUID = 0L;
     // Use Event.newBuilder() to construct.
     private Event(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
@@ -7134,14 +7303,19 @@ public final class LoggregatorEnvelope {
     @java.lang.Override
     public final com.google.protobuf.UnknownFieldSet
     getUnknownFields() {
-      return com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+      return this.unknownFields;
     }
     private Event(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
       int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -7151,7 +7325,8 @@ public final class LoggregatorEnvelope {
               done = true;
               break;
             default: {
-              if (!input.skipField(tag)) {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
                 done = true;
               }
               break;
@@ -7176,6 +7351,7 @@ public final class LoggregatorEnvelope {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
+        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
@@ -7277,6 +7453,7 @@ public final class LoggregatorEnvelope {
       if (!getBodyBytes().isEmpty()) {
         com.google.protobuf.GeneratedMessageV3.writeString(output, 2, body_);
       }
+      unknownFields.writeTo(output);
     }
 
     public int getSerializedSize() {
@@ -7290,11 +7467,11 @@ public final class LoggregatorEnvelope {
       if (!getBodyBytes().isEmpty()) {
         size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, body_);
       }
+      size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
     }
 
-    private static final long serialVersionUID = 0L;
     @java.lang.Override
     public boolean equals(final java.lang.Object obj) {
       if (obj == this) {
@@ -7310,6 +7487,7 @@ public final class LoggregatorEnvelope {
           .equals(other.getTitle());
       result = result && getBody()
           .equals(other.getBody());
+      result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
 
@@ -7490,7 +7668,7 @@ public final class LoggregatorEnvelope {
       }
       public Builder setField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.setField(field, value);
       }
       public Builder clearField(
@@ -7503,12 +7681,12 @@ public final class LoggregatorEnvelope {
       }
       public Builder setRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, Object value) {
+          int index, java.lang.Object value) {
         return (Builder) super.setRepeatedField(field, index, value);
       }
       public Builder addRepeatedField(
           com.google.protobuf.Descriptors.FieldDescriptor field,
-          Object value) {
+          java.lang.Object value) {
         return (Builder) super.addRepeatedField(field, value);
       }
       public Builder mergeFrom(com.google.protobuf.Message other) {
@@ -7530,6 +7708,7 @@ public final class LoggregatorEnvelope {
           body_ = other.body_;
           onChanged();
         }
+        this.mergeUnknownFields(other.unknownFields);
         onChanged();
         return this;
       }
@@ -7695,12 +7874,12 @@ public final class LoggregatorEnvelope {
       }
       public final Builder setUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.setUnknownFieldsProto3(unknownFields);
       }
 
       public final Builder mergeUnknownFields(
           final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return this;
+        return super.mergeUnknownFields(unknownFields);
       }
 
 
@@ -7723,7 +7902,7 @@ public final class LoggregatorEnvelope {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-          return new Event(input, extensionRegistry);
+        return new Event(input, extensionRegistry);
       }
     };
 
@@ -7820,7 +7999,7 @@ public final class LoggregatorEnvelope {
       ".loggregator.v2.LogH\000\022*\n\007counter\030\005 \001(\0132\027" +
       ".loggregator.v2.CounterH\000\022&\n\005gauge\030\006 \001(\013" +
       "2\025.loggregator.v2.GaugeH\000\022&\n\005timer\030\007 \001(\013" +
-      "2\025.loggregator.v2.TimerH\000\022&\n\005event\030\n \001(\013",
+      "2\025.loggregator.v2.TimerH\000\022&\n\005event\030\n \001(\013" +
       "2\025.loggregator.v2.EventH\000\032L\n\023DeprecatedT" +
       "agsEntry\022\013\n\003key\030\001 \001(\t\022$\n\005value\030\002 \001(\0132\025.l" +
       "oggregator.v2.Value:\0028\001\032+\n\tTagsEntry\022\013\n\003" +
@@ -7830,7 +8009,7 @@ public final class LoggregatorEnvelope {
       "H\000\022\021\n\007integer\030\002 \001(\003H\000\022\021\n\007decimal\030\003 \001(\001H\000" +
       "B\006\n\004data\"X\n\003Log\022\017\n\007payload\030\001 \001(\014\022&\n\004type" +
       "\030\002 \001(\0162\030.loggregator.v2.Log.Type\"\030\n\004Type" +
-      "\022\007\n\003OUT\020\000\022\007\n\003ERR\020\001\"5\n\007Counter\022\014\n\004name\030\001 ",
+      "\022\007\n\003OUT\020\000\022\007\n\003ERR\020\001\"5\n\007Counter\022\014\n\004name\030\001 " +
       "\001(\t\022\r\n\005delta\030\002 \001(\004\022\r\n\005total\030\003 \001(\004\"\210\001\n\005Ga" +
       "uge\0223\n\007metrics\030\001 \003(\0132\".loggregator.v2.Ga" +
       "uge.MetricsEntry\032J\n\014MetricsEntry\022\013\n\003key\030" +

@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.1'
+        classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.3'
     }
 }
 
@@ -19,11 +19,11 @@ version '1.0-SNAPSHOT'
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.3.0"
+        artifact = "com.google.protobuf:protoc:3.5.1-1"
     }
     plugins {
         grpc {
-            artifact = "io.grpc:protoc-gen-grpc-java:1.5.0"
+            artifact = "io.grpc:protoc-gen-grpc-java:1.9.0"
         }
     }
     generateProtoTasks {
@@ -45,9 +45,9 @@ ext.junitJupiterVersion  = '5.0.3'
 ext.junitPlatformVersion = '1.0.0'
 
 dependencies {
-    compile 'io.grpc:grpc-all:1.5.0'
-    compile 'io.netty:netty-codec-http2:4.1.12.Final'
-    compile 'io.netty:netty-tcnative-boringssl-static:2.0.5.Final'
+    compile 'io.grpc:grpc-all:1.9.0'
+    compile 'io.netty:netty-codec-http2:4.1.17.Final'
+    compile 'io.netty:netty-tcnative-boringssl-static:2.0.7.Final'
     compile group: 'com.j256.simplejmx', name: 'simplejmx', version: '1.15'
     testCompile("org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")

@@ -1,24 +1,24 @@
 package org.cloudfoundry.loggregator.v2;
 
-import static io.grpc.stub.ClientCalls.asyncUnaryCall;
-import static io.grpc.stub.ClientCalls.asyncServerStreamingCall;
-import static io.grpc.stub.ClientCalls.asyncClientStreamingCall;
-import static io.grpc.stub.ClientCalls.asyncBidiStreamingCall;
-import static io.grpc.stub.ClientCalls.blockingUnaryCall;
-import static io.grpc.stub.ClientCalls.blockingServerStreamingCall;
-import static io.grpc.stub.ClientCalls.futureUnaryCall;
 import static io.grpc.MethodDescriptor.generateFullMethodName;
-import static io.grpc.stub.ServerCalls.asyncUnaryCall;
-import static io.grpc.stub.ServerCalls.asyncServerStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncClientStreamingCall;
+import static io.grpc.stub.ClientCalls.asyncBidiStreamingCall;
+import static io.grpc.stub.ClientCalls.asyncClientStreamingCall;
+import static io.grpc.stub.ClientCalls.asyncServerStreamingCall;
+import static io.grpc.stub.ClientCalls.asyncUnaryCall;
+import static io.grpc.stub.ClientCalls.blockingServerStreamingCall;
+import static io.grpc.stub.ClientCalls.blockingUnaryCall;
+import static io.grpc.stub.ClientCalls.futureUnaryCall;
 import static io.grpc.stub.ServerCalls.asyncBidiStreamingCall;
-import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
+import static io.grpc.stub.ServerCalls.asyncClientStreamingCall;
+import static io.grpc.stub.ServerCalls.asyncServerStreamingCall;
+import static io.grpc.stub.ServerCalls.asyncUnaryCall;
 import static io.grpc.stub.ServerCalls.asyncUnimplementedStreamingCall;
+import static io.grpc.stub.ServerCalls.asyncUnimplementedUnaryCall;
 
 /**
  */
 @javax.annotation.Generated(
-    value = "by gRPC proto compiler (version 1.5.0)",
+    value = "by gRPC proto compiler (version 1.9.0)",
     comments = "Source: ingress.proto")
 public final class IngressGrpc {
 
@@ -28,41 +28,101 @@ public final class IngressGrpc {
 
   // Static method descriptors that strictly reflect the proto.
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  @java.lang.Deprecated // Use {@link #getSenderMethod()} instead. 
   public static final io.grpc.MethodDescriptor<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Envelope,
-      org.cloudfoundry.loggregator.v2.LoggregatorIngress.IngressResponse> METHOD_SENDER =
-      io.grpc.MethodDescriptor.<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Envelope, org.cloudfoundry.loggregator.v2.LoggregatorIngress.IngressResponse>newBuilder()
-          .setType(io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
-          .setFullMethodName(generateFullMethodName(
-              "loggregator.v2.Ingress", "Sender"))
-          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Envelope.getDefaultInstance()))
-          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              org.cloudfoundry.loggregator.v2.LoggregatorIngress.IngressResponse.getDefaultInstance()))
-          .build();
+      org.cloudfoundry.loggregator.v2.LoggregatorIngress.IngressResponse> METHOD_SENDER = getSenderMethod();
+
+  private static volatile io.grpc.MethodDescriptor<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Envelope,
+      org.cloudfoundry.loggregator.v2.LoggregatorIngress.IngressResponse> getSenderMethod;
+
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  public static final io.grpc.MethodDescriptor<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch,
-      org.cloudfoundry.loggregator.v2.LoggregatorIngress.BatchSenderResponse> METHOD_BATCH_SENDER =
-      io.grpc.MethodDescriptor.<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch, org.cloudfoundry.loggregator.v2.LoggregatorIngress.BatchSenderResponse>newBuilder()
-          .setType(io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
-          .setFullMethodName(generateFullMethodName(
-              "loggregator.v2.Ingress", "BatchSender"))
-          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch.getDefaultInstance()))
-          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              org.cloudfoundry.loggregator.v2.LoggregatorIngress.BatchSenderResponse.getDefaultInstance()))
-          .build();
+  public static io.grpc.MethodDescriptor<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Envelope,
+      org.cloudfoundry.loggregator.v2.LoggregatorIngress.IngressResponse> getSenderMethod() {
+    io.grpc.MethodDescriptor<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Envelope, org.cloudfoundry.loggregator.v2.LoggregatorIngress.IngressResponse> getSenderMethod;
+    if ((getSenderMethod = IngressGrpc.getSenderMethod) == null) {
+      synchronized (IngressGrpc.class) {
+        if ((getSenderMethod = IngressGrpc.getSenderMethod) == null) {
+          IngressGrpc.getSenderMethod = getSenderMethod = 
+              io.grpc.MethodDescriptor.<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Envelope, org.cloudfoundry.loggregator.v2.LoggregatorIngress.IngressResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
+              .setFullMethodName(generateFullMethodName(
+                  "loggregator.v2.Ingress", "Sender"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Envelope.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.cloudfoundry.loggregator.v2.LoggregatorIngress.IngressResponse.getDefaultInstance()))
+                  .setSchemaDescriptor(new IngressMethodDescriptorSupplier("Sender"))
+                  .build();
+          }
+        }
+     }
+     return getSenderMethod;
+  }
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  @java.lang.Deprecated // Use {@link #getBatchSenderMethod()} instead. 
   public static final io.grpc.MethodDescriptor<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch,
-      org.cloudfoundry.loggregator.v2.LoggregatorIngress.SendResponse> METHOD_SEND =
-      io.grpc.MethodDescriptor.<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch, org.cloudfoundry.loggregator.v2.LoggregatorIngress.SendResponse>newBuilder()
-          .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
-          .setFullMethodName(generateFullMethodName(
-              "loggregator.v2.Ingress", "Send"))
-          .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch.getDefaultInstance()))
-          .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              org.cloudfoundry.loggregator.v2.LoggregatorIngress.SendResponse.getDefaultInstance()))
-          .build();
+      org.cloudfoundry.loggregator.v2.LoggregatorIngress.BatchSenderResponse> METHOD_BATCH_SENDER = getBatchSenderMethod();
+
+  private static volatile io.grpc.MethodDescriptor<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch,
+      org.cloudfoundry.loggregator.v2.LoggregatorIngress.BatchSenderResponse> getBatchSenderMethod;
+
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static io.grpc.MethodDescriptor<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch,
+      org.cloudfoundry.loggregator.v2.LoggregatorIngress.BatchSenderResponse> getBatchSenderMethod() {
+    io.grpc.MethodDescriptor<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch, org.cloudfoundry.loggregator.v2.LoggregatorIngress.BatchSenderResponse> getBatchSenderMethod;
+    if ((getBatchSenderMethod = IngressGrpc.getBatchSenderMethod) == null) {
+      synchronized (IngressGrpc.class) {
+        if ((getBatchSenderMethod = IngressGrpc.getBatchSenderMethod) == null) {
+          IngressGrpc.getBatchSenderMethod = getBatchSenderMethod = 
+              io.grpc.MethodDescriptor.<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch, org.cloudfoundry.loggregator.v2.LoggregatorIngress.BatchSenderResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.CLIENT_STREAMING)
+              .setFullMethodName(generateFullMethodName(
+                  "loggregator.v2.Ingress", "BatchSender"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.cloudfoundry.loggregator.v2.LoggregatorIngress.BatchSenderResponse.getDefaultInstance()))
+                  .setSchemaDescriptor(new IngressMethodDescriptorSupplier("BatchSender"))
+                  .build();
+          }
+        }
+     }
+     return getBatchSenderMethod;
+  }
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  @java.lang.Deprecated // Use {@link #getSendMethod()} instead. 
+  public static final io.grpc.MethodDescriptor<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch,
+      org.cloudfoundry.loggregator.v2.LoggregatorIngress.SendResponse> METHOD_SEND = getSendMethod();
+
+  private static volatile io.grpc.MethodDescriptor<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch,
+      org.cloudfoundry.loggregator.v2.LoggregatorIngress.SendResponse> getSendMethod;
+
+  @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
+  public static io.grpc.MethodDescriptor<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch,
+      org.cloudfoundry.loggregator.v2.LoggregatorIngress.SendResponse> getSendMethod() {
+    io.grpc.MethodDescriptor<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch, org.cloudfoundry.loggregator.v2.LoggregatorIngress.SendResponse> getSendMethod;
+    if ((getSendMethod = IngressGrpc.getSendMethod) == null) {
+      synchronized (IngressGrpc.class) {
+        if ((getSendMethod = IngressGrpc.getSendMethod) == null) {
+          IngressGrpc.getSendMethod = getSendMethod = 
+              io.grpc.MethodDescriptor.<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch, org.cloudfoundry.loggregator.v2.LoggregatorIngress.SendResponse>newBuilder()
+              .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
+              .setFullMethodName(generateFullMethodName(
+                  "loggregator.v2.Ingress", "Send"))
+              .setSampledToLocalTracing(true)
+              .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch.getDefaultInstance()))
+              .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
+                  org.cloudfoundry.loggregator.v2.LoggregatorIngress.SendResponse.getDefaultInstance()))
+                  .setSchemaDescriptor(new IngressMethodDescriptorSupplier("Send"))
+                  .build();
+          }
+        }
+     }
+     return getSendMethod;
+  }
 
   /**
    * Creates a new async stub that supports all call types for the service
@@ -95,41 +155,41 @@ public final class IngressGrpc {
      */
     public io.grpc.stub.StreamObserver<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Envelope> sender(
         io.grpc.stub.StreamObserver<org.cloudfoundry.loggregator.v2.LoggregatorIngress.IngressResponse> responseObserver) {
-      return asyncUnimplementedStreamingCall(METHOD_SENDER, responseObserver);
+      return asyncUnimplementedStreamingCall(getSenderMethod(), responseObserver);
     }
 
     /**
      */
     public io.grpc.stub.StreamObserver<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch> batchSender(
         io.grpc.stub.StreamObserver<org.cloudfoundry.loggregator.v2.LoggregatorIngress.BatchSenderResponse> responseObserver) {
-      return asyncUnimplementedStreamingCall(METHOD_BATCH_SENDER, responseObserver);
+      return asyncUnimplementedStreamingCall(getBatchSenderMethod(), responseObserver);
     }
 
     /**
      */
     public void send(org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch request,
         io.grpc.stub.StreamObserver<org.cloudfoundry.loggregator.v2.LoggregatorIngress.SendResponse> responseObserver) {
-      asyncUnimplementedUnaryCall(METHOD_SEND, responseObserver);
+      asyncUnimplementedUnaryCall(getSendMethod(), responseObserver);
     }
 
     @java.lang.Override public final io.grpc.ServerServiceDefinition bindService() {
       return io.grpc.ServerServiceDefinition.builder(getServiceDescriptor())
           .addMethod(
-            METHOD_SENDER,
+            getSenderMethod(),
             asyncClientStreamingCall(
               new MethodHandlers<
                 org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Envelope,
                 org.cloudfoundry.loggregator.v2.LoggregatorIngress.IngressResponse>(
                   this, METHODID_SENDER)))
           .addMethod(
-            METHOD_BATCH_SENDER,
+            getBatchSenderMethod(),
             asyncClientStreamingCall(
               new MethodHandlers<
                 org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch,
                 org.cloudfoundry.loggregator.v2.LoggregatorIngress.BatchSenderResponse>(
                   this, METHODID_BATCH_SENDER)))
           .addMethod(
-            METHOD_SEND,
+            getSendMethod(),
             asyncUnaryCall(
               new MethodHandlers<
                 org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch,
@@ -162,7 +222,7 @@ public final class IngressGrpc {
     public io.grpc.stub.StreamObserver<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.Envelope> sender(
         io.grpc.stub.StreamObserver<org.cloudfoundry.loggregator.v2.LoggregatorIngress.IngressResponse> responseObserver) {
       return asyncClientStreamingCall(
-          getChannel().newCall(METHOD_SENDER, getCallOptions()), responseObserver);
+          getChannel().newCall(getSenderMethod(), getCallOptions()), responseObserver);
     }
 
     /**
@@ -170,7 +230,7 @@ public final class IngressGrpc {
     public io.grpc.stub.StreamObserver<org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch> batchSender(
         io.grpc.stub.StreamObserver<org.cloudfoundry.loggregator.v2.LoggregatorIngress.BatchSenderResponse> responseObserver) {
       return asyncClientStreamingCall(
-          getChannel().newCall(METHOD_BATCH_SENDER, getCallOptions()), responseObserver);
+          getChannel().newCall(getBatchSenderMethod(), getCallOptions()), responseObserver);
     }
 
     /**
@@ -178,7 +238,7 @@ public final class IngressGrpc {
     public void send(org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch request,
         io.grpc.stub.StreamObserver<org.cloudfoundry.loggregator.v2.LoggregatorIngress.SendResponse> responseObserver) {
       asyncUnaryCall(
-          getChannel().newCall(METHOD_SEND, getCallOptions()), request, responseObserver);
+          getChannel().newCall(getSendMethod(), getCallOptions()), request, responseObserver);
     }
   }
 
@@ -204,7 +264,7 @@ public final class IngressGrpc {
      */
     public org.cloudfoundry.loggregator.v2.LoggregatorIngress.SendResponse send(org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch request) {
       return blockingUnaryCall(
-          getChannel(), METHOD_SEND, getCallOptions(), request);
+          getChannel(), getSendMethod(), getCallOptions(), request);
     }
   }
 
@@ -231,7 +291,7 @@ public final class IngressGrpc {
     public com.google.common.util.concurrent.ListenableFuture<org.cloudfoundry.loggregator.v2.LoggregatorIngress.SendResponse> send(
         org.cloudfoundry.loggregator.v2.LoggregatorEnvelope.EnvelopeBatch request) {
       return futureUnaryCall(
-          getChannel().newCall(METHOD_SEND, getCallOptions()), request);
+          getChannel().newCall(getSendMethod(), getCallOptions()), request);
     }
   }
 
@@ -282,10 +342,38 @@ public final class IngressGrpc {
     }
   }
 
-  private static final class IngressDescriptorSupplier implements io.grpc.protobuf.ProtoFileDescriptorSupplier {
+  private static abstract class IngressBaseDescriptorSupplier
+      implements io.grpc.protobuf.ProtoFileDescriptorSupplier, io.grpc.protobuf.ProtoServiceDescriptorSupplier {
+    IngressBaseDescriptorSupplier() {}
+
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
       return org.cloudfoundry.loggregator.v2.LoggregatorIngress.getDescriptor();
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Descriptors.ServiceDescriptor getServiceDescriptor() {
+      return getFileDescriptor().findServiceByName("Ingress");
+    }
+  }
+
+  private static final class IngressFileDescriptorSupplier
+      extends IngressBaseDescriptorSupplier {
+    IngressFileDescriptorSupplier() {}
+  }
+
+  private static final class IngressMethodDescriptorSupplier
+      extends IngressBaseDescriptorSupplier
+      implements io.grpc.protobuf.ProtoMethodDescriptorSupplier {
+    private final String methodName;
+
+    IngressMethodDescriptorSupplier(String methodName) {
+      this.methodName = methodName;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Descriptors.MethodDescriptor getMethodDescriptor() {
+      return getServiceDescriptor().findMethodByName(methodName);
     }
   }
 
@@ -298,10 +386,10 @@ public final class IngressGrpc {
         result = serviceDescriptor;
         if (result == null) {
           serviceDescriptor = result = io.grpc.ServiceDescriptor.newBuilder(SERVICE_NAME)
-              .setSchemaDescriptor(new IngressDescriptorSupplier())
-              .addMethod(METHOD_SENDER)
-              .addMethod(METHOD_BATCH_SENDER)
-              .addMethod(METHOD_SEND)
+              .setSchemaDescriptor(new IngressFileDescriptorSupplier())
+              .addMethod(getSenderMethod())
+              .addMethod(getBatchSenderMethod())
+              .addMethod(getSendMethod())
               .build();
         }
       }
