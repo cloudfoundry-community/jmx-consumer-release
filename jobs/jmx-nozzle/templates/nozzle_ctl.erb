@@ -1,5 +1,10 @@
 #!/bin/bash -e
 
+<%
+  rlp_host = link("reverse_log_proxy").instances.first.address
+  rlp_port = link("reverse_log_proxy").p('reverse_log_proxy.egress.port')
+%>
+
 RUN_DIR=/var/vcap/sys/run/jmx-nozzle
 LOG_DIR=/var/vcap/sys/log/jmx-nozzle
 PACKAGE_DIR=/var/vcap/packages/jmx-nozzle
@@ -7,6 +12,8 @@ PIDFILE=$RUN_DIR/jmx-nozzle.pid
 CONFIG_DIR=/var/vcap/jobs/jmx-nozzle/config
 JAVA_HOME=/var/vcap/packages/jmx-nozzle/jdk
 TMPDIR=/var/vcap/packages/jmx-nozzle/tmp
+
+openssl pkcs8 -topk8 -inform PEM -outform PEM -in $CONFIG_DIR/key -out $CONFIG_DIR/key.pkcs8 -nocrypt
 
 case $1 in
 
@@ -22,10 +29,18 @@ chown -R vcap:vcap $LOG_DIR
 
 echo $$ > $PIDFILE
 
-hostname=<%=  spec.address %>
+hostname=<%= spec.address %>
 
 exec chpst -u vcap:vcap $JAVA_HOME/bin/java \
--Dlog-level= \
+-Dconfig.jmx.server.port=<%= p('jmx.server.port') %> \
+-Dconfig.jmx.registry.port=<%= p('jmx.registry.port') %> \
+-Dconfig.rlp.host=<%= rlp_host %> \
+-Dconfig.rlp.port=<%= rlp_port %> \
+-Dconfig.tls.cert=$CONFIG_DIR/cert \
+-Dconfig.tls.key=$CONFIG_DIR/key.pkcs8 \
+-Dconfig.tls.ca_cert=$CONFIG_DIR/ca_cert \
+-Dconfig.tls.authority=<%= p('tls.authority') %> \
+-Dlog-level=FINER \
 -Dcom.sun.management.jmxremote.authenticate=false \
 -Dcom.sun.management.jmxremote.registry.ssl=false \
 -Dcom.sun.management.jmxremote.ssl=false \

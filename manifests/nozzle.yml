@@ -15,14 +15,32 @@ instance_groups:
   jobs:
   - name: jmx-nozzle
     release: jmx-nozzle
+    consumes:
+      reverse_log_proxy:
+        deployment: cf
+        from: reverse_log_proxy
+    properties:
+      tls:
+        ca_cert: "((loggregator_ca.certificate))"
+        nozzle:
+          cert: "((nozzle_ssl.certificate))"
+          key: "((nozzle_ssl.private_key))"
+
   stemcell: ubuntu
   azs: [z1]
-  vm_type: default
+  vm_type: minimal
   networks:
   - name: default
 
 update:
   canaries: 1
   max_in_flight: 3
-  canary_watch_time: 30000-600000
-  update_watch_time: 5000-600000
+  canary_watch_time: 30000-60000
+  update_watch_time: 5000-60000
+
+variables:
+- name: nozzle_ssl
+  type: certificate
+  options:
+    ca: loggregator_ca
+    common_name: jmx-nozzle
