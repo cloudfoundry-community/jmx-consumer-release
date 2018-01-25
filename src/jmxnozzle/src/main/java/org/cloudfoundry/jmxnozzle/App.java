@@ -13,9 +13,9 @@ public class App {
         JmxNozzleServer jmxServer = new JmxNozzleServer(Config.getRegistryPort(), Config.getServerPort());
         Logger rootLogger = LogManager.getLogManager().getLogger("");
         Handler[] handlers = rootLogger.getHandlers();
-        rootLogger.setLevel(Level.FINEST);
+        rootLogger.setLevel(Level.INFO);
         for (Handler h : handlers) {
-            h.setLevel(Level.FINEST);
+            h.setLevel(Level.INFO);
         }
 
         jmxServer.start();

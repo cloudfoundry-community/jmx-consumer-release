@@ -5,7 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import javax.management.JMException;
 import javax.management.ObjectName;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,6 +22,8 @@ public class AcceptanceTest {
 
         ProcessBuilder pb = new ProcessBuilder("java", "-jar", "./build/libs/jmx-nozzle-1.0-SNAPSHOT.jar");
         Process process = pb.start();
+
+        writeLogsToStdout(process);
 
         try {
             JmxClient client = null;
@@ -49,6 +55,14 @@ public class AcceptanceTest {
         }
     }
 
+    private void writeLogsToStdout(Process process) {
+        StreamGobbler outputGobbler = new StreamGobbler(process.getInputStream(), System.out::println);
+        StreamGobbler errorGobbler = new StreamGobbler(process.getErrorStream(), System.out::println);
+
+        new Thread(outputGobbler).start();
+        new Thread(errorGobbler).start();
+    }
+
     private JmxClient getJmxClient() throws JMException {
         String uri = String.format(
                 "service:jmx:rmi://%s:%d/jndi/rmi://%s:%d/jmxrmi",
@@ -60,5 +74,19 @@ public class AcceptanceTest {
         JmxClient client = new JmxClient(uri);
         assertThat(client).isNotNull();
         return client;
+    }
+
+    class StreamGobbler implements Runnable {
+        private InputStream inputStream;
+        private Consumer<String> consumeInputLine;
+
+        public StreamGobbler(InputStream inputStream, Consumer<String> consumeInputLine) {
+            this.inputStream = inputStream;
+            this.consumeInputLine = consumeInputLine;
+        }
+
+        public void run() {
+            new BufferedReader(new InputStreamReader(inputStream)).lines().forEach(consumeInputLine);
+        }
     }
 }

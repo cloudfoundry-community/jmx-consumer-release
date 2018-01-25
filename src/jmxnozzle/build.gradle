@@ -81,4 +81,13 @@ test {
     dependsOn "assemble"
 }
 
+junitPlatform {
+    filters {
+        tags {
+            exclude 'compatibility'
+        }
+    }
+}
+
+
 // According to HW, proto files output needs to go to:   /src/main/proto
