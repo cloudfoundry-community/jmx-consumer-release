@@ -10,18 +10,20 @@ import javax.management.*;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JmxNozzleServer {
     private int registryPort;
     private int serverPort;
     private JmxServer server = null;
-    private DynamicJmxBean dynamicJmxBean;
-
+    private Map<ObjectName, DynamicJmxBean> dynamicJmxBeans;
     private JmxNozzleServer() {}
 
     public JmxNozzleServer(int registryPort, int serverPort) {
         this.registryPort = registryPort;
         this.serverPort = serverPort;
+        this.dynamicJmxBeans = new HashMap<>();
     }
 
     public boolean start() throws JMException, UnknownHostException {
@@ -31,15 +33,26 @@ public class JmxNozzleServer {
         server.start();
 
         server.setUsePlatformMBeanServer(true);
-        dynamicJmxBean = new DynamicJmxBean("deployment", "job", "0", "0.0.0.0");
-
-        MBeanServer platformMBeanServer = ManagementFactory.getPlatformMBeanServer();
-        platformMBeanServer.registerMBean(dynamicJmxBean, new ObjectName(dynamicJmxBean.getName()));
-
         return (true);
     }
 
-    public void addMetric(Metric metric) throws AttributeNotFoundException, MBeanException, ReflectionException, InvalidAttributeValueException {
+    public void addMetric(Metric metric) throws AttributeNotFoundException, MBeanException, ReflectionException, InvalidAttributeValueException, MalformedObjectNameException, InstanceAlreadyExistsException, NotCompliantMBeanException {
+        DynamicJmxBean dynamicJmxBean = new DynamicJmxBean(
+                metric.getDeployment(),
+                metric.getJob(),
+                metric.getIndex(),
+                metric.getIP()
+        );
+        ObjectName objectName = new ObjectName(dynamicJmxBean.getName());
+
+        MBeanServer platformMBeanServer = ManagementFactory.getPlatformMBeanServer();
+        if (dynamicJmxBeans.containsKey(objectName)) {
+            dynamicJmxBean = dynamicJmxBeans.get(objectName);
+        } else {
+            dynamicJmxBeans.put(objectName, dynamicJmxBean);
+            platformMBeanServer.registerMBean(dynamicJmxBean, objectName);
+        }
+
         dynamicJmxBean.setAttribute(new Attribute(metric.getName(), metric.getValue()));
     }
 

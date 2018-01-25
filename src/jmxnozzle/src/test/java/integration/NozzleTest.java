@@ -7,6 +7,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class NozzleTest {
@@ -42,12 +44,28 @@ public class NozzleTest {
         assertThat(metric).isInstanceOfAny(Metric.class);
         assertThat(metric.getName()).isEqualTo("fakeGaugeMetricName0");
         assertThat(metric.getValue()).isEqualTo(0d);
+        assertThat(metric.getTimestamp()).isGreaterThan(0L);
+        assertThat(metric.getDeployment()).isEqualTo("deployment-name");
+        assertThat(metric.getJob()).isEqualTo("job-name");
+        assertThat(metric.getIndex()).isEqualTo("index-guid");
+        assertThat(metric.getIP()).isEqualTo("0.0.0.0");
+        Map<String, String> tags = metric.getTags();
+        assertThat(tags.size()).isGreaterThan(0);
+        assertThat(tags.get("custom_tag")).isEqualTo("custom_value");
 
         metric = nozzle.getNextMetric();
 
         assertThat(metric).isInstanceOfAny(Metric.class);
         assertThat(metric.getName()).isEqualTo("fakeCounterMetricName1");
         assertThat(metric.getValue()).isEqualTo(1d);
+        assertThat(metric.getTimestamp()).isGreaterThan(0L);
+        assertThat(metric.getDeployment()).isEqualTo("deployment-name");
+        assertThat(metric.getJob()).isEqualTo("job-name");
+        assertThat(metric.getIndex()).isEqualTo("index-guid");
+        assertThat(metric.getIP()).isEqualTo("1.1.1.1");
+        tags = metric.getTags();
+        assertThat(tags.size()).isGreaterThan(0);
+        assertThat(tags.get("custom_tag")).isEqualTo("custom_value");
     }
 
     @Test

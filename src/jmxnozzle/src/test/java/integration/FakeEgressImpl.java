@@ -25,24 +25,30 @@ public class FakeEgressImpl extends EgressGrpc.EgressImplBase {
 
         egressRequest = request;
         for (int i = 0; ; i++) {
-            LoggregatorEnvelope.Envelope envelope;
+            LoggregatorEnvelope.Envelope.Builder envelope = LoggregatorEnvelope.Envelope.newBuilder()
+                    .setTimestamp(System.nanoTime())
+                    .putTags("deployment", "deployment-name")
+                    .putTags("job", "job-name")
+                    .putTags("index", "index-guid")
+                    .putTags("ip", String.format("%1d.%1d.%1d.%1d", i, i, i, i))
+                    .putTags("custom_tag", "custom_value");
+
             if (i % 2 == 0) {
                 LoggregatorEnvelope.Gauge gauge = LoggregatorEnvelope.Gauge.newBuilder()
                         .putMetrics(
                                 String.format("fakeGaugeMetricName%d", i),
                                 LoggregatorEnvelope.GaugeValue.newBuilder().setValue(new Double(i)).build()
-                        )
-                        .build();
-                envelope = LoggregatorEnvelope.Envelope.newBuilder().setGauge(gauge).build();
+                        ).build();
+                envelope.setGauge(gauge).build();
             } else {
                 LoggregatorEnvelope.Counter counter = LoggregatorEnvelope.Counter.newBuilder()
                         .setName(String.format("fakeCounterMetricName%d", i))
                         .setTotal(i)
                         .build();
-                envelope = LoggregatorEnvelope.Envelope.newBuilder().setCounter(counter).build();
+                envelope.setCounter(counter);
             }
 
-            responseObserver.onNext(envelope);
+            responseObserver.onNext(envelope.build());
         }
     }
 

@@ -47,9 +47,9 @@ public class Nozzle {
                 case GAUGE:
                     Map<String, LoggregatorEnvelope.GaugeValue> metricsMap = envelope.getGauge().getMetricsMap();
                     Map.Entry<String, LoggregatorEnvelope.GaugeValue> first = metricsMap.entrySet().iterator().next();
-                    return new Metric(first.getKey(), first.getValue().getValue());
+                    return new Metric(first.getKey(), first.getValue().getValue(), envelope.getTimestamp(), envelope.getTagsMap());
                 case COUNTER:
-                    return new Metric(envelope.getCounter().getName(), (double) envelope.getCounter().getTotal());
+                    return new Metric(envelope.getCounter().getName(), (double) envelope.getCounter().getTotal(), envelope.getTimestamp(), envelope.getTagsMap());
             }
 
         }
