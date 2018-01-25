@@ -4,6 +4,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.3'
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.3'
     }
 }
 
@@ -14,6 +15,7 @@ plugins {
     id 'com.google.protobuf' version '0.8.1'
 }
 
+apply plugin: 'org.junit.platform.gradle.plugin'
 group 'org.cloudfoundry'
 version '1.0-SNAPSHOT'
 
@@ -74,6 +76,9 @@ sourceSets {
     }
 }
 
-test.dependsOn "assemble"
+test {
+    testLogging.showStandardStreams = true
+    dependsOn "assemble"
+}
 
 // According to HW, proto files output needs to go to:   /src/main/proto
