@@ -24,7 +24,7 @@ public class FakeEgressImpl extends EgressGrpc.EgressImplBase {
 
 
         egressRequest = request;
-        for (int i = 0; ; i++) {
+        for (int i = 0; i <256; i++) {
             LoggregatorEnvelope.Envelope.Builder envelope = LoggregatorEnvelope.Envelope.newBuilder()
                     .setTimestamp(System.nanoTime())
                     .putTags("deployment", "deployment-name")

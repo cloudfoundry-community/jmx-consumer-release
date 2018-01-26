@@ -26,19 +26,10 @@ public class AcceptanceTest {
         writeLogsToStdout(process);
 
         try {
-            JmxClient client = null;
-            for (int i = 0; i < 1; i++) {
-                Thread.sleep(500);
-                try {
-                    client = getJmxClient();
-                } catch (JMException e) {
-                    continue;
-                }
-                break;
-            }
+            JmxClient client = getJmxClient();
 
             Set<ObjectName> beanNames = client.getBeanNames("org.cloudfoundry");
-            ObjectName name = new ObjectName("org.cloudfoundry:deployment=deployment,job=job,index=0,ip=0.0.0.0");
+            ObjectName name = new ObjectName("org.cloudfoundry:deployment=deployment-name,job=job-name,index=index-guid,ip=0.0.0.0");
             assertThat(beanNames).contains(name);
             Thread.sleep(1000);
 
@@ -46,7 +37,9 @@ public class AcceptanceTest {
             assertThat(attribute).isNotNull();
             assertThat((Double) attribute).isEqualTo(0d);
 
-            attribute = client.getAttribute(name, "fakeCounterMetricName1");
+            attribute = client.getAttribute(new ObjectName(
+                    "org.cloudfoundry:deployment=deployment-name,job=job-name,index=index-guid,ip=1.1.1.1"),
+                    "fakeCounterMetricName1");
             assertThat(attribute).isNotNull();
             assertThat((Double) attribute).isEqualTo(1d);
         } finally {
@@ -63,7 +56,7 @@ public class AcceptanceTest {
         new Thread(errorGobbler).start();
     }
 
-    private JmxClient getJmxClient() throws JMException {
+    private JmxClient getJmxClient() throws JMException, InterruptedException {
         String uri = String.format(
                 "service:jmx:rmi://%s:%d/jndi/rmi://%s:%d/jmxrmi",
                 "127.0.0.1",
@@ -71,12 +64,35 @@ public class AcceptanceTest {
                 "127.0.0.1",
                 44444
         );
-        JmxClient client = new JmxClient(uri);
-        assertThat(client).isNotNull();
+
+        int retry = 0;
+        int maxRetries = 3;
+        JmxClient client = null;
+        while(retry < maxRetries) {
+            Thread.sleep(1000);
+            try {
+                client = new JmxClient(uri);
+                break;
+            } catch(JMException e) {
+                retry++;
+                if(retry == maxRetries) {
+                    throw e;
+                }
+            }
+        }
+        waitForJMXServerToPresentBeans(client);
         return client;
     }
 
+    private void waitForJMXServerToPresentBeans(JmxClient client) throws InterruptedException, JMException {
+        for (int i = 0; i < 5; i++) {
+            Thread.sleep(1000);
+            if(client.getBeanNames("org.cloudfoundry").size() != 0) return;
+        }
+    }
+
     class StreamGobbler implements Runnable {
+
         private InputStream inputStream;
         private Consumer<String> consumeInputLine;
 
