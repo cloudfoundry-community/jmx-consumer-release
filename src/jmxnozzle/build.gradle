@@ -88,6 +88,3 @@ junitPlatform {
         }
     }
 }
-
-
-// According to HW, proto files output needs to go to:   /src/main/proto
