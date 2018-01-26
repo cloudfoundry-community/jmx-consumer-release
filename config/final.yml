@@ -3,4 +3,4 @@ blobstore:
   provider: gcs
   options:
     bucket_name: jmx-nozzle-release
-    credentials_source: static
+    credentials_source: none
