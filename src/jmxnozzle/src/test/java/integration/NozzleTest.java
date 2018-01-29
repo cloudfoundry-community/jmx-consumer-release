@@ -75,5 +75,6 @@ public class NozzleTest {
                 LoggregatorEgress.Selector.newBuilder().setCounter(LoggregatorEgress.CounterSelector.newBuilder().build()).build(),
                 LoggregatorEgress.Selector.newBuilder().setGauge(LoggregatorEgress.GaugeSelector.newBuilder().build()).build()
         );
+//        TODO - assert on preferred tags in request
     }
 }

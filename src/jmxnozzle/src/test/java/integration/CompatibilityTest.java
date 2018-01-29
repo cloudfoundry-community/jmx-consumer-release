@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Tag("compatibility")
 public class CompatibilityTest {
     private MBeanServerConnection createClient() throws IOException {
-        System.setProperty("socksProxyHost", "localhost");
-        System.setProperty("socksProxyPort", "7777");
+//        System.setProperty("socksProxyHost", "10.244.0.142");
+//        System.setProperty("socksProxyPort", "44444");
 
-        JMXServiceURL serviceURL = new JMXServiceURL("service:jmx:rmi://10.0.0.6:44445/jndi/rmi://10.0.0.6:44444/jmxrmi");
+        JMXServiceURL serviceURL = new JMXServiceURL("service:jmx:rmi://10.244.0.142:44445/jndi/rmi://10.244.0.142:44444/jmxrmi");
         Map<String, String[]> env = ImmutableMap.of(JMXConnector.CREDENTIALS, new String[]{"root", "root"});
 
         JMXConnector jmxConnector = JMXConnectorFactory.connect(serviceURL, env);
@@ -36,8 +36,7 @@ public class CompatibilityTest {
     public void customMetricsFromVMS() throws JMException, IOException {
         final String guidPattern = "[a-f0-9]{8}-([a-f0-9]{4}-){3}[a-f0-9]{12}";
         final String ipv4Pattern = "(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])";
-        final String [] jobs= new String[] {"clock_global", "consul_server", "diego_brain", "diego_cell", "diego_database",
-                "doppler", "loggregator_trafficcontroller", "mysql", "nats", "nfs_server", "router", "syslog_adapter", "uaa"};
+        final String [] jobs= new String[] {"uaa", "diego_cell", "doppler", "nats", "router"};
 
         String filter= "org.cloudfoundry:deployment=cf,job=%s,index=*,ip=*,*";
 

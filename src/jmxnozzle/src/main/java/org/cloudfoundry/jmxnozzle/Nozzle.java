@@ -62,6 +62,7 @@ public class Nozzle {
         LoggregatorEgress.EgressRequest request = LoggregatorEgress.EgressRequest.newBuilder()
                 .addSelectors(getCounterSelector())
                 .addSelectors(getGaugeSelector())
+                .setUsePreferredTags(true)
                 .build();
         envelopes = blockingStub.receiver(request);
     }
