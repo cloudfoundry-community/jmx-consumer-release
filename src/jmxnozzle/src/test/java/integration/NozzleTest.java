@@ -42,7 +42,7 @@ public class NozzleTest {
         Metric metric = nozzle.getNextMetric();
 
         assertThat(metric).isInstanceOfAny(Metric.class);
-        assertThat(metric.getName()).isEqualTo("fakeGaugeMetricName0");
+        assertThat(metric.getName()).isEqualTo("fakeOrigin.fakeGaugeMetricName0[custom_tag=custom_value]");
         assertThat(metric.getValue()).isEqualTo(0d);
         assertThat(metric.getTimestamp()).isGreaterThan(0L);
         assertThat(metric.getDeployment()).isEqualTo("deployment-name");
@@ -56,7 +56,7 @@ public class NozzleTest {
         metric = nozzle.getNextMetric();
 
         assertThat(metric).isInstanceOfAny(Metric.class);
-        assertThat(metric.getName()).isEqualTo("fakeCounterMetricName1");
+        assertThat(metric.getName()).isEqualTo("fakeOrigin.fakeCounterMetricName1[custom_tag=custom_value]");
         assertThat(metric.getValue()).isEqualTo(1d);
         assertThat(metric.getTimestamp()).isGreaterThan(0L);
         assertThat(metric.getDeployment()).isEqualTo("deployment-name");

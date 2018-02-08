@@ -30,6 +30,8 @@ public class FakeEgressImpl extends EgressGrpc.EgressImplBase {
                     .putTags("deployment", "deployment-name")
                     .putTags("job", "job-name")
                     .putTags("index", "index-guid")
+                    .putTags("origin", "fakeOrigin")
+                    .putTags("id", "some-id")
                     .putTags("ip", String.format("%1d.%1d.%1d.%1d", i, i, i, i))
                     .putTags("custom_tag", "custom_value");
 

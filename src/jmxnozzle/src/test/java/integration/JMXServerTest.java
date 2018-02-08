@@ -21,9 +21,8 @@ public class JMXServerTest {
 
   JmxNozzleServer server;
 
-  @BeforeEach
-  public void startTheServer() throws Exception {
-    server = new JmxNozzleServer(44444, 44445);
+  public void startTheServer(boolean withPrefix) throws Exception {
+    server = new JmxNozzleServer(44444, 44445, withPrefix ? "opentsdb.nozzle." : "");
     server.start();
   }
 
@@ -47,8 +46,7 @@ public class JMXServerTest {
 
   @Test
   public void addMetricToServer() throws Exception {
-
-    // TODO add timestamps to the equation
+    startTheServer(false);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
     metrics1Tags.put("deployment", "deployment0");
     metrics1Tags.put("job", "job0");
@@ -94,6 +92,7 @@ public class JMXServerTest {
   //@Test
   @DisplayName("When the same metric has timestamps that come out of order")
   public void sameMetricDifferentTimestamps() throws Exception {
+    startTheServer(false);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
     metrics1Tags.put("deployment", "deployment0");
     metrics1Tags.put("job", "job0");
@@ -109,6 +108,28 @@ public class JMXServerTest {
     assertThat(beanNames).contains(name);
 
     Object attribute = client.getAttribute(name, "system.cpu1");
+    assertThat(attribute).isNotNull();
+    assertThat((Double)attribute).isEqualTo(100d);
+  }
+
+  @Test
+  @DisplayName("When the prefix is enabled it prepends each metric name")
+  public void addPrefixToMetrics() throws Exception {
+    startTheServer(true);
+    Map<String, String> metrics1Tags = new HashMap<String, String>();
+    metrics1Tags.put("deployment", "deployment0");
+    metrics1Tags.put("job", "job0");
+    metrics1Tags.put("index", "index0");
+    metrics1Tags.put("ip","0.0.0.0");
+    server.addMetric(new Metric("testingPrefix", 100d, 100, metrics1Tags));
+
+    JmxClient client = getJmxClient();
+
+    Set<ObjectName> beanNames = client.getBeanNames("org.cloudfoundry");
+    ObjectName name = new ObjectName("org.cloudfoundry:deployment=deployment0,job=job0,index=index0,ip=0.0.0.0");
+    assertThat(beanNames).contains(name);
+
+    Object attribute = client.getAttribute(name, "opentsdb.nozzle.testingPrefix");
     assertThat(attribute).isNotNull();
     assertThat((Double)attribute).isEqualTo(100d);
   }

@@ -33,13 +33,13 @@ public class AcceptanceTest {
             assertThat(beanNames).contains(name);
             Thread.sleep(1000);
 
-            Object attribute = client.getAttribute(name, "fakeGaugeMetricName0");
+            Object attribute = client.getAttribute(name, "fakeOrigin.fakeGaugeMetricName0[custom_tag=custom_value]");
             assertThat(attribute).isNotNull();
             assertThat((Double) attribute).isEqualTo(0d);
 
             attribute = client.getAttribute(new ObjectName(
                     "org.cloudfoundry:deployment=deployment-name,job=job-name,index=index-guid,ip=1.1.1.1"),
-                    "fakeCounterMetricName1");
+                    "fakeOrigin.fakeCounterMetricName1[custom_tag=custom_value]");
             assertThat(attribute).isNotNull();
             assertThat((Double) attribute).isEqualTo(1d);
         } finally {

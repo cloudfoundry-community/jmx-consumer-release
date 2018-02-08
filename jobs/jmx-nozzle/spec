@@ -30,3 +30,7 @@ properties:
   tls.authority:
     description: Common name of the authority for RLP.
     default: reverselogproxy
+  metric.prefix:
+    description: Preprends each metric name with the prefix.
+    default: ""
+    example: "opentsdb.nozzle."

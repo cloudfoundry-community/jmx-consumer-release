@@ -1,8 +1,6 @@
 package integration;
 
 import com.google.common.collect.ImmutableMap;
-import com.j256.simplejmx.client.JmxClient;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +10,6 @@ import javax.management.ObjectName;
 import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
-
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
@@ -22,10 +19,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Tag("compatibility")
 public class CompatibilityTest {
     private MBeanServerConnection createClient() throws IOException {
-//        System.setProperty("socksProxyHost", "10.244.0.142");
-//        System.setProperty("socksProxyPort", "44444");
+        System.setProperty("socksProxyHost", "localhost");
+        System.setProperty("socksProxyPort", "5000");
 
-        JMXServiceURL serviceURL = new JMXServiceURL("service:jmx:rmi://10.244.0.142:44445/jndi/rmi://10.244.0.142:44444/jmxrmi");
+        JMXServiceURL serviceURL = new JMXServiceURL("service:jmx:rmi://10.0.4.28:44445/jndi/rmi://10.0.4.28:44444/jmxrmi");
         Map<String, String[]> env = ImmutableMap.of(JMXConnector.CREDENTIALS, new String[]{"root", "root"});
 
         JMXConnector jmxConnector = JMXConnectorFactory.connect(serviceURL, env);
@@ -74,8 +71,12 @@ public class CompatibilityTest {
 
             for(String attributeName: attributeNames) {
                 Object attribute = mbeanConn.getAttribute(objectNode, attributeName);
-                assertThat(attribute).isNotNull();
-                assertThat((Double)attribute).isGreaterThan(0d);
+                assertThat(attribute)
+                        .as("attribute '%s' should not be null in job '%s'", attributeName, job)
+                        .isNotNull();
+                assertThat((Double)attribute)
+                        .as("attribute '%s' should not be greater than zero in job '%s'", attributeName, job)
+                        .isGreaterThan(0d);
             }
         }
     }
@@ -124,8 +125,12 @@ public class CompatibilityTest {
 
             for(String attributeName: attributeNames) {
                 Object attribute = mbeanConn.getAttribute(objectNode, attributeName);
-                assertThat(attribute).isNotNull();
-                assertThat((Double)attribute).isGreaterThan(0d);
+                assertThat(attribute)
+                        .as("attribute '%s' should not be null in job '%s'", attributeName, job)
+                        .isNotNull();
+                assertThat((Double)attribute)
+                        .as("attribute '%s' should not be greater than zero in job '%s'", attributeName, job)
+                        .isGreaterThan(0d);
             }
         }
     }

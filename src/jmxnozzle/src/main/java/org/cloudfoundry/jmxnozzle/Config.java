@@ -35,4 +35,8 @@ public class Config {
     public static String getAuthority() {
         return System.getProperty("config.tls.authority", "metrics");
     }
+
+    public static String getMetricPrefix() {
+        return System.getProperty("config.metric.prefix", "");
+    }
 }

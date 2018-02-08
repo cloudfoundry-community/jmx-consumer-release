@@ -14,6 +14,7 @@ public class ConfigTest {
         assertThat(Config.getRLPPort()).isEqualTo(12345);
         assertThat(Config.getRegistryPort()).isEqualTo(44444);
         assertThat(Config.getServerPort()).isEqualTo(44445);
+        assertThat(Config.getMetricPrefix()).isEqualTo("");
     }
 
     @Test
@@ -23,12 +24,14 @@ public class ConfigTest {
         System.setProperty("config.rlp.port", "5555");
         System.setProperty("config.jmx.server.port", "1111");
         System.setProperty("config.jmx.registry.port", "2222");
+        System.setProperty("config.metric.prefix", "testingPrefix");
 
 
         assertThat(Config.getRLPHost()).isEqualTo("9.9.9.9");
         assertThat(Config.getRLPPort()).isEqualTo(5555);
         assertThat(Config.getRegistryPort()).isEqualTo(2222);
         assertThat(Config.getServerPort()).isEqualTo(1111);
+        assertThat(Config.getMetricPrefix()).isEqualTo("testingPrefix");
     }
 
     @Test

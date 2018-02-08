@@ -1,6 +1,7 @@
 package unit;
 
 import org.cloudfoundry.jmxnozzle.Metric;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -31,10 +32,11 @@ public class DescribeMetric {
     inputTags.put("index", "test-index");
     inputTags.put("ip", "test-ip");
     inputTags.put("extra", "test-extra-attribute");
+    inputTags.put("origin", "test-origin");
 
     Metric otherMetric = new Metric("otherMetric", 100d, 12345L, inputTags);
     assertThat(otherMetric).isInstanceOfAny(Metric.class);
-    assertThat(otherMetric.getName()).isEqualTo("otherMetric");
+    assertThat(otherMetric.getName()).isEqualTo("test-origin.otherMetric[extra=test-extra-attribute]");
     assertThat(otherMetric.getValue()).isEqualTo(100d);
     assertThat(otherMetric.getTimestamp()).isEqualTo(12345L);
     assertThat(otherMetric.getDeployment()).isEqualTo("test-deployment");
@@ -43,6 +45,56 @@ public class DescribeMetric {
     assertThat(otherMetric.getIP()).isEqualTo("test-ip");
     Map<String, String> outputTags = otherMetric.getTags();
     assertThat(outputTags.get("extra")).isEqualTo("test-extra-attribute");
+  }
+
+  @Test
+  @DisplayName("With additional tags they get appeneded to the metric name")
+  public void metricNameWithTags() {
+    HashMap<String, String> inputTags= new HashMap<>();
+    inputTags.put("deployment", "test-deployment");
+    inputTags.put("job", "test-job");
+    inputTags.put("index", "test-index");
+    inputTags.put("ip", "test-ip");
+    inputTags.put("origin", "test-origin");
+    inputTags.put("metric_version","2.0");
+    inputTags.put("loggregator","v1");
+
+    Metric otherMetric = new Metric("otherMetric", 100d, 12345L, inputTags);
+    assertThat(otherMetric.getName()).isEqualTo("test-origin.otherMetric[loggregator=v1,metric_version=2.0]");
+  }
+
+  @Test
+  @DisplayName("It ignores tags that are loggregator specific")
+  public void metricNameWithLoggregatorV1Tags() {
+    HashMap<String, String> inputTags= new HashMap<>();
+    inputTags.put("deployment", "test-deployment");
+    inputTags.put("job", "test-job");
+    inputTags.put("index", "test-index");
+    inputTags.put("ip", "test-ip");
+    inputTags.put("origin", "test-origin");
+    inputTags.put("metric_version","2.0");
+    inputTags.put("loggregator","v1");
+    inputTags.put("__v1_type", "CounterEvent");
+
+    Metric otherMetric = new Metric("otherMetric", 100d, 12345L, inputTags);
+    assertThat(otherMetric.getName()).isEqualTo("test-origin.otherMetric[loggregator=v1,metric_version=2.0]");
+  }
+
+  @Test
+  @DisplayName("It removes the id as a tag from the name")
+  public void metricNameWithIDTag() {
+    HashMap<String, String> inputTags= new HashMap<>();
+    inputTags.put("deployment", "test-deployment");
+    inputTags.put("job", "test-job");
+    inputTags.put("index", "test-index");
+    inputTags.put("ip", "test-ip");
+    inputTags.put("origin", "test-origin");
+    inputTags.put("metric_version","2.0");
+    inputTags.put("loggregator","v1");
+    inputTags.put("id", "don't care");
+
+    Metric otherMetric = new Metric("otherMetric", 100d, 12345L, inputTags);
+    assertThat(otherMetric.getName()).isEqualTo("test-origin.otherMetric[loggregator=v1,metric_version=2.0]");
   }
 }
 

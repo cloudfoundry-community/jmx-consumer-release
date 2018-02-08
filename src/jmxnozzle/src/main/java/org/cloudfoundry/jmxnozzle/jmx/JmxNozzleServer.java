@@ -16,13 +16,15 @@ import java.util.Map;
 public class JmxNozzleServer {
     private int registryPort;
     private int serverPort;
+    private String metricPrefix;
     private JmxServer server = null;
     private Map<ObjectName, DynamicJmxBean> dynamicJmxBeans;
     private JmxNozzleServer() {}
 
-    public JmxNozzleServer(int registryPort, int serverPort) {
+    public JmxNozzleServer(int registryPort, int serverPort, String metricPrefix) {
         this.registryPort = registryPort;
         this.serverPort = serverPort;
+        this.metricPrefix = metricPrefix;
         this.dynamicJmxBeans = new HashMap<>();
     }
 
@@ -37,6 +39,12 @@ public class JmxNozzleServer {
     }
 
     public void addMetric(Metric metric) throws AttributeNotFoundException, MBeanException, ReflectionException, InvalidAttributeValueException, MalformedObjectNameException, InstanceAlreadyExistsException, NotCompliantMBeanException {
+        DynamicJmxBean dynamicJmxBean = getDynamicJmxBean(metric);
+        String metricName = this.metricPrefix + metric.getName();
+        dynamicJmxBean.setAttribute(new Attribute(metricName, metric.getValue()));
+    }
+
+    private DynamicJmxBean getDynamicJmxBean(Metric metric) throws MalformedObjectNameException, InstanceAlreadyExistsException, MBeanRegistrationException, NotCompliantMBeanException {
         DynamicJmxBean dynamicJmxBean = new DynamicJmxBean(
                 metric.getDeployment(),
                 metric.getJob(),
@@ -52,11 +60,20 @@ public class JmxNozzleServer {
             dynamicJmxBeans.put(objectName, dynamicJmxBean);
             platformMBeanServer.registerMBean(dynamicJmxBean, objectName);
         }
-
-        dynamicJmxBean.setAttribute(new Attribute(metric.getName(), metric.getValue()));
+        return dynamicJmxBean;
     }
 
     public void stop() {
         server.stop();
+        MBeanServer platformMBeanServer = ManagementFactory.getPlatformMBeanServer();
+        dynamicJmxBeans.keySet().stream().forEach(name -> {
+            try {
+                platformMBeanServer.unregisterMBean(name);
+            } catch (InstanceNotFoundException e) {
+                e.printStackTrace();
+            } catch (MBeanRegistrationException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
