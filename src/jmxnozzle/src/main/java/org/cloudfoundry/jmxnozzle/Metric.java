@@ -31,6 +31,8 @@ public class Metric {
     this.IP= this.tags.remove("ip");
     this.origin= this.tags.remove("origin");
     this.tags.remove("id");
+    this.tags.remove("name");
+    this.tags.remove("role");
 
     this.name = generateName(name);
   }

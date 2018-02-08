@@ -81,7 +81,7 @@ public class DescribeMetric {
   }
 
   @Test
-  @DisplayName("It removes the id as a tag from the name")
+  @DisplayName("It removes the id, name, and role as a tag from the name")
   public void metricNameWithIDTag() {
     HashMap<String, String> inputTags= new HashMap<>();
     inputTags.put("deployment", "test-deployment");
@@ -92,6 +92,8 @@ public class DescribeMetric {
     inputTags.put("metric_version","2.0");
     inputTags.put("loggregator","v1");
     inputTags.put("id", "don't care");
+    inputTags.put("name", "don't care");
+    inputTags.put("role", "don't care");
 
     Metric otherMetric = new Metric("otherMetric", 100d, 12345L, inputTags);
     assertThat(otherMetric.getName()).isEqualTo("test-origin.otherMetric[loggregator=v1,metric_version=2.0]");
