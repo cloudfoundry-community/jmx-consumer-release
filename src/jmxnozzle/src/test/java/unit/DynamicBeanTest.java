@@ -1,11 +1,13 @@
 package unit;
 
+import org.cloudfoundry.jmxnozzle.Metric;
 import org.cloudfoundry.jmxnozzle.jmx.DynamicJmxBean;
 import org.junit.jupiter.api.Test;
 
 import javax.management.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static javax.management.ImmutableDescriptor.EMPTY_DESCRIPTOR;
@@ -18,7 +20,8 @@ public class DynamicBeanTest {
                 "deployment",
                 "job",
                 "0",
-                "0.0.0.0"
+                "0.0.0.0",
+                ""
         );
 
         assertThat(bean.invoke("", null, null )).isNull();
@@ -55,7 +58,8 @@ public class DynamicBeanTest {
                 "deployment",
                 "job",
                 "0",
-                "0.0.0.0"
+                "0.0.0.0",
+                ""
         );
 
         bean.setAttribute(new Attribute("system.cpu", 5d));
@@ -69,7 +73,8 @@ public class DynamicBeanTest {
                 "deployment",
                 "job",
                 "0",
-                "0.0.0.0"
+                "0.0.0.0",
+                ""
         );
 
         List<Attribute> setAttributes = new ArrayList<>();
@@ -79,5 +84,35 @@ public class DynamicBeanTest {
 
         AttributeList getAttributes = bean.getAttributes(new String[]{"system1.cpu", "system2.cpu"});
         assertThat(getAttributes.asList()).contains(setAttributes.get(0), setAttributes.get(1));
+    }
+
+    @Test
+    public void setMetric() throws AttributeNotFoundException, MBeanException, ReflectionException, InvalidAttributeValueException {
+        DynamicJmxBean bean = new DynamicJmxBean(
+                "deployment",
+                "job",
+                "0",
+                "0.0.0.0",
+                ""
+        );
+
+        bean.setMetric(new Metric("test", 100d, 0, new HashMap<>()));
+        Object attribute = bean.getAttribute("test");
+        assertThat((Double)attribute).isEqualTo(100d);
+    }
+
+    @Test
+    public void setMetricWithPrefix() throws AttributeNotFoundException, MBeanException, ReflectionException, InvalidAttributeValueException {
+        DynamicJmxBean bean = new DynamicJmxBean(
+                "deployment",
+                "job",
+                "0",
+                "0.0.0.0",
+                "prefix."
+        );
+
+        bean.setMetric(new Metric("test", 100d, 0, new HashMap<>()));
+        Object attribute = bean.getAttribute("prefix.test");
+        assertThat((Double)attribute).isEqualTo(100d);
     }
 }

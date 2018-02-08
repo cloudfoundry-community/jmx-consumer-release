@@ -40,8 +40,7 @@ public class JmxNozzleServer {
 
     public void addMetric(Metric metric) throws AttributeNotFoundException, MBeanException, ReflectionException, InvalidAttributeValueException, MalformedObjectNameException, InstanceAlreadyExistsException, NotCompliantMBeanException {
         DynamicJmxBean dynamicJmxBean = getDynamicJmxBean(metric);
-        String metricName = this.metricPrefix + metric.getName();
-        dynamicJmxBean.setAttribute(new Attribute(metricName, metric.getValue()));
+        dynamicJmxBean.setMetric(metric);
     }
 
     private DynamicJmxBean getDynamicJmxBean(Metric metric) throws MalformedObjectNameException, InstanceAlreadyExistsException, MBeanRegistrationException, NotCompliantMBeanException {
@@ -49,7 +48,8 @@ public class JmxNozzleServer {
                 metric.getDeployment(),
                 metric.getJob(),
                 metric.getIndex(),
-                metric.getIP()
+                metric.getIP(),
+                this.metricPrefix
         );
         ObjectName objectName = new ObjectName(dynamicJmxBean.getName());
 

@@ -42,17 +42,13 @@ public class Metric {
       name = origin + "." + name;
     }
     if (!this.tags.isEmpty()) {
-      TreeSet keys = new TreeSet(this.tags.keySet());
-      name += new StringBuilder()
-              .append("[")
-              .append(
-                      keys
-                        .stream()
-                        .map(key -> String.format("%s=%s", key, this.tags.get(key)))
-                        .collect(Collectors.joining(","))
-              )
-              .append("]")
-              .toString();
+      TreeSet<String> keys = new TreeSet<String>(this.tags.keySet());
+      name += "[" +
+              keys
+                      .stream()
+                      .map(key -> String.format("%s=%s", key, this.tags.get(key)))
+                      .collect(Collectors.joining(",")) +
+              "]";
     }
     return name;
   }

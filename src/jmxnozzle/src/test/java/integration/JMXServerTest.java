@@ -89,7 +89,7 @@ public class JMXServerTest {
     assertThat((Double)attribute).isEqualTo(2d);
   }
 
-  //@Test
+  @Test
   @DisplayName("When the same metric has timestamps that come out of order")
   public void sameMetricDifferentTimestamps() throws Exception {
     startTheServer(false);

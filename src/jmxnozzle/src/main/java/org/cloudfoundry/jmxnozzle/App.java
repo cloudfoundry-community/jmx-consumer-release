@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        showAllApplicationDebugLogs();
+        //showAllApplicationDebugLogs();
 
         JmxNozzleServer jmxServer = new JmxNozzleServer(Config.getRegistryPort(), Config.getServerPort(), Config.getMetricPrefix());
         jmxServer.start();
