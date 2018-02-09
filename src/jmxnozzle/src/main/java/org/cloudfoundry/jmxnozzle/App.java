@@ -11,7 +11,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         //showAllApplicationDebugLogs();
 
-        JmxNozzleServer jmxServer = new JmxNozzleServer(Config.getRegistryPort(), Config.getServerPort(), Config.getMetricPrefix());
+        JmxNozzleServer jmxServer = new JmxNozzleServer(Config.getRegistryPort(), Config.getServerPort(), Config.getMetricPrefix(), 60 * 5 * 1000);
         jmxServer.start();
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {

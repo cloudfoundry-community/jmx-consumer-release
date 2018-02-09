@@ -1,31 +1,43 @@
 package org.cloudfoundry.jmxnozzle.jmx;
 
-import com.j256.simplejmx.common.JmxAttributeField;
-import com.j256.simplejmx.common.JmxResource;
+import com.google.common.base.Ticker;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.RemovalListener;
 import com.j256.simplejmx.server.JmxServer;
-import org.cloudfoundry.jmxnozzle.Config;
 import org.cloudfoundry.jmxnozzle.Metric;
 
 import javax.management.*;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class JmxNozzleServer {
     private int registryPort;
     private int serverPort;
     private String metricPrefix;
     private JmxServer server = null;
-    private Map<ObjectName, DynamicJmxBean> dynamicJmxBeans;
+    private Cache<ObjectName, DynamicJmxBean> dynamicJmxBeans;
     private JmxNozzleServer() {}
 
-    public JmxNozzleServer(int registryPort, int serverPort, String metricPrefix) {
+    public JmxNozzleServer(int registryPort, int serverPort, String metricPrefix, long expiryTime) {
         this.registryPort = registryPort;
         this.serverPort = serverPort;
         this.metricPrefix = metricPrefix;
-        this.dynamicJmxBeans = new HashMap<>();
+        RemovalListener<ObjectName, DynamicJmxBean> unregsisterFromMBeanServer = removal -> {
+            MBeanServer platformMBeanServer = ManagementFactory.getPlatformMBeanServer();
+            try {
+                platformMBeanServer.unregisterMBean(removal.getKey());
+            } catch (InstanceNotFoundException | MBeanRegistrationException e) {
+                e.printStackTrace();
+            }
+        };
+        this.dynamicJmxBeans = CacheBuilder.newBuilder()
+                .expireAfterAccess(expiryTime, TimeUnit.MILLISECONDS)
+                .removalListener(unregsisterFromMBeanServer)
+                .ticker(Ticker.systemTicker())
+                .build();
     }
 
     public boolean start() throws JMException, UnknownHostException {
@@ -54,8 +66,9 @@ public class JmxNozzleServer {
         ObjectName objectName = new ObjectName(dynamicJmxBean.getName());
 
         MBeanServer platformMBeanServer = ManagementFactory.getPlatformMBeanServer();
-        if (dynamicJmxBeans.containsKey(objectName)) {
-            dynamicJmxBean = dynamicJmxBeans.get(objectName);
+
+        if (dynamicJmxBeans.getIfPresent(objectName) != null) {
+            dynamicJmxBean = dynamicJmxBeans.getIfPresent(objectName);
         } else {
             dynamicJmxBeans.put(objectName, dynamicJmxBean);
             platformMBeanServer.registerMBean(dynamicJmxBean, objectName);
@@ -66,14 +79,6 @@ public class JmxNozzleServer {
     public void stop() {
         server.stop();
         MBeanServer platformMBeanServer = ManagementFactory.getPlatformMBeanServer();
-        dynamicJmxBeans.keySet().stream().forEach(name -> {
-            try {
-                platformMBeanServer.unregisterMBean(name);
-            } catch (InstanceNotFoundException e) {
-                e.printStackTrace();
-            } catch (MBeanRegistrationException e) {
-                e.printStackTrace();
-            }
-        });
+        dynamicJmxBeans.invalidateAll();
     }
 }

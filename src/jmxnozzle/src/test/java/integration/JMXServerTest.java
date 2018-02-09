@@ -21,8 +21,13 @@ public class JMXServerTest {
 
   JmxNozzleServer server;
 
-  public void startTheServer(boolean withPrefix) throws Exception {
-    server = new JmxNozzleServer(44444, 44445, withPrefix ? "opentsdb.nozzle." : "");
+  public void startTheServer(boolean withPrefix, long expiryTime) throws Exception {
+    server = new JmxNozzleServer(
+            44444,
+            44445,
+            withPrefix ? "opentsdb.nozzle." : "",
+            expiryTime
+    );
     server.start();
   }
 
@@ -46,7 +51,7 @@ public class JMXServerTest {
 
   @Test
   public void addMetricToServer() throws Exception {
-    startTheServer(false);
+    startTheServer(false, 9999999999l);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
     metrics1Tags.put("deployment", "deployment0");
     metrics1Tags.put("job", "job0");
@@ -92,7 +97,7 @@ public class JMXServerTest {
   @Test
   @DisplayName("When the same metric has timestamps that come out of order")
   public void sameMetricDifferentTimestamps() throws Exception {
-    startTheServer(false);
+    startTheServer(false, 9999999999l);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
     metrics1Tags.put("deployment", "deployment0");
     metrics1Tags.put("job", "job0");
@@ -115,7 +120,7 @@ public class JMXServerTest {
   @Test
   @DisplayName("When the prefix is enabled it prepends each metric name")
   public void addPrefixToMetrics() throws Exception {
-    startTheServer(true);
+    startTheServer(true, 9999999999l);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
     metrics1Tags.put("deployment", "deployment0");
     metrics1Tags.put("job", "job0");
@@ -132,5 +137,55 @@ public class JMXServerTest {
     Object attribute = client.getAttribute(name, "opentsdb.nozzle.testingPrefix");
     assertThat(attribute).isNotNull();
     assertThat((Double)attribute).isEqualTo(100d);
+  }
+
+  @Test
+  @DisplayName("Bean is gone after specified expiry time")
+  public void checkBeanExpiryTime() throws Exception {
+    long expiryTime= 3000;
+
+    // set the expiry time
+
+    startTheServer(true, expiryTime);
+    Map<String, String> metrics1Tags = new HashMap<String, String>();
+    metrics1Tags.put("deployment", "deployment21");
+    metrics1Tags.put("job", "job0");
+    metrics1Tags.put("index", "index0");
+    metrics1Tags.put("ip","0.0.0.0");
+    server.addMetric(new Metric("testingPrefix", 100d, 100, metrics1Tags));
+
+    JmxClient client = getJmxClient();
+    Set<ObjectName> beanNames = client.getBeanNames("org.cloudfoundry");
+    ObjectName name = new ObjectName("org.cloudfoundry:deployment=deployment21,job=job0,index=index0,ip=0.0.0.0");
+    assertThat(beanNames).contains(name);
+
+    Thread.sleep(expiryTime + 2000);
+
+    metrics1Tags = new HashMap<String, String>();
+    metrics1Tags.put("deployment", "deployment123");
+    metrics1Tags.put("job", "job0");
+    metrics1Tags.put("index", "index0");
+    metrics1Tags.put("ip","0.0.0.0");
+    server.addMetric(new Metric("testingPrefix", 100d, 100, metrics1Tags));
+    metrics1Tags.put("deployment", "deployment1234");
+    server.addMetric(new Metric("testingPrefix123", 100d, 100, metrics1Tags));
+    metrics1Tags.put("deployment", "deployment1235");
+    server.addMetric(new Metric("testingPrefix123", 100d, 100, metrics1Tags));
+    metrics1Tags.put("deployment", "deployment12351");
+    server.addMetric(new Metric("testingPrefix123", 100d, 100, metrics1Tags));
+    metrics1Tags.put("deployment", "deployment12352");
+    server.addMetric(new Metric("testingPrefix123", 100d, 100, metrics1Tags));
+
+    //the caches runs after so many writes to the cache hash map
+    //it does not run the "expiry" every time
+    //
+    // from the docs
+    // Timed expiration is performed with periodic maintenance during writes and occasionally during reads, as discussed below
+    //
+    // That is the reason additional write operations above are necessary for this test to pass
+
+    beanNames = client.getBeanNames("org.cloudfoundry");
+    assertThat(beanNames).doesNotContain(name);
+
   }
 }
