@@ -28,15 +28,9 @@ public class JMXServerTest {
 
   public void startTheServer(String username, String password, boolean withPrefix, long expiryTime) throws Exception {
     // create tempfile for password and access file
-    File passwordFile = File.createTempFile("password", ".cfg");
-    BufferedWriter writer= new BufferedWriter(new FileWriter(passwordFile));
-    writer.write(username + " " + password);
-    writer.close();
+    File passwordFile = writeToConfigFile("password", username + " " + password);
+    File authFile = writeToConfigFile("auth", username + " readonly");
 
-    File authFile = File.createTempFile("auth", ".cfg");
-    writer = new BufferedWriter(new FileWriter(authFile));
-    writer.write(username +" readonly");
-    writer.close();
     server = new JmxNozzleServer(
             44444,
             44445,
@@ -71,6 +65,7 @@ public class JMXServerTest {
   }
 
   @Test
+  @DisplayName("Test adding metrics to server")
   public void addMetricToServer() throws Exception {
     startTheServer("root", "root",false, 9999999999l);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
@@ -217,5 +212,13 @@ public class JMXServerTest {
 
     assertThat(getJmxClient("root","password")).isNotNull();
     assertThatThrownBy(() -> getJmxClient()).hasMessage("Authentication failed! Invalid username or password");
+  }
+
+  private File writeToConfigFile(String filename, String content) throws IOException {
+    File configFile = File.createTempFile(filename, ".cfg");
+    BufferedWriter writer= new BufferedWriter(new FileWriter(configFile));
+    writer.write(content);
+    writer.close();
+    return configFile;
   }
 }
