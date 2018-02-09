@@ -15,6 +15,8 @@ public class ConfigTest {
         assertThat(Config.getRegistryPort()).isEqualTo(44444);
         assertThat(Config.getServerPort()).isEqualTo(44445);
         assertThat(Config.getMetricPrefix()).isEqualTo("");
+        assertThat(Config.getPasswordFile()).isEqualTo("src/test/resources/password.cfg");
+        assertThat(Config.getAccessFile()).isEqualTo("src/test/resources/access.cfg");
     }
 
     @Test
@@ -25,6 +27,8 @@ public class ConfigTest {
         System.setProperty("config.jmx.server.port", "1111");
         System.setProperty("config.jmx.registry.port", "2222");
         System.setProperty("config.metric.prefix", "testingPrefix");
+        System.setProperty("config.auth.password.file", "someplace/password.cfg");
+        System.setProperty("config.auth.access.file", "someplace/access.cfg");
 
 
         assertThat(Config.getRLPHost()).isEqualTo("9.9.9.9");
@@ -32,6 +36,8 @@ public class ConfigTest {
         assertThat(Config.getRegistryPort()).isEqualTo(2222);
         assertThat(Config.getServerPort()).isEqualTo(1111);
         assertThat(Config.getMetricPrefix()).isEqualTo("testingPrefix");
+        assertThat(Config.getPasswordFile()).isEqualTo("someplace/password.cfg");
+        assertThat(Config.getAccessFile()).isEqualTo("someplace/access.cfg");
     }
 
     @Test

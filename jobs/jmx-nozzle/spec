@@ -6,6 +6,8 @@ templates:
   cert.erb: config/cert
   key.erb: config/key
   ca_cert.erb: config/ca_cert
+  password.cfg.erb: config/password.cfg
+  access.cfg.erb: config/access.cfg
 
 packages:
 - jmx-nozzle
@@ -15,6 +17,11 @@ consumes:
   type: reverse_log_proxy
 
 properties:
+  jmx.server.username:
+    description: Username for autheticating against JMX Server
+    default: "admin"
+  jmx.server.password:
+      description: Password for autheticating against JMX Server
   jmx.server.port:
     description: Port used for serving JMX
     default: 44445

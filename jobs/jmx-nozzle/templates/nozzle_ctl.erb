@@ -41,6 +41,8 @@ exec chpst -u vcap:vcap $JAVA_HOME/bin/java \
 -Dconfig.tls.ca_cert=$CONFIG_DIR/ca_cert \
 -Dconfig.metric.prefix=<%= p('metric.prefix') %> \
 -Dconfig.tls.authority=<%= p('tls.authority') %> \
+-Dconfig.auth.password.file=$CONFIG_DIR/password.cfg \
+-Dconfig.auth.access.file=$CONFIG_DIR/access.cfg \
 -Dlog-level=FINER \
 -Dio.netty.native.workdir=$TMPDIR \
 -Dcom.sun.management.jmxremote.authenticate=false \

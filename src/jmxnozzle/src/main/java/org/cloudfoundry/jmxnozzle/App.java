@@ -2,6 +2,7 @@ package org.cloudfoundry.jmxnozzle;
 
 import org.cloudfoundry.jmxnozzle.jmx.JmxNozzleServer;
 
+import java.io.IOException;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -11,11 +12,22 @@ public class App {
     public static void main(String[] args) throws Exception {
         //showAllApplicationDebugLogs();
 
-        JmxNozzleServer jmxServer = new JmxNozzleServer(Config.getRegistryPort(), Config.getServerPort(), Config.getMetricPrefix(), 60 * 5 * 1000);
+        JmxNozzleServer jmxServer = new JmxNozzleServer(
+                Config.getRegistryPort(),
+                Config.getServerPort(),
+                Config.getMetricPrefix(),
+                60 * 5 * 1000,
+                Config.getPasswordFile(),
+                Config.getAccessFile()
+        );
         jmxServer.start();
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
-                jmxServer.stop();
+                try {
+                    jmxServer.stop();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }, "Shutdown-thread"));
 

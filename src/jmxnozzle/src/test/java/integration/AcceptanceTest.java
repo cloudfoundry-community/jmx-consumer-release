@@ -71,7 +71,7 @@ public class AcceptanceTest {
         while(retry < maxRetries) {
             Thread.sleep(1000);
             try {
-                client = new JmxClient(uri);
+                client = new JmxClient(uri, "root", "root");
                 break;
             } catch(JMException e) {
                 retry++;

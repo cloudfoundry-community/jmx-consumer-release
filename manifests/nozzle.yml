@@ -25,6 +25,10 @@ instance_groups:
         nozzle:
           cert: "((nozzle_ssl.certificate))"
           key: "((nozzle_ssl.private_key))"
+      jmx:
+        server:
+          username: admin
+          password: insecure-password
 
   stemcell: ubuntu
   azs: [z1]

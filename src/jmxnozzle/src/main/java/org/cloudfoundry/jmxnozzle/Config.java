@@ -39,4 +39,12 @@ public class Config {
     public static String getMetricPrefix() {
         return System.getProperty("config.metric.prefix", "");
     }
+
+    public static String getPasswordFile() { return System.getProperty("config.auth.password.file",
+            "src/test/resources/password.cfg");
+    }
+
+    public static String getAccessFile() {  return System.getProperty("config.auth.access.file",
+            "src/test/resources/access.cfg");
+    }
 }

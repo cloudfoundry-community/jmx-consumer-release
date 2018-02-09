@@ -11,32 +11,53 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javax.management.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class JMXServerTest {
 
   JmxNozzleServer server;
 
-  public void startTheServer(boolean withPrefix, long expiryTime) throws Exception {
+  public void startTheServer(String username, String password, boolean withPrefix, long expiryTime) throws Exception {
+    // create tempfile for password and access file
+    File passwordFile = File.createTempFile("password", ".cfg");
+    BufferedWriter writer= new BufferedWriter(new FileWriter(passwordFile));
+    writer.write(username + " " + password);
+    writer.close();
+
+    File authFile = File.createTempFile("auth", ".cfg");
+    writer = new BufferedWriter(new FileWriter(authFile));
+    writer.write(username +" readonly");
+    writer.close();
     server = new JmxNozzleServer(
             44444,
             44445,
             withPrefix ? "opentsdb.nozzle." : "",
-            expiryTime
+            expiryTime,
+            passwordFile.getAbsolutePath(),
+            authFile.getAbsolutePath()
     );
     server.start();
   }
 
   @AfterEach
-  public void stopTheServer() {
+  public void stopTheServer() throws IOException {
     server.stop();
   }
 
   private JmxClient getJmxClient() throws JMException {
+    return getJmxClient("root", "root");
+  }
+
+  private JmxClient getJmxClient(String username, String password) throws JMException {
     String uri = String.format(
       "service:jmx:rmi://%s:%d/jndi/rmi://%s:%d/jmxrmi",
       "127.0.0.1",
@@ -44,14 +65,14 @@ public class JMXServerTest {
       "127.0.0.1",
       44444
     );
-    JmxClient client = new JmxClient(uri);
+    JmxClient client = new JmxClient(uri, username, password);
     assertThat(client).isNotNull();
     return client;
   }
 
   @Test
   public void addMetricToServer() throws Exception {
-    startTheServer(false, 9999999999l);
+    startTheServer("root", "root",false, 9999999999l);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
     metrics1Tags.put("deployment", "deployment0");
     metrics1Tags.put("job", "job0");
@@ -97,7 +118,7 @@ public class JMXServerTest {
   @Test
   @DisplayName("When the same metric has timestamps that come out of order")
   public void sameMetricDifferentTimestamps() throws Exception {
-    startTheServer(false, 9999999999l);
+    startTheServer("root", "root",false, 9999999999l);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
     metrics1Tags.put("deployment", "deployment0");
     metrics1Tags.put("job", "job0");
@@ -120,7 +141,7 @@ public class JMXServerTest {
   @Test
   @DisplayName("When the prefix is enabled it prepends each metric name")
   public void addPrefixToMetrics() throws Exception {
-    startTheServer(true, 9999999999l);
+    startTheServer("root", "root",true, 9999999999l);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
     metrics1Tags.put("deployment", "deployment0");
     metrics1Tags.put("job", "job0");
@@ -146,7 +167,7 @@ public class JMXServerTest {
 
     // set the expiry time
 
-    startTheServer(true, expiryTime);
+    startTheServer("root", "root",false, expiryTime);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
     metrics1Tags.put("deployment", "deployment21");
     metrics1Tags.put("job", "job0");
@@ -187,5 +208,14 @@ public class JMXServerTest {
     beanNames = client.getBeanNames("org.cloudfoundry");
     assertThat(beanNames).doesNotContain(name);
 
+  }
+
+  @Test
+  @DisplayName("When username and password are specified for the server")
+  public void checkValidAndUsername() throws Exception {
+    startTheServer("root", "password",false, 9999999999l);
+
+    assertThat(getJmxClient("root","password")).isNotNull();
+    assertThatThrownBy(() -> getJmxClient()).hasMessage("Authentication failed! Invalid username or password");
   }
 }
