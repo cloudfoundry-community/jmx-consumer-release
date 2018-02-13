@@ -12,8 +12,10 @@ public class JmxNozzleServer {
 
     private JmxNozzleServer() {}
 
-    public JmxNozzleServer(int registryPort, int serverPort, String metricPrefix, long expiryTime, String passwordFile, String accessFile) {
-        this.server = new JMXServer(registryPort, serverPort, passwordFile, accessFile);
+    public JmxNozzleServer(int registryPort, int serverPort, String metricPrefix, long expiryTime,
+                           String passwordFile, String accessFile, String certFile, String keyFile) throws Exception {
+        this.server = new JMXServer(registryPort, serverPort, passwordFile, accessFile, certFile, keyFile);
+
         this.beans = new BeanCollector(expiryTime, metricPrefix);
     }
 

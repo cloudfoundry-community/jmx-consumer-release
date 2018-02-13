@@ -20,20 +20,20 @@ public class Config {
         return Integer.parseInt(System.getProperty("config.rlp.port", "12345"));
     }
 
-    public static String getCertFile() {
-        return System.getProperty("config.tls.cert", "src/test/resources/metrics-server.pem");
+    public static String getRLPCertFile() {
+        return System.getProperty("config.nozzle.tls.cert", "src/test/resources/metrics-server.pem");
     }
 
-    public static String getKeyFile() {
-        return System.getProperty("config.tls.key", "src/test/resources/metrics-server.key");
+    public static String getRLPKeyFile() {
+        return System.getProperty("config.nozzle.tls.key", "src/test/resources/metrics-server.key");
     }
 
-    public static String getCACertFile() {
-        return System.getProperty("config.tls.ca_cert", "src/test/resources/metrics-ca.pem");
+    public static String getRLPCACertFile() {
+        return System.getProperty("config.nozzle.tls.ca_cert", "src/test/resources/metrics-ca.pem");
     }
 
-    public static String getAuthority() {
-        return System.getProperty("config.tls.authority", "metrics");
+    public static String getRLPAuthority() {
+        return System.getProperty("config.nozzle.tls.authority", "metrics");
     }
 
     public static String getMetricPrefix() {
@@ -46,5 +46,13 @@ public class Config {
 
     public static String getAccessFile() {  return System.getProperty("config.auth.access.file",
             "src/test/resources/access.cfg");
+    }
+
+    public static String getServerKeyFile() {
+        return System.getProperty("config.jmx.tls.key",null);
+    }
+
+    public static String getServerCertFile() {
+        return System.getProperty("config.jmx.tls.cert", null);
     }
 }

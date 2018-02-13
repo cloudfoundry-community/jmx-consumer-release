@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        //showAllApplicationDebugLogs();
+        showAllApplicationDebugLogs();
 
         JmxNozzleServer jmxServer = new JmxNozzleServer(
                 Config.getRegistryPort(),
@@ -18,7 +18,9 @@ public class App {
                 Config.getMetricPrefix(),
                 60 * 5 * 1000,
                 Config.getPasswordFile(),
-                Config.getAccessFile()
+                Config.getAccessFile(),
+                Config.getServerCertFile(),
+                Config.getServerKeyFile()
         );
         jmxServer.start();
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
@@ -34,10 +36,10 @@ public class App {
         Nozzle nozzle = new Nozzle(
                 Config.getRLPHost(),
                 Config.getRLPPort(),
-                Config.getCertFile(),
-                Config.getKeyFile(),
-                Config.getCACertFile(),
-                Config.getAuthority()
+                Config.getRLPCertFile(),
+                Config.getRLPKeyFile(),
+                Config.getRLPCACertFile(),
+                Config.getRLPAuthority()
         );
         nozzle.start();
 

@@ -6,6 +6,8 @@ templates:
   cert.erb: config/cert
   key.erb: config/key
   ca_cert.erb: config/ca_cert
+  jmx_tls_key.erb: config/jmx_tls_key
+  jmx_tls_cert.erb: config/jmx_tls_cert
   password.cfg.erb: config/password.cfg
   access.cfg.erb: config/access.cfg
 
@@ -37,6 +39,10 @@ properties:
   tls.authority:
     description: Common name of the authority for RLP.
     default: reverselogproxy
+  jmx.tls.key:
+    description: Jmx TLS key file
+  jmx.tls.cert:
+    description: Jmx TLS cert file
   metric.prefix:
     description: Preprends each metric name with the prefix.
     default: ""

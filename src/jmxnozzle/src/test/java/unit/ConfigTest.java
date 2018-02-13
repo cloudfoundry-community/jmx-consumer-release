@@ -17,6 +17,8 @@ public class ConfigTest {
         assertThat(Config.getMetricPrefix()).isEqualTo("");
         assertThat(Config.getPasswordFile()).isEqualTo("src/test/resources/password.cfg");
         assertThat(Config.getAccessFile()).isEqualTo("src/test/resources/access.cfg");
+        assertThat(Config.getServerKeyFile()).isNull();
+        assertThat(Config.getServerCertFile()).isNull();
     }
 
     @Test
@@ -29,6 +31,8 @@ public class ConfigTest {
         System.setProperty("config.metric.prefix", "testingPrefix");
         System.setProperty("config.auth.password.file", "someplace/password.cfg");
         System.setProperty("config.auth.access.file", "someplace/access.cfg");
+        System.setProperty("config.jmx.tls.key", "server.key");
+        System.setProperty("config.jmx.tls.cert", "server.crt");
 
 
         assertThat(Config.getRLPHost()).isEqualTo("9.9.9.9");
@@ -38,24 +42,26 @@ public class ConfigTest {
         assertThat(Config.getMetricPrefix()).isEqualTo("testingPrefix");
         assertThat(Config.getPasswordFile()).isEqualTo("someplace/password.cfg");
         assertThat(Config.getAccessFile()).isEqualTo("someplace/access.cfg");
+        assertThat(Config.getServerKeyFile()).isEqualTo("server.key");
+        assertThat(Config.getServerCertFile()).isEqualTo("server.crt");
     }
 
     @Test
     @DisplayName("Setting the mutual TLS config parameters")
     public void testOverridingMutualTLS() {
-        assertThat(Config.getCertFile()).isEqualTo("src/test/resources/metrics-server.pem");
-        assertThat(Config.getKeyFile()).isEqualTo("src/test/resources/metrics-server.key");
-        assertThat(Config.getCACertFile()).isEqualTo("src/test/resources/metrics-ca.pem");
-        assertThat(Config.getAuthority()).isEqualTo("metrics");
+        assertThat(Config.getRLPCertFile()).isEqualTo("src/test/resources/metrics-server.pem");
+        assertThat(Config.getRLPKeyFile()).isEqualTo("src/test/resources/metrics-server.key");
+        assertThat(Config.getRLPCACertFile()).isEqualTo("src/test/resources/metrics-ca.pem");
+        assertThat(Config.getRLPAuthority()).isEqualTo("metrics");
 
-        System.setProperty("config.tls.cert", "my-cert.pem");
-        System.setProperty("config.tls.key", "my.key");
-        System.setProperty("config.tls.ca_cert", "ca.pem");
-        System.setProperty("config.tls.authority", "reverselogproxy");
+        System.setProperty("config.nozzle.tls.cert", "my-cert.pem");
+        System.setProperty("config.nozzle.tls.key", "my.key");
+        System.setProperty("config.nozzle.tls.ca_cert", "ca.pem");
+        System.setProperty("config.nozzle.tls.authority", "reverselogproxy");
 
-        assertThat(Config.getCertFile()).isEqualTo("my-cert.pem");
-        assertThat(Config.getKeyFile()).isEqualTo("my.key");
-        assertThat(Config.getCACertFile()).isEqualTo("ca.pem");
-        assertThat(Config.getAuthority()).isEqualTo("reverselogproxy");
+        assertThat(Config.getRLPCertFile()).isEqualTo("my-cert.pem");
+        assertThat(Config.getRLPKeyFile()).isEqualTo("my.key");
+        assertThat(Config.getRLPCACertFile()).isEqualTo("ca.pem");
+        assertThat(Config.getRLPAuthority()).isEqualTo("reverselogproxy");
     }
 }

@@ -11,10 +11,16 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javax.management.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+import java.io.*;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -37,7 +43,9 @@ public class JMXServerTest {
             withPrefix ? "opentsdb.nozzle." : "",
             expiryTime,
             passwordFile.getAbsolutePath(),
-            authFile.getAbsolutePath()
+            authFile.getAbsolutePath(),
+            null,
+            null
     );
     server.start();
   }
@@ -208,9 +216,9 @@ public class JMXServerTest {
   @Test
   @DisplayName("When username and password are specified for the server")
   public void checkValidAndUsername() throws Exception {
-    startTheServer("root", "password",false, 9999999999l);
+    startTheServer("root", "password", false, 9999999999l);
 
-    assertThat(getJmxClient("root","password")).isNotNull();
+    assertThat(getJmxClient("root", "password")).isNotNull();
     assertThatThrownBy(() -> getJmxClient()).hasMessage("Authentication failed! Invalid username or password");
   }
 
