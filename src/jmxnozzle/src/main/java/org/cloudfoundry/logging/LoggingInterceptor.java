@@ -1,4 +1,4 @@
-package logging;
+package org.cloudfoundry.logging;
 
 import javax.management.MBeanServer;
 import javax.management.remote.JMXPrincipal;
@@ -19,7 +19,7 @@ public class LoggingInterceptor implements InvocationHandler {
     private final String VENDOR = "cloud_foundry";
     private final String PRODUCT = "jmx_nozzle";
     private final int SEVERITY = 5;
-    private final String SECURITY_LOGGING_PROPERTY = "security.logging.enabled";
+    private final String SECURITY_LOGGING_PROPERTY = "security.org.cloudfoundry.logging.enabled";
     private final String PRODUCT_VERSION_PROPERTY = "product.version";
     private MBeanServer mbs;
     private String serverIpAddress ;
@@ -127,5 +127,4 @@ public class LoggingInterceptor implements InvocationHandler {
             }
         }
     }
-
 }

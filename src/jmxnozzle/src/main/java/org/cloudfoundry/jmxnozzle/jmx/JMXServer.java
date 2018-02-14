@@ -1,12 +1,12 @@
 package org.cloudfoundry.jmxnozzle.jmx;
 
-import logging.LoggingInterceptor;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMKeyPair;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
+import org.cloudfoundry.logging.LoggingInterceptor;
 
 import javax.management.JMException;
 import javax.management.remote.JMXConnectorServer;

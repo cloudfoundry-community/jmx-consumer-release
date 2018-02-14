@@ -3,6 +3,8 @@ package logging;
 import org.junit.Before;
 import org.junit.Test;
 
+import org.cloudfoundry.logging.*;
+
 import javax.management.MBeanServer;
 import javax.management.remote.JMXPrincipal;
 import javax.security.auth.Subject;

@@ -1,4 +1,4 @@
-package logging;
+package org.cloudfoundry.logging;
 
 import javax.security.auth.Subject;
 import java.security.AccessControlContext;

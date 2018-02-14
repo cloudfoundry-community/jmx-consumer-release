@@ -3,6 +3,8 @@ package logging;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.cloudfoundry.logging.*;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class LogFormatterTest {
