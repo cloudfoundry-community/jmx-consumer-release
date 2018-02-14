@@ -58,6 +58,7 @@ dependencies {
     testRuntime("org.junit.platform:junit-platform-launcher:${junitPlatformVersion}")
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.9.0'
     testCompile group: 'com.j256.simplejmx', name: 'simplejmx', version: '1.15'
+    testCompile "org.mockito:mockito-core:2.+"
 }
 
 mainClassName = "org.cloudfoundry.jmxnozzle.App"

@@ -1,9 +1,12 @@
 package org.cloudfoundry.jmxnozzle.jmx;
 
+import logging.LoggingInterceptor;
+
 import javax.management.JMException;
 import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXConnectorServerFactory;
 import javax.management.remote.JMXServiceURL;
+import javax.management.remote.MBeanServerForwarder;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
@@ -32,11 +35,16 @@ public class JMXServer {
         System.out.println("binding to: " + host.toString());
 
         registry = LocateRegistry.createRegistry(registryPort);
+
         jmxConnectorServer = JMXConnectorServerFactory.newJMXConnectorServer(
                 new JMXServiceURL(String.format("service:jmx:rmi://%s:%d/jndi/rmi://%s:%d/jmxrmi", host.getHostAddress(), serverPort, host.getHostAddress(), registryPort)),
                 this.env,
                 ManagementFactory.getPlatformMBeanServer()
         );
+
+        MBeanServerForwarder proxy = LoggingInterceptor.newProxyInstance();
+        jmxConnectorServer.setMBeanServerForwarder(proxy);
+
         jmxConnectorServer.start();
     }
 
