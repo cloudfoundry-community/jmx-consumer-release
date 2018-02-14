@@ -55,6 +55,10 @@ dependencies {
     compile 'io.netty:netty-codec-http2:4.1.17.Final'
     compile 'io.netty:netty-tcnative-boringssl-static:2.0.7.Final'
     compile group: 'com.google.guava', name: 'guava', version: '24.0-jre'
+    compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.10.0'
+    compile 'org.apache.logging.log4j:log4j-core:2.10.0'
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.4'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
     testCompile("org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
     testRuntime("org.junit.platform:junit-platform-launcher:${junitPlatformVersion}")

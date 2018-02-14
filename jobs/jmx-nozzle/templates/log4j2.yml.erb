@@ -1,0 +1,17 @@
+---
+configuration:
+  properties:
+    property:
+      name: LOG_LEVEL
+      value: <%= p('log.level') %>
+  appenders:
+    Console:
+      name: STDOUT
+      PatternLayout:
+        Pattern: "%d %p %C{-5} [%t] %m%n"
+
+  loggers:
+    root:
+      level: <%= p('log.level') %>
+      AppenderRef:
+        ref: STDOUT

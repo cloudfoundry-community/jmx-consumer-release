@@ -10,8 +10,6 @@ import java.util.logging.Logger;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        showAllApplicationDebugLogs();
-
         JmxNozzleServer jmxServer = new JmxNozzleServer(
                 Config.getRegistryPort(),
                 Config.getServerPort(),
@@ -45,15 +43,6 @@ public class App {
 
         while (true) {
             jmxServer.addMetric(nozzle.getNextMetric());
-        }
-    }
-
-    private static void showAllApplicationDebugLogs() {
-        Logger rootLogger = LogManager.getLogManager().getLogger("");
-        Handler[] handlers = rootLogger.getHandlers();
-        rootLogger.setLevel(Level.FINEST);
-        for (Handler h : handlers) {
-            h.setLevel(Level.FINEST);
         }
     }
 }

@@ -20,7 +20,9 @@ public class AcceptanceTest {
         fakeLoggregator = new FakeEgressImpl();
         fakeLoggregator.start();
 
-        ProcessBuilder pb = new ProcessBuilder("java", "-jar", "./build/libs/jmx-nozzle-1.0-SNAPSHOT.jar");
+        ProcessBuilder pb = new ProcessBuilder("java",
+                "-jar", "./build/libs/jmx-nozzle-1.0-SNAPSHOT.jar"
+        );
         Process process = pb.start();
 
         writeLogsToStdout(process);
