@@ -39,7 +39,7 @@ public class SSLSupportTest {
                 "src/test/resources/jmx_ssl_test.key"
         );
         server.start();
-        assertThat(correctOpenSsl()).startsWith("1.0");
+        assertThat(correctOpenSsl()).startsWith("1");
     }
 
     @AfterEach
