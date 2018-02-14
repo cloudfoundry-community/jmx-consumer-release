@@ -55,4 +55,12 @@ public class Config {
     public static String getServerCertFile() {
         return System.getProperty("config.jmx.tls.cert", null);
     }
+
+    public static String getVersion() {
+        return System.getProperty("product.version", "Product Version Not Set");
+    }
+
+    public static boolean getSecurityLoggingEnabled() {
+        return System.getProperty("security.org.cloudfoundry.logging.enabled", "true").equalsIgnoreCase("true");
+    }
 }

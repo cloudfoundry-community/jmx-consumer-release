@@ -1,5 +1,7 @@
 package org.cloudfoundry.logging;
 
+import org.cloudfoundry.jmxnozzle.Config;
+
 import javax.management.MBeanServer;
 import javax.management.remote.JMXPrincipal;
 import javax.management.remote.MBeanServerForwarder;
@@ -14,13 +16,10 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 public class LoggingInterceptor implements InvocationHandler {
-    private boolean SECURITY_LOGGING = true;
-    private String PRODUCT_VERSION = "1.0";
+    boolean loggingEnabled = Config.getSecurityLoggingEnabled();
     private final String VENDOR = "cloud_foundry";
     private final String PRODUCT = "jmx_nozzle";
     private final int SEVERITY = 5;
-    private final String SECURITY_LOGGING_PROPERTY = "security.org.cloudfoundry.logging.enabled";
-    private final String PRODUCT_VERSION_PROPERTY = "product.version";
     private MBeanServer mbs;
     private String serverIpAddress ;
     private LogFormatter securityLogFormatter;
@@ -35,15 +34,7 @@ public class LoggingInterceptor implements InvocationHandler {
             e.printStackTrace();
         }
 
-        String securitySystemProperty = System.getProperty(SECURITY_LOGGING_PROPERTY);
-        SECURITY_LOGGING = securitySystemProperty == null || securitySystemProperty.equalsIgnoreCase("true");
-        String productVersionSystemProperty = System.getProperty(PRODUCT_VERSION_PROPERTY);
-
-        if (productVersionSystemProperty != null) {
-            PRODUCT_VERSION = productVersionSystemProperty;
-        }
-
-        securityLogFormatter = new LogFormatter(VENDOR, PRODUCT, PRODUCT_VERSION, SEVERITY);
+         securityLogFormatter = new LogFormatter(VENDOR, PRODUCT,  Config.getVersion(), SEVERITY);
     }
 
     public static MBeanServerForwarder newProxyInstance() {
@@ -115,7 +106,7 @@ public class LoggingInterceptor implements InvocationHandler {
             reason = "Error";
             throw e;
         }finally{
-            if (SECURITY_LOGGING) {
+            if (loggingEnabled) {
                 try {
                     String secLogSigId = securityLogFormatter.formatSignatureId(methodName, args);
                     String secLogExts = securityLogFormatter.formatExtensions(System.currentTimeMillis(), methodName, identity, secLogSigId, result, reason, serverIpAddress);

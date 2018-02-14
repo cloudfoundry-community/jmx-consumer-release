@@ -52,6 +52,8 @@ exec chpst -u vcap:vcap $JAVA_HOME/bin/java \
 -Dcom.sun.management.jmxremote.ssl=false \
 -Dcom.sun.management.jmxremote.ssl.need.client.auth=false \
 -Djava.rmi.server.hostname=$hostname \
+-Dproduct.version=1.0 \
+-Dsecurity.org.cloudfoundry.logging.enabled=true \
 -jar $PACKAGE_DIR/jmx-nozzle-1.0-SNAPSHOT.jar \
 >>$LOG_DIR/jmx-nozzle.stdout.log \
 2>>$LOG_DIR/jmx-nozzle.stderr.log
