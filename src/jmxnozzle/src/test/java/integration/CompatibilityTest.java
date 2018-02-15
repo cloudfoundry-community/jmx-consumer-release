@@ -19,10 +19,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Tag("compatibility")
 public class CompatibilityTest {
     private MBeanServerConnection createClient() throws IOException {
-        System.setProperty("socksProxyHost", "localhost");
-        System.setProperty("socksProxyPort", "5000");
+//        System.setProperty("socksProxyHost", "localhost");
+//        System.setProperty("socksProxyPort", "5000");
 
-        JMXServiceURL serviceURL = new JMXServiceURL("service:jmx:rmi://10.0.4.28:44445/jndi/rmi://10.0.4.28:44444/jmxrmi");
+        String hostName = System.getProperty("config.hostname", null);
+        assertThat(hostName).describedAs("Provide hostname via system property config.hostname").isNotNull();
+
+        JMXServiceURL serviceURL = new JMXServiceURL(
+                String.format(
+                        "service:jmx:rmi://%s:44445/jndi/rmi://%s:44444/jmxrmi",
+                        hostName,
+                        hostName
+                )
+        );
         Map<String, String[]> env = ImmutableMap.of(JMXConnector.CREDENTIALS, new String[]{"admin", "insecure-password"});
 
         JMXConnector jmxConnector = JMXConnectorFactory.connect(serviceURL, env);

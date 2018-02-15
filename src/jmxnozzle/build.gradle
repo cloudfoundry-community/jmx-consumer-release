@@ -46,7 +46,7 @@ repositories {
 }
 
 ext.junitJupiterVersion  = '5.0.3'
-ext.junitPlatformVersion = '1.0.0'
+ext.junitPlatformVersion = '1.0.3'
 
 dependencies {
     compile 'io.grpc:grpc-all:1.9.0'
@@ -62,6 +62,7 @@ dependencies {
     testCompile("org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
     testRuntime("org.junit.platform:junit-platform-launcher:${junitPlatformVersion}")
+    testCompile "org.junit.platform:junit-platform-console-standalone:${junitPlatformVersion}"
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.9.0'
     testCompile group: 'com.j256.simplejmx', name: 'simplejmx', version: '1.15'
     testCompile "org.mockito:mockito-core:2.+"
@@ -96,4 +97,14 @@ junitPlatform {
             exclude 'compatibility'
         }
     }
+}
+
+task compatibilityTest(dependsOn: compileTestJava, type: JavaExec) {
+    classpath = sourceSets.test.runtimeClasspath
+    main 'org.junit.platform.console.ConsoleLauncher'
+    systemProperties System.getProperties()
+    args = [
+            //'--scan-class-path', sourceSets.test.output.classesDir.absolutePath,
+            '--select-class', 'integration.CompatibilityTest',
+            ]
 }
