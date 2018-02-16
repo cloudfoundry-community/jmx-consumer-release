@@ -7,7 +7,6 @@
 set -eux
 
 export VBOX_DEPLOYMENT_DIR=~/deployments/vbox
-
 mkdir -p "${VBOX_DEPLOYMENT_DIR}"
 
 pushd "${VBOX_DEPLOYMENT_DIR}"
@@ -19,6 +18,8 @@ pushd "${VBOX_DEPLOYMENT_DIR}"
 		-o ~/workspace/bosh-deployment/bosh-lite.yml \
 		-o ~/workspace/bosh-deployment/bosh-lite-runc.yml \
 		-o ~/workspace/bosh-deployment/jumpbox-user.yml \
+		-o ~/workspace/bosh-deployment/uaa.yml \
+		-o ~/workspace/bosh-system-metrics-server-release/manifests/server-ops.yml \
 		--vars-store ./creds.yml \
 		-v director_name="Bosh Lite Director" \
 		-v internal_ip=192.168.50.6 \
@@ -27,9 +28,7 @@ pushd "${VBOX_DEPLOYMENT_DIR}"
 		-v outbound_network_name=NatNetwork
 
 	bosh alias-env vbox -e 192.168.50.6 --ca-cert <(bosh int ./creds.yml --path /director_ssl/ca)
-	export BOSH_CLIENT=admin
-	export BOSH_CLIENT_SECRET
-	BOSH_CLIENT_SECRET=$(bosh int ./creds.yml --path /admin_password)
+	bosh -e vbox login --client=admin --client-secret="$(bosh int ./creds.yml --path /admin_password)"
 popd
 
 # Try to add routes - they may already be there, so it may be okay to fail
@@ -42,7 +41,4 @@ set +e
 set -e
 
 bosh -n -e vbox update-cloud-config ~/workspace/bosh-deployment/warden/cloud-config.yml
-
-bosh -n -e vbox upload-stemcell \
-https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent?v=3468.5 \
---sha1 b95fac2b5d27a3c91b762b1df3747110b058a145
+bosh -n -e vbox upload-stemcell https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent
