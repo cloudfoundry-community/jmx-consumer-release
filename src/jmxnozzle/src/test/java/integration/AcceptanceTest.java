@@ -1,6 +1,7 @@
 package integration;
 
 import com.j256.simplejmx.client.JmxClient;
+import helpers.OutputLogRedirector;
 import org.junit.jupiter.api.Test;
 
 import javax.management.JMException;
@@ -25,7 +26,8 @@ public class AcceptanceTest {
         );
         Process process = pb.start();
 
-        writeLogsToStdout(process);
+        OutputLogRedirector outputLogRedirector = new OutputLogRedirector();
+        outputLogRedirector.writeLogsToStdout(process);
 
         try {
             JmxClient client = getJmxClient();
@@ -50,13 +52,7 @@ public class AcceptanceTest {
         }
     }
 
-    private void writeLogsToStdout(Process process) {
-        StreamGobbler outputGobbler = new StreamGobbler(process.getInputStream(), System.out::println);
-        StreamGobbler errorGobbler = new StreamGobbler(process.getErrorStream(), System.out::println);
 
-        new Thread(outputGobbler).start();
-        new Thread(errorGobbler).start();
-    }
 
     private JmxClient getJmxClient() throws JMException, InterruptedException {
         String uri = String.format(
@@ -90,21 +86,6 @@ public class AcceptanceTest {
         for (int i = 0; i < 5; i++) {
             Thread.sleep(1000);
             if(client.getBeanNames("org.cloudfoundry").size() != 0) return;
-        }
-    }
-
-    class StreamGobbler implements Runnable {
-
-        private InputStream inputStream;
-        private Consumer<String> consumeInputLine;
-
-        public StreamGobbler(InputStream inputStream, Consumer<String> consumeInputLine) {
-            this.inputStream = inputStream;
-            this.consumeInputLine = consumeInputLine;
-        }
-
-        public void run() {
-            new BufferedReader(new InputStreamReader(inputStream)).lines().forEach(consumeInputLine);
         }
     }
 }

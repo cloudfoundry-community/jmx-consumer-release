@@ -37,6 +37,7 @@ exec chpst -u vcap:vcap $JAVA_HOME/bin/java \
 -Dconfig.jmx.registry.port=<%= p('jmx.registry.port') %> \
 -Dconfig.rlp.host=<%= rlp_host %> \
 -Dconfig.rlp.port=<%= rlp_port %> \
+-Dconfig.health.port=8080           \
 -Dconfig.nozzle.tls.cert=$CONFIG_DIR/cert \
 -Dconfig.nozzle.tls.key=$CONFIG_DIR/key.pkcs8 \
 -Dconfig.nozzle.tls.ca_cert=$CONFIG_DIR/ca_cert \

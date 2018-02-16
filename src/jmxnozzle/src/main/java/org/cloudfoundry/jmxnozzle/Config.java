@@ -12,6 +12,10 @@ public class Config {
         return Integer.parseInt(System.getProperty("config.jmx.registry.port", "44444"));
     }
 
+    public static int getHealthPort() {
+        return Integer.parseInt(System.getProperty("config.health.port", "8080"));
+    }
+
     public static String getRLPHost() {
         return System.getProperty("config.rlp.host", "localhost");
     }

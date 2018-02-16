@@ -59,6 +59,7 @@ dependencies {
     compile 'org.apache.logging.log4j:log4j-core:2.10.0'
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.4'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.4'
+
     testCompile("org.junit.jupiter:junit-jupiter-api:${junitJupiterVersion}")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
     testRuntime("org.junit.platform:junit-platform-launcher:${junitPlatformVersion}")
@@ -66,6 +67,7 @@ dependencies {
     testCompile group: 'org.assertj', name: 'assertj-core', version: '3.9.0'
     testCompile group: 'com.j256.simplejmx', name: 'simplejmx', version: '1.15'
     testCompile "org.mockito:mockito-core:2.+"
+    testCompile 'org.apache.httpcomponents:httpclient:4.5.5'
 }
 
 mainClassName = "org.cloudfoundry.jmxnozzle.App"

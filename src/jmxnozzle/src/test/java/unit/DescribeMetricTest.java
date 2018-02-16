@@ -9,7 +9,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class DescribeMetric {
+public class DescribeMetricTest {
 
   @Test
   public void metricTakesItsValuesFromCreation() throws Exception {

@@ -1,15 +1,18 @@
 package org.cloudfoundry.jmxnozzle;
 
+import org.cloudfoundry.jmxnozzle.health.HealthServer;
 import org.cloudfoundry.jmxnozzle.jmx.JmxNozzleServer;
 
 import java.io.IOException;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
+import java.util.HashMap;
+import java.util.Map;
 
 public class App {
     public static void main(String[] args) throws Exception {
+
+        HealthServer healthServer = new HealthServer();
+        healthServer.start(Config.getHealthPort());
+
         JmxNozzleServer jmxServer = new JmxNozzleServer(
                 Config.getRegistryPort(),
                 Config.getServerPort(),
@@ -21,10 +24,12 @@ public class App {
                 Config.getServerKeyFile()
         );
         jmxServer.start();
+
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             public void run() {
                 try {
                     jmxServer.stop();
+                    healthServer.stop();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -43,6 +48,8 @@ public class App {
 
         while (true) {
             jmxServer.addMetric(nozzle.getNextMetric());
+            healthServer.addToMetric("metrics_received");
+            healthServer.addToMetric("metrics_emitted");
         }
     }
 }
