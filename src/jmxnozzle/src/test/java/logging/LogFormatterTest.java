@@ -9,18 +9,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class LogFormatterTest {
     private LogFormatter logging;
-    private String deviceVendor;
-    private String deviceProduct;
-    private String deviceVersion;
-    private int severity;
 
     @Before
     public void setUp() {
-        deviceVendor = "some-vendor";
-        deviceProduct = "some-product";
-        deviceVersion = "some-version";
-        severity = 99;
-        logging = new LogFormatter(deviceVendor, deviceProduct, deviceVersion, severity);
+        logging = new LogFormatter("userAuthenticationMechanism", "Java Security Manager");
     }
 
     @Test
@@ -44,12 +36,12 @@ public class LogFormatterTest {
         assertThat(fields.length).isEqualTo(8);
 
         assertThat(fields[0]).isEqualTo("CEF:0");
-        assertThat(fields[1]).isEqualTo(deviceVendor);
-        assertThat(fields[2]).isEqualTo(deviceProduct);
-        assertThat(fields[3]).isEqualTo(deviceVersion);
+        assertThat(fields[1]).isEqualTo("cloud_foundry");
+        assertThat(fields[2]).isEqualTo("jmx_nozzle");
+        assertThat(fields[3]).isEqualTo("Product Version Not Set");
         assertThat(fields[4]).isEqualTo(signatureId);
         assertThat(fields[5]).isEqualTo(methodName);
-        assertThat(Integer.parseInt(fields[6])).isEqualTo(severity);
+        assertThat(Integer.parseInt(fields[6])).isEqualTo(5);
         assertThat(fields[7]).isEqualTo("some-extensions");
     }
 

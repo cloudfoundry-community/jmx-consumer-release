@@ -17,9 +17,6 @@ import java.util.logging.Logger;
 
 public class LoggingInterceptor implements InvocationHandler {
     boolean loggingEnabled = Config.getSecurityLoggingEnabled();
-    private final String VENDOR = "cloud_foundry";
-    private final String PRODUCT = "jmx_nozzle";
-    private final int SEVERITY = 5;
     private MBeanServer mbs;
     private String serverIpAddress ;
     private LogFormatter securityLogFormatter;
@@ -34,7 +31,7 @@ public class LoggingInterceptor implements InvocationHandler {
             e.printStackTrace();
         }
 
-         securityLogFormatter = new LogFormatter(VENDOR, PRODUCT,  Config.getVersion(), SEVERITY);
+         securityLogFormatter = new LogFormatter("userAuthenticationMechanism", "Java Security Manager");
     }
 
     public static MBeanServerForwarder newProxyInstance() {

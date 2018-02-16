@@ -1,5 +1,7 @@
 package org.cloudfoundry.logging;
 
+import org.cloudfoundry.jmxnozzle.Config;
+
 import java.util.Arrays;
 import java.util.StringJoiner;
 
@@ -7,18 +9,22 @@ public class LogFormatter {
     private String deviceVendor;
     private String deviceProduct;
     private String deviceVersion;
+    private String authenticationLabel;
+    private String authenticationMechanism;
     private int severity;
 
     private static final String LOG_FORMAT = "CEF:0|%s|%s|%s|%s|%s|%d|%s";
 
-    private static final String EXTENSION_FORMAT = "rt=%d requestMethod=%s suser=%s cs1Label=userAuthenticationMechanism"
-        + " cs1=Java Security Manager request=%s cs2Label=result cs2=%s cs3Label=reason cs3=%s dproc=jmx_nozzle dst=%s";
+    private static final String EXTENSION_FORMAT = "rt=%d requestMethod=%s suser=%s cs1Label=%s"
+        + " cs1=%s request=%s cs2Label=result cs2=%s cs3Label=reason cs3=%s dproc=jmx_nozzle dst=%s";
 
-    public LogFormatter(String deviceVendor, String deviceProduct, String deviceVersion, int severity) {
-        this.deviceVendor = deviceVendor;
-        this.deviceProduct = deviceProduct;
-        this.deviceVersion = deviceVersion;
-        this.severity = severity;
+    public LogFormatter(String authenticationLabel, String authenticationMechanism) {
+        this.deviceVendor = "cloud_foundry";
+        this.deviceProduct = "jmx_nozzle";
+        this.deviceVersion = Config.getVersion();
+        this.severity = 5;
+        this.authenticationLabel = authenticationLabel;
+        this.authenticationMechanism = authenticationMechanism;
     }
 
     public String format(String signatureId, String methodName, String extensions) {
@@ -48,7 +54,7 @@ public class LogFormatter {
     }
 
     public String formatExtensions(long requestTime, String methodName, String user, String signatureId, String result, String reason, String serverIP) {
-        return String.format(EXTENSION_FORMAT, requestTime, methodName, user, escapeExtension(signatureId), result, reason, serverIP);
+        return String.format(EXTENSION_FORMAT, requestTime, methodName, user, this.authenticationLabel, this.authenticationMechanism, escapeExtension(signatureId), result, reason, serverIP);
     }
 
     private String escapeField(String field) {
