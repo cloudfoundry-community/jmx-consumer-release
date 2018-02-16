@@ -19,7 +19,6 @@ pushd "${VBOX_DEPLOYMENT_DIR}"
 		-o ~/workspace/bosh-deployment/bosh-lite-runc.yml \
 		-o ~/workspace/bosh-deployment/jumpbox-user.yml \
 		-o ~/workspace/bosh-deployment/uaa.yml \
-		-o ~/workspace/bosh-system-metrics-server-release/manifests/server-ops.yml \
 		--vars-store ./creds.yml \
 		-v director_name="Bosh Lite Director" \
 		-v internal_ip=192.168.50.6 \
