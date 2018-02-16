@@ -9,6 +9,10 @@ set -eux
 export VBOX_DEPLOYMENT_DIR=~/deployments/vbox
 mkdir -p "${VBOX_DEPLOYMENT_DIR}"
 
+pushd ~/workspace/bosh-system-metrics-server-release
+    bosh create-release --tarball=/tmp/server-release.tgz --force
+popd
+
 pushd "${VBOX_DEPLOYMENT_DIR}"
 	bosh -n create-env ~/workspace/bosh-deployment/bosh.yml \
 	        --recreate \
@@ -19,10 +23,12 @@ pushd "${VBOX_DEPLOYMENT_DIR}"
 		-o ~/workspace/bosh-deployment/bosh-lite-runc.yml \
 		-o ~/workspace/bosh-deployment/jumpbox-user.yml \
 		-o ~/workspace/bosh-deployment/uaa.yml \
-		-o ~/workspace/bosh-deployment/local-dns.yml \
+		-o ~/workspace/bosh-system-metrics-server-release/manifests/server-ops.yml \
+		-o ~/workspace/bosh-deployment/local-dns.yml\
 		--vars-store ./creds.yml \
 		-v director_name="Bosh Lite Director" \
 		-v internal_ip=192.168.50.6 \
+		-v external_ip=192.168.50.6 \
 		-v internal_gw=192.168.50.1 \
 		-v internal_cidr=192.168.50.0/24 \
 		-v outbound_network_name=NatNetwork

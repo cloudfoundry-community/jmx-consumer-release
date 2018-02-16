@@ -22,6 +22,15 @@ pushd ~/workspace/cf-deployment
 
 popd
 
+pushd ~/workspace/bosh-system-metrics-forwarder-release
+    bosh create-release --force
+    bosh -n -e vbox upload-release
+    bosh -n -e vbox -d bosh-system-metrics-forwarder deploy <(cat manifests/bosh-system-metrics-forwarder.yml | sed 's/loggregator_metron/loggregator_tls_metron/g') \
+        --vars-file $VBOX_DEPLOYMENT_DIR/creds.yml \
+        --vars-file $VBOX_DEPLOYMENT_DIR/deployment-vars.yml \
+        -v internal_ip=192.168.50.6
+popd
+
 bosh create-release --force
 bosh -n -e vbox upload-release
 bosh -n -e vbox -d jmx-consumer deploy manifests/consumer.yml \
