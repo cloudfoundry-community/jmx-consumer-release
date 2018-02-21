@@ -3,6 +3,8 @@ name: jmx-nozzle
 releases:
 - name: jmx-nozzle
   version: latest
+- name: bosh-dns
+  version: latest
 
 stemcells:
 - os: ubuntu-trusty
@@ -13,6 +15,8 @@ instance_groups:
 - name: jmx-nozzle
   instances: 1
   jobs:
+  - name: bosh-dns
+    release: bosh-dns
   - name: jmx-nozzle
     release: jmx-nozzle
     consumes:

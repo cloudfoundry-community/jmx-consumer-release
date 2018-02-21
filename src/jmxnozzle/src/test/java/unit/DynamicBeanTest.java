@@ -1,6 +1,6 @@
 package unit;
 
-import org.cloudfoundry.jmxnozzle.Metric;
+import org.cloudfoundry.jmxnozzle.ingress.Metric;
 import org.cloudfoundry.jmxnozzle.jmx.DynamicJmxBean;
 import org.junit.jupiter.api.Test;
 

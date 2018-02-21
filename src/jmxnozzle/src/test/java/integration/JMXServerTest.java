@@ -1,26 +1,14 @@
 package integration;
 
 import com.j256.simplejmx.client.JmxClient;
-import org.cloudfoundry.jmxnozzle.App;
-import org.cloudfoundry.jmxnozzle.Config;
-import org.cloudfoundry.jmxnozzle.Metric;
+import org.cloudfoundry.jmxnozzle.ingress.Metric;
 import org.cloudfoundry.jmxnozzle.jmx.JmxNozzleServer;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import javax.management.*;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManagerFactory;
 import java.io.*;
-import java.security.KeyManagementException;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;

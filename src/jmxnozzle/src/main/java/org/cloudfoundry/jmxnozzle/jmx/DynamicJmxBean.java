@@ -1,6 +1,6 @@
 package org.cloudfoundry.jmxnozzle.jmx;
 
-import org.cloudfoundry.jmxnozzle.Metric;
+import org.cloudfoundry.jmxnozzle.ingress.Metric;
 
 import javax.management.*;
 import javax.management.modelmbean.DescriptorSupport;

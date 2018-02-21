@@ -1,15 +1,18 @@
 package integration;
 
-import org.cloudfoundry.jmxnozzle.Metric;
-import org.cloudfoundry.jmxnozzle.Nozzle;
+import org.cloudfoundry.jmxnozzle.ingress.Metric;
+import org.cloudfoundry.jmxnozzle.ingress.Nozzle;
 import org.cloudfoundry.loggregator.v2.LoggregatorEgress;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Java6Assertions.assertThatThrownBy;
 
 public class NozzleTest {
     private Nozzle nozzle;
@@ -29,11 +32,10 @@ public class NozzleTest {
                 "metrics"
 
         );
-        nozzle.start();
     }
 
     @AfterEach
-    public void cleanupServers() {
+    public void cleanupServers() throws InterruptedException {
         fakeLoggregator.stop();
     }
 
@@ -69,12 +71,41 @@ public class NozzleTest {
     }
 
     @Test
+    @DisplayName("When loggregator kills the stream")
+    public void streamGetsKilled() throws IOException, InterruptedException {
+        for(int i = 0; i < 10; ++i) assertThat(nozzle.getNextMetric()).isNotNull();
+        fakeLoggregator.stop();
+
+
+//        assertThatThrownBy(() -> { nozzle.getNextMetric(); })
+//                .isInstanceOf(io.grpc.StatusRuntimeException.class);
+
+        new Thread(() -> {
+            try {
+                fakeLoggregator.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+//        Thread.sleep(1000L);
+        for(int i = 0; i < 10; ++i) assertThat(nozzle.getNextMetric()).isNotNull();
+    }
+
+    @Test
+    @DisplayName("When the stream ends it reconnects")
+    public void reconnectsOnCompleteStream() throws IOException {
+        for(int i = 0; i < 10; ++i) assertThat(nozzle.getNextMetric()).isNotNull();
+        for(int i = 0; i < 10; ++i) assertThat(nozzle.getNextMetric()).isNotNull();
+    }
+
+    @Test
     public void onlyRequestsGaugeAndCounterValues() {
         nozzle.getNextMetric();
         assertThat(fakeLoggregator.getEgressRequest().getSelectorsList()).contains(
                 LoggregatorEgress.Selector.newBuilder().setCounter(LoggregatorEgress.CounterSelector.newBuilder().build()).build(),
                 LoggregatorEgress.Selector.newBuilder().setGauge(LoggregatorEgress.GaugeSelector.newBuilder().build()).build()
         );
-//        TODO - assert on preferred tags in request
+        assertThat(fakeLoggregator.getEgressRequest().getUsePreferredTags()).isTrue();
     }
 }

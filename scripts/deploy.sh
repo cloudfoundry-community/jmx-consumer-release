@@ -14,6 +14,8 @@ pushd ~/workspace/cf-deployment
     bosh -n -e vbox -d cf deploy cf-deployment.yml \
         -o operations/bosh-lite.yml \
         -o operations/use-compiled-releases.yml \
+        -o operations/experimental/use-bosh-dns.yml \
+        -o operations/experimental/use-bosh-dns-for-containers.yml \
         --vars-store $VBOX_DEPLOYMENT_DIR/deployment-vars.yml \
         -v system_domain=bosh-lite.com
 

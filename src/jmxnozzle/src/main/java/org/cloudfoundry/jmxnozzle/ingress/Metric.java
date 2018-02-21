@@ -1,4 +1,4 @@
-package org.cloudfoundry.jmxnozzle;
+package org.cloudfoundry.jmxnozzle.ingress;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -4,7 +4,7 @@ import com.google.common.base.Ticker;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
-import org.cloudfoundry.jmxnozzle.Metric;
+import org.cloudfoundry.jmxnozzle.ingress.Metric;
 
 import javax.management.*;
 import java.lang.management.ManagementFactory;
