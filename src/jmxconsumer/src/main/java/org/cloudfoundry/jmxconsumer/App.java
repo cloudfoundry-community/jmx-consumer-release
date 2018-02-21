@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cloudfoundry.jmxconsumer.health.HealthServer;
 import org.cloudfoundry.jmxconsumer.ingress.Consumer;
-import org.cloudfoundry.jmxconsumer.jmx.JmxNozzleServer;
+import org.cloudfoundry.jmxconsumer.jmx.JmxConsumerServer;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class App {
     public static void main(String[] args) {
         try {
             HealthServer healthServer = createHealthServer();
-            JmxNozzleServer jmxServer = createJMXServer();
+            JmxConsumerServer jmxServer = createJMXServer();
             addShutdownHook(healthServer, jmxServer);
 
             Consumer consumer = startNozzle();
@@ -32,7 +32,7 @@ public class App {
         }
     }
 
-    private static void addShutdownHook(HealthServer healthServer, JmxNozzleServer jmxServer) {
+    private static void addShutdownHook(HealthServer healthServer, JmxConsumerServer jmxServer) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
                 logger.fatal("Running shutdown");
@@ -63,9 +63,9 @@ public class App {
         return healthServer;
     }
 
-    private static JmxNozzleServer createJMXServer() throws Exception {
+    private static JmxConsumerServer createJMXServer() throws Exception {
         logger.info("Starting JMX Server");
-        JmxNozzleServer jmxServer = new JmxNozzleServer(
+        JmxConsumerServer jmxServer = new JmxConsumerServer(
                 Config.getRegistryPort(),
                 Config.getServerPort(),
                 Config.getMetricPrefix(),

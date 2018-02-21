@@ -1,6 +1,6 @@
 package integration;
 
-import org.cloudfoundry.jmxconsumer.jmx.JmxNozzleServer;
+import org.cloudfoundry.jmxconsumer.jmx.JmxConsumerServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Java6Assertions.assertThat;
 public class SSLSupportTest {
     private int registryPort = 44444;
     private int serverPort = 44445;
-    JmxNozzleServer server;
+    JmxConsumerServer server;
 
     @BeforeEach
     public void startTheServer() throws Exception {
@@ -28,7 +28,7 @@ public class SSLSupportTest {
         File passwordFile = writeToConfigFile("password", username + " " + password);
         File authFile = writeToConfigFile("auth", username + " readonly");
 
-        server = new JmxNozzleServer(
+        server = new JmxConsumerServer(
                 registryPort,
                 serverPort,
                 "opentsdb.nozzle.",

@@ -5,15 +5,15 @@ import org.cloudfoundry.jmxconsumer.ingress.Metric;
 import javax.management.*;
 import java.io.IOException;
 
-public class JmxNozzleServer {
+public class JmxConsumerServer {
 
     private JMXServer server;
     private BeanCollector beans;
 
-    private JmxNozzleServer() {}
+    private JmxConsumerServer() {}
 
-    public JmxNozzleServer(int registryPort, int serverPort, String metricPrefix, long expiryTime,
-                           String passwordFile, String accessFile, String certFile, String keyFile) throws Exception {
+    public JmxConsumerServer(int registryPort, int serverPort, String metricPrefix, long expiryTime,
+                             String passwordFile, String accessFile, String certFile, String keyFile) throws Exception {
         this.server = new JMXServer(registryPort, serverPort, passwordFile, accessFile, certFile, keyFile);
 
         this.beans = new BeanCollector(expiryTime, metricPrefix);

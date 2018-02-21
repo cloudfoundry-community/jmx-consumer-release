@@ -2,7 +2,7 @@ package integration;
 
 import com.j256.simplejmx.client.JmxClient;
 import org.cloudfoundry.jmxconsumer.ingress.Metric;
-import org.cloudfoundry.jmxconsumer.jmx.JmxNozzleServer;
+import org.cloudfoundry.jmxconsumer.jmx.JmxConsumerServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,14 +18,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class JMXServerTest {
 
-  JmxNozzleServer server;
+  JmxConsumerServer server;
 
   public void startTheServer(String username, String password, boolean withPrefix, long expiryTime) throws Exception {
     // create tempfile for password and access file
     File passwordFile = writeToConfigFile("password", username + " " + password);
     File authFile = writeToConfigFile("auth", username + " readonly");
 
-    server = new JmxNozzleServer(
+    server = new JmxConsumerServer(
             44444,
             44445,
             withPrefix ? "opentsdb.nozzle." : "",
