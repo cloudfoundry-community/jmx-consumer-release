@@ -1,6 +1,6 @@
-name: jmx-nozzle
+name: jmx-consumer
 blobstore:
   provider: gcs
   options:
-    bucket_name: jmx-nozzle-release
+    bucket_name: jmx-consumer-release
     credentials_source: none

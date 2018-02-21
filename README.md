@@ -1,4 +1,4 @@
-# JMX Nozzle Release
+# JMX Consumer Release
 
 This is still under active development and not _production_ ready at all.
 
@@ -17,14 +17,14 @@ This is still under active development and not _production_ ready at all.
 ```
 bosh create-release --force
 bosh upload-release --rebase
-bosh -d jmx-nozzle deploy manifests/nozzle.yml \
+bosh -d jmx-consumer deploy manifests/consumer.yml \
   --vars-store vars.yml \
   --vars-file ~/workspace/cf-deployment/deployments-vars.yml \
   -v cf_deployment_name=cf \
   -v zone=az1 \
   -v vm_type=default \
   -v network_name=default
-bosh -d jmx-nozzle vms #grab IP address of VM
+bosh -d jmx-consumer vms #grab IP address of VM
 
 # since self signed certs are used, a truststore needs to be generated for `jconsole`
 bosh int vars.yml --path jmx_ssl.certificate > /tmp/jmx.crt
