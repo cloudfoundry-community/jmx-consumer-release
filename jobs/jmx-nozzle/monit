@@ -1,6 +1,0 @@
-check process jmx-nozzle
-  with pidfile /var/vcap/sys/run/jmx-nozzle/jmx-nozzle.pid
-  start program "/var/vcap/jobs/jmx-nozzle/bin/nozzle_ctl start"
-    with timeout 60 seconds
-  stop program "/var/vcap/jobs/jmx-nozzle/bin/nozzle_ctl stop"
-  group vcap

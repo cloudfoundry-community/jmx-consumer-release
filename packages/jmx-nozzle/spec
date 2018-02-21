@@ -1,8 +1,0 @@
----
-name: jmx-nozzle
-
-dependencies: []
-
-files:
-- openjdk/openjdk-*.tar.gz
-- jmxnozzle/**/*

@@ -1,7 +1,7 @@
-name: jmx-nozzle
+name: jmx-consumer
 
 releases:
-- name: jmx-nozzle
+- name: jmx-consumer
   version: latest
 - name: bosh-dns
   version: latest
@@ -12,25 +12,25 @@ stemcells:
   version: latest
 
 instance_groups:
-- name: jmx-nozzle
+- name: jmx-consumer
   instances: 1
   jobs:
   - name: bosh-dns
     release: bosh-dns
-  - name: jmx-nozzle
-    release: jmx-nozzle
+  - name: jmx-consumer
+    release: jmx-consumer
     consumes:
       reverse_log_proxy:
         deployment: ((cf_deployment_name))
         from: reverse_log_proxy
     properties:
       metric:
-        prefix: opentsdb.nozzle.
+        prefix: opentsdb.consumer.
       tls:
         ca_cert: "((loggregator_ca.certificate))"
-        nozzle:
-          cert: "((nozzle_ssl.certificate))"
-          key: "((nozzle_ssl.private_key))"
+        consumer:
+          cert: "((consumer_ssl.certificate))"
+          key: "((consumer_ssl.private_key))"
       jmx:
         tls:
           cert: "((jmx_ssl.certificate))"
@@ -52,11 +52,11 @@ update:
   update_watch_time: 5000-60000
 
 variables:
-- name: nozzle_ssl
+- name: consumer_ssl
   type: certificate
   options:
     ca: loggregator_ca
-    common_name: jmx-nozzle
+    common_name: jmx-consumer
     extended_key_usage:
     - client_auth
     - server_auth

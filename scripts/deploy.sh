@@ -24,17 +24,17 @@ popd
 
 bosh create-release --force
 bosh -n -e vbox upload-release
-bosh -n -e vbox -d jmx-nozzle deploy manifests/nozzle.yml \
+bosh -n -e vbox -d jmx-consumer deploy manifests/consumer.yml \
     --vars-file $VBOX_DEPLOYMENT_DIR/deployment-vars.yml \
-    --vars-store $VBOX_DEPLOYMENT_DIR/nozzle-vars.yml \
+    --vars-store $VBOX_DEPLOYMENT_DIR/consumer-vars.yml \
       -v cf_deployment_name=cf \
       -v zone=z1 \
       -v vm_type=default \
       -v network_name=default
 rm $VBOX_DEPLOYMENT_DIR/jconsole.truststore
-bosh int $VBOX_DEPLOYMENT_DIR/nozzle-vars.yml --path /jmx_ssl/certificate > $VBOX_DEPLOYMENT_DIR/jmx.crt
+bosh int $VBOX_DEPLOYMENT_DIR/consumer-vars.yml --path /jmx_ssl/certificate > $VBOX_DEPLOYMENT_DIR/jmx.crt
 keytool -import -alias jconsole -file $VBOX_DEPLOYMENT_DIR/jmx.crt -keystore $VBOX_DEPLOYMENT_DIR/jconsole.truststore -storepass password -noprompt
-vm_ip=$(bosh -e vbox vms  | grep jmx-nozzle | awk '{ print $4 }')
+vm_ip=$(bosh -e vbox vms  | grep jmx-consumer | awk '{ print $4 }')
 
 echo "Run command:"
 echo "jconsole -J-Djavax.net.ssl.trustStore=$VBOX_DEPLOYMENT_DIR/jconsole.truststore -J-Djavax.net.ssl.trustStorePassword=password"

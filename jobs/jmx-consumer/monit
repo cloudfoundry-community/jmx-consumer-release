@@ -1,0 +1,6 @@
+check process jmx-consumer
+  with pidfile /var/vcap/sys/run/jmx-consumer/jmx-consumer.pid
+  start program "/var/vcap/jobs/jmx-consumer/bin/consumer_ctl start"
+    with timeout 60 seconds
+  stop program "/var/vcap/jobs/jmx-consumer/bin/consumer_ctl stop"
+  group vcap

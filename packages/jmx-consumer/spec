@@ -1,0 +1,8 @@
+---
+name: jmx-consumer
+
+dependencies: []
+
+files:
+- openjdk/openjdk-*.tar.gz
+- jmxconsumer/**/*
