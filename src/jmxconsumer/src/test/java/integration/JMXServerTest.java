@@ -18,6 +18,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class JMXServerTest {
 
+  private static final String SHA1_FOR_ROOT = "DC76E9F0C0006E8F919E0C515C66DBBA3982F785";
+  private static final String SHA1_FOR_PASSWORD = "5BAA61E4C9B93F3F0682250B6CF8331B7EE68FD8";
   JmxConsumerServer server;
 
   public void startTheServer(String username, String password, boolean withPrefix, long expiryTime) throws Exception {
@@ -63,7 +65,7 @@ public class JMXServerTest {
   @Test
   @DisplayName("Test adding metrics to server")
   public void addMetricToServer() throws Exception {
-    startTheServer("root", "root",false, 9999999999l);
+    startTheServer("root", SHA1_FOR_ROOT,false, 9999999999l);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
     metrics1Tags.put("deployment", "deployment0");
     metrics1Tags.put("job", "job0");
@@ -109,7 +111,7 @@ public class JMXServerTest {
   @Test
   @DisplayName("When the same metric has timestamps that come out of order")
   public void sameMetricDifferentTimestamps() throws Exception {
-    startTheServer("root", "root",false, 9999999999l);
+    startTheServer("root", SHA1_FOR_ROOT,false, 9999999999l);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
     metrics1Tags.put("deployment", "deployment0");
     metrics1Tags.put("job", "job0");
@@ -132,7 +134,7 @@ public class JMXServerTest {
   @Test
   @DisplayName("When the prefix is enabled it prepends each metric name")
   public void addPrefixToMetrics() throws Exception {
-    startTheServer("root", "root",true, 9999999999l);
+    startTheServer("root", SHA1_FOR_ROOT,true, 9999999999l);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
     metrics1Tags.put("deployment", "deployment0");
     metrics1Tags.put("job", "job0");
@@ -158,7 +160,7 @@ public class JMXServerTest {
 
     // set the expiry time
 
-    startTheServer("root", "root",false, expiryTime);
+    startTheServer("root", SHA1_FOR_ROOT,false, expiryTime);
     Map<String, String> metrics1Tags = new HashMap<String, String>();
     metrics1Tags.put("deployment", "deployment21");
     metrics1Tags.put("job", "job0");
@@ -204,10 +206,10 @@ public class JMXServerTest {
   @Test
   @DisplayName("When username and password are specified for the server")
   public void checkValidAndUsername() throws Exception {
-    startTheServer("root", "password", false, 9999999999l);
+    startTheServer("root", SHA1_FOR_PASSWORD, false, 9999999999l);
 
     assertThat(getJmxClient("root", "password")).isNotNull();
-    assertThatThrownBy(() -> getJmxClient()).hasMessage("Authentication failed! Invalid username or password");
+    assertThatThrownBy(() -> getJmxClient()).hasMessage("Authentication failed. Invalid username or password");
   }
 
   private File writeToConfigFile(String filename, String content) throws IOException {

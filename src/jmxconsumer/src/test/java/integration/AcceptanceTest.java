@@ -22,7 +22,8 @@ public class AcceptanceTest {
         fakeLoggregator.start();
 
         ProcessBuilder pb = new ProcessBuilder("java",
-                "-jar", "./build/libs/jmx-consumer-1.0-SNAPSHOT.jar"
+                "-jar",
+                "./build/libs/jmx-consumer-1.0-SNAPSHOT.jar"
         );
         Process process = pb.start();
 

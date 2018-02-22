@@ -9,17 +9,13 @@ import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.cloudfoundry.logging.LoggingInterceptor;
 
 import javax.management.JMException;
-import javax.management.remote.JMXConnectorServer;
-import javax.management.remote.JMXConnectorServerFactory;
-import javax.management.remote.JMXServiceURL;
-import javax.management.remote.MBeanServerForwarder;
+import javax.management.remote.*;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 import javax.rmi.ssl.SslRMIClientSocketFactory;
 import javax.rmi.ssl.SslRMIServerSocketFactory;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
@@ -51,12 +47,11 @@ public class JMXServer {
                      String certFile, String keyFile) throws Exception {
         this.registryPort = registryPort;
         this.serverPort = serverPort;
-        if(certFile != null) {
+        if (certFile != null) {
             addSSLToServer(certFile, keyFile);
         }
 
-        this.env.put("jmx.remote.x.password.file", passwordFile);
-        this.env.put("jmx.remote.x.access.file", accessFile);
+        this.env.put("jmx.remote.authenticator", new JmxShaFileAuthenticator(passwordFile));
     }
 
     private void addSSLToServer(String certFile, String keyFile) throws Exception {
@@ -132,6 +127,7 @@ public class JMXServer {
                 this.env,
                 ManagementFactory.getPlatformMBeanServer()
         );
+
 
         MBeanServerForwarder proxy = LoggingInterceptor.newProxyInstance();
         jmxConnectorServer.setMBeanServerForwarder(proxy);
