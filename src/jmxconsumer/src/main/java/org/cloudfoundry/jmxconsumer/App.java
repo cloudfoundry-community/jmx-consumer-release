@@ -12,7 +12,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 public class App {
-    private static Logger logger = LogManager.getLogger(App.class);
+    private static Logger logger = LogManager.getLogger();
     public static void main(String[] args) {
         try {
             HealthServer healthServer = createHealthServer();

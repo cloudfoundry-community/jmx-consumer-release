@@ -42,7 +42,7 @@ public class HealthServer {
         Map<String, Integer> metrics;
         LogFormatter logFormatter;
         private String serverIpAddress ;
-        private final Logger logger = LogManager.getLogger((HealthEndpoint.class.getName()));
+        private final Logger logger = LogManager.getLogger();
 
 
         public HealthEndpoint(Map<String, Integer> metrics) {

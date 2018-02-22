@@ -22,7 +22,7 @@ public class LoggingInterceptor implements InvocationHandler {
     private String serverIpAddress ;
     private LogFormatter securityLogFormatter;
 
-    private static final Logger logger = LogManager.getLogger((LoggingInterceptor.class.getName()));
+    private static final Logger logger = LogManager.getLogger();
 
     public LoggingInterceptor(){
         super();

@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Consumer {
-    private static Logger logger = LogManager.getLogger(Consumer.class);
+    private static Logger logger = LogManager.getLogger();
     private final NettyChannelBuilder channelBuilder;
     private EgressGrpc.EgressBlockingStub blockingStub;
     private Iterator<LoggregatorEnvelope.Envelope> envelopes;
