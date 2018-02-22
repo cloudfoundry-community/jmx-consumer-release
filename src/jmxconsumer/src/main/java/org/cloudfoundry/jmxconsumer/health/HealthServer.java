@@ -4,8 +4,9 @@ import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cloudfoundry.logging.LogFormatter;
-import org.cloudfoundry.logging.LoggingInterceptor;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -13,7 +14,6 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class HealthServer {
     HttpServer server;
@@ -42,7 +42,7 @@ public class HealthServer {
         Map<String, Integer> metrics;
         LogFormatter logFormatter;
         private String serverIpAddress ;
-        private final Logger logger = Logger.getLogger(LoggingInterceptor.class.getName());
+        private final Logger logger = LogManager.getLogger((HealthEndpoint.class.getName()));
 
 
         public HealthEndpoint(Map<String, Integer> metrics) {

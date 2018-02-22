@@ -1,21 +1,19 @@
 package org.cloudfoundry.jmxconsumer.jmx;
 
-import org.cloudfoundry.jmxconsumer.Config;
-import sun.security.acl.PrincipalImpl;
-
 import javax.management.remote.JMXAuthenticator;
 import javax.management.remote.JMXPrincipal;
 import javax.security.auth.Subject;
-import javax.security.auth.login.LoginException;
 import javax.xml.bind.DatatypeConverter;
-import java.io.*;
-import java.security.*;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
-
-import static org.bouncycastle.cms.RecipientId.password;
 
 public class JmxShaFileAuthenticator implements JMXAuthenticator {
     private Properties userCredentials;

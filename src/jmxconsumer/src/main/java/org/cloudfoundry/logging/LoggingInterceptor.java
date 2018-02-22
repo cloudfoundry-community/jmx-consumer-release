@@ -1,5 +1,7 @@
 package org.cloudfoundry.logging;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.cloudfoundry.jmxconsumer.Config;
 
 import javax.management.MBeanServer;
@@ -13,7 +15,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.security.Principal;
 import java.util.Set;
-import java.util.logging.Logger;
 
 public class LoggingInterceptor implements InvocationHandler {
     boolean loggingEnabled = Config.getSecurityLoggingEnabled();
@@ -21,7 +22,7 @@ public class LoggingInterceptor implements InvocationHandler {
     private String serverIpAddress ;
     private LogFormatter securityLogFormatter;
 
-    private static final Logger logger = Logger.getLogger(LoggingInterceptor.class.getName());
+    private static final Logger logger = LogManager.getLogger((LoggingInterceptor.class.getName()));
 
     public LoggingInterceptor(){
         super();
