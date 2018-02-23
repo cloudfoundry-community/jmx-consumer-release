@@ -20,15 +20,21 @@ import java.io.InputStreamReader;
 
 import static org.assertj.core.api.Java6Assertions.assertThat;
 
-public class HealthEndpointTest {
+public class
+HealthEndpointTest {
     Process process;
+    FakeEgressImpl fakeLoggregator;
 
     @BeforeEach
     public void setupTests() throws IOException {
         ProcessBuilder pb = new ProcessBuilder("java",
+//                "-Dlog4j.configurationFile=/Users/pivotal/workspace/jmx-nozzle-release/src/jmxconsumer/src/test/resources/logging.yml",
                 "-jar", "./build/libs/jmx-consumer-1.0-SNAPSHOT.jar"
         );
         process = pb.start();
+
+        fakeLoggregator = new FakeEgressImpl();
+        fakeLoggregator.start();
 
         OutputLogRedirector outputLogRedirector = new OutputLogRedirector();
         outputLogRedirector.writeLogsToStdout(process);
@@ -38,29 +44,42 @@ public class HealthEndpointTest {
     public void shutdown() throws InterruptedException {
         process.destroy();
         process.waitFor();
+        fakeLoggregator.stop();
+
     }
 
     @Test()
     @DisplayName("Health point receives metrics")
     public void getHealthInfo() throws Exception {
-        FakeEgressImpl fakeLoggregator = new FakeEgressImpl();
-        try {
-            fakeLoggregator.start();
+            JsonObject json = getJSONBody("http://localhost:8080/health");
 
-            Thread.sleep(1000);
-
-            JsonObject response = getResponse("http://localhost:8080/health");
-            assertThat(response.get("metrics_received").getAsInt()).isGreaterThan(0);
-            assertThat(response.get("metrics_emitted").getAsInt()).isGreaterThan(0);
-        } finally {
-            fakeLoggregator.stop();
-        }
+            assertThat(json.get("metrics_received").getAsInt()).isGreaterThan(0);
+            assertThat(json.get("metrics_emitted").getAsInt()).isGreaterThan(0);
     }
 
-    public JsonObject getResponse(String url) throws IOException {
+    private void waitForServerToRespond(HttpGet request, HttpClient client) throws IOException, InterruptedException {
+        HttpResponse response= null;
+        int numberOfRetrys= 5;
+
+        do {
+            System.out.println("retries: " + numberOfRetrys);
+            try {
+                Thread.sleep(1000);
+                response = client.execute(request);
+            } catch(Exception e) {
+            }
+
+        } while ((response == null) && ((numberOfRetrys--) > 0));
+    }
+
+    public JsonObject getJSONBody(String url) throws IOException, InterruptedException {
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet(url);
+
+        waitForServerToRespond(request, client);
+
         HttpResponse response = client.execute(request);
+        assertThat(response).isNotNull();
         assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
