@@ -41,8 +41,9 @@ public class JMXServerTest {
   }
 
   @AfterEach
-  public void stopTheServer() throws IOException {
+  public void stopTheServer() throws IOException, InterruptedException {
     server.stop();
+    Thread.sleep(1000);
   }
 
   private JmxClient getJmxClient() throws JMException {

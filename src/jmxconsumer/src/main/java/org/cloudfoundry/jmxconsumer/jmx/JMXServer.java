@@ -9,7 +9,10 @@ import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.cloudfoundry.logging.LoggingInterceptor;
 
 import javax.management.JMException;
-import javax.management.remote.*;
+import javax.management.remote.JMXConnectorServer;
+import javax.management.remote.JMXConnectorServerFactory;
+import javax.management.remote.JMXServiceURL;
+import javax.management.remote.MBeanServerForwarder;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
@@ -138,6 +141,7 @@ public class JMXServer {
     public void stop() throws IOException {
         jmxConnectorServer.stop();
         UnicastRemoteObject.unexportObject(registry, true);
+
     }
 
 }

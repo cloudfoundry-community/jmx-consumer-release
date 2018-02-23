@@ -1,0 +1,17 @@
+---
+configuration:
+  properties:
+    property:
+      name: LOG_LEVEL
+      value: DEBUG
+  appenders:
+    Console:
+      name: STDOUT
+      PatternLayout:
+        Pattern: "%d %p %C{-5} [%t] %m%n"
+
+  loggers:
+    root:
+      level: DEBUG
+      AppenderRef:
+        ref: STDOUT
