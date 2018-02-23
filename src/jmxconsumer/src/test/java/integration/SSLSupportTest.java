@@ -43,8 +43,9 @@ public class SSLSupportTest {
     }
 
     @AfterEach
-    public void stopServer() throws IOException {
+    public void stopServer() throws IOException, InterruptedException {
         server.stop();
+        Thread.sleep(1000);
     }
 
     @Test
