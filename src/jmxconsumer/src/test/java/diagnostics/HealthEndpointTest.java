@@ -58,7 +58,7 @@ HealthEndpointTest {
                 Thread.sleep(2000);
                 JsonObject json = getJSONBody("http://localhost:8080/health");
 
-                assertThat(json.get("metrics_received").getAsInt()).isGreaterThan(100000);
+                assertThat(json.get("metrics_received").getAsInt()).isGreaterThan(0);
                 assertThat(json.get("metrics_emitted").getAsInt()).isGreaterThan(0);
                 return;
             } catch (Throwable e ) {
