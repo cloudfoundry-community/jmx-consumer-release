@@ -51,32 +51,26 @@ HealthEndpointTest {
     @Test()
     @DisplayName("Health point receives metrics")
     public void getHealthInfo() throws Exception {
-            JsonObject json = getJSONBody("http://localhost:8080/health");
-
-            assertThat(json.get("metrics_received").getAsInt()).isGreaterThan(0);
-            assertThat(json.get("metrics_emitted").getAsInt()).isGreaterThan(0);
-    }
-
-    private void waitForServerToRespond(HttpGet request, HttpClient client) throws IOException, InterruptedException {
-        HttpResponse response= null;
         int numberOfRetrys= 5;
-
         do {
             System.out.println("retries: " + numberOfRetrys);
             try {
-                Thread.sleep(1000);
-                response = client.execute(request);
-            } catch(Exception e) {
-            }
+                Thread.sleep(2000);
+                JsonObject json = getJSONBody("http://localhost:8080/health");
 
-        } while ((response == null) && ((numberOfRetrys--) > 0));
+                assertThat(json.get("metrics_received").getAsInt()).isGreaterThan(100000);
+                assertThat(json.get("metrics_emitted").getAsInt()).isGreaterThan(0);
+                return;
+            } catch (Throwable e ) {
+            }
+        } while (numberOfRetrys-- > 0);
+
+        throw new Exception("Failed to recieve metrics");
     }
 
     public JsonObject getJSONBody(String url) throws IOException, InterruptedException {
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet(url);
-
-        waitForServerToRespond(request, client);
 
         HttpResponse response = client.execute(request);
         assertThat(response).isNotNull();

@@ -68,7 +68,6 @@ public class FakeEgressImpl extends EgressGrpc.EgressImplBase {
                 )
                 .build()
                 .start();
-
     }
 
     public void stop() throws InterruptedException {
