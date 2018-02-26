@@ -94,6 +94,7 @@ test {
 }
 
 junitPlatform {
+    details 'verbose'
     filters {
         tags {
             exclude 'compatibility'
