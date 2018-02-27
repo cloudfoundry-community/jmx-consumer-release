@@ -1,0 +1,158 @@
+resource_types:
+- name: bosh-deployment
+  type: docker-image
+  source:
+    repository: cloudfoundry/bosh-deployment-resource
+
+resources:
+- name: jmx-consumer-release
+  type: git
+  source:
+    uri: https://github.com/cloudfoundry-community/jmx-consumer-release
+- name: tycho-env-bbl-state
+  type: git
+  source:
+    branch: master
+    uri: git@github.com:cloudfoundry/tycho-env.git
+    private_key: ((tycho_env_git_deploy_key))
+
+jobs:
+- name: run-gradle-tests
+  plan:
+    - get: jmx-consumer-release
+      trigger: true
+    - task: run-gradle-tests
+      config:
+        platform: linux
+        inputs:
+        - name: jmx-consumer-release
+        caches:
+        - path: .gradle
+        image_resource:
+          source:
+            repository: openjdk
+            tag: 8
+          type: docker-image
+        run:
+          path: bash
+          args:
+            - -c
+            - |
+              export GRADLE_USER_HOME=$PWD/.gradle
+              cd jmx-consumer-release/src/jmxconsumer
+              ./gradlew build
+- name: run-compatibility-tests
+  plan:
+    - get: jmx-consumer-release
+      trigger: true
+      passed:
+      - run-gradle-tests
+    - get: tycho-env-bbl-state
+    - task: deploy-bosh-release
+      config:
+        platform: linux
+        inputs:
+        - name: jmx-consumer-release
+        - name: tycho-env-bbl-state
+        outputs:
+        - name: jmx-consumer-vars
+        - name: tycho-env-bbl-state-updated
+        caches:
+        - path: jmx-consumer-release/blobs
+        image_resource:
+          type: docker-image
+          source:
+            repository: relintdockerhubpushbot/cf-deployment-concourse-tasks
+            tag: v3
+        run:
+          path: bash
+          args:
+            - -c
+            - |
+              #!/bin/bash
+              set -e
+
+              workspace=$PWD
+
+              pushd ./tycho-env-bbl-state
+                vars_dir=$PWD
+                source .envrc
+                bbl ssh-key > $workspace/jmx-consumer-vars/director-key
+                bbl director-address | cut -d/ -f 3 | cut -d: -f 1 > $workspace/jmx-consumer-vars/director-address
+              popd
+
+              pushd ./jmx-consumer-release
+                bosh create-release --force
+                bosh -n upload-release --rebase
+                bosh -n -d jmx-consumer deploy manifests/consumer.yml \
+                  --vars-file $vars_dir/deployment-vars.yml \
+                  --vars-store $vars_dir/consumer-vars.yml \
+                  -v cf_deployment_name=cf \
+                  -v zone=z1 \
+                  -v vm_type=default \
+                  -v network_name=default
+              popd
+
+              bosh int $vars_dir/consumer-vars.yml --path /jmx_ssl/certificate > jmx-consumer-vars/cert
+              bosh -d jmx-consumer vms --json | jq '.Tables[0].Rows[0].ips' -r > jmx-consumer-vars/ip
+
+              pushd ./tycho-env-bbl-state
+                git add consumer-vars.yml
+                git config --global user.email "ci@pivotal.io"
+                git config --global user.name "CI"
+                git commit -m 'update vars for jmx consumer' || true
+              popd
+
+              rsync -a tycho-env-bbl-state/ tycho-env-bbl-state-updated
+    - put: tycho-env-bbl-state
+      params:
+        repository: tycho-env-bbl-state-updated
+    - task: run-cf-integration-tests
+      config:
+        platform: linux
+        inputs:
+        - name: jmx-consumer-release
+        - name: jmx-consumer-vars
+        caches:
+        - path: .gradle
+        image_resource:
+          source:
+            repository: openjdk
+            tag: 8
+          type: docker-image
+        run:
+          path: bash
+          args:
+            - -c
+            - |
+              #bin/bash
+              set -eu
+              workspace=$PWD
+
+              export GRADLE_USER_HOME=$workspace/.gradle
+
+              function killssh {
+                pkill ssh
+              }
+
+              trap killssh EXIT
+
+              pushd $JAVA_HOME/jre/lib/security/
+                keytool -import -alias jconsole -file $workspace/jmx-consumer-vars/cert -keystore cacerts -storepass changeit -noprompt
+              popd
+
+              export hostname=$(cat jmx-consumer-vars/ip)
+              cd jmx-consumer-release/src/jmxconsumer
+              # ./gradlew testClasses
+
+              ssh_host=$(cat $workspace/jmx-consumer-vars/director-address)
+              mkdir -p ~/.ssh
+              ssh-keyscan $ssh_host >> ~/.ssh/known_hosts
+              chmod 600 $workspace/jmx-consumer-vars/director-key
+
+              ssh -D 5000 -i $workspace/jmx-consumer-vars/director-key jumpbox@$ssh_host  -fNC
+              ./gradlew compatibilityTest \
+                -Dconfig.hostname=$hostname \
+                -DsocksProxyHost=localhost \
+                -DsocksProxyPort=5000
+
