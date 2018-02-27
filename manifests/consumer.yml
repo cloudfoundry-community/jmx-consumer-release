@@ -25,7 +25,7 @@ instance_groups:
         from: reverse_log_proxy
     properties:
       metric:
-        prefix: opentsdb.consumer.
+        prefix: opentsdb.nozzle.
       tls:
         ca_cert: "((loggregator_ca.certificate))"
         consumer:
