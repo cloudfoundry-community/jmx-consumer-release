@@ -29,7 +29,7 @@ chown -R vcap:vcap $LOG_DIR
 
 echo $$ > $PIDFILE
 
-hostname=<%= spec.address %>
+hostname=<%= p("jmx.server.hostname", spec.address) %>
 
 exec chpst -u vcap:vcap $JAVA_HOME/bin/java \
 -Dlog4j.configurationFile=$CONFIG_DIR/log4j2.yml \

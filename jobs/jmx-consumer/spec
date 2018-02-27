@@ -28,6 +28,8 @@ properties:
   jmx.server.port:
     description: Port used for serving JMX
     default: 44445
+  jmx.server.hostname:
+    description: The host of the JMX Server. This host must be a bindable address on the VM.
   jmx.registry.port:
     description: Port used for serving JMX Registry
     default: 44444
