@@ -21,6 +21,8 @@ public class CompatibilityTest {
     private MBeanServerConnection createClient() throws IOException {
         String hostName = System.getProperty("config.hostname", null);
         assertThat(hostName).describedAs("Provide hostname via system property config.hostname").isNotNull();
+        String username = System.getProperty("config.username", "admin");
+        String password = System.getProperty("config.password", "insecure-password");
 
         JMXServiceURL serviceURL = new JMXServiceURL(
                 String.format(
@@ -29,7 +31,7 @@ public class CompatibilityTest {
                         hostName
                 )
         );
-        Map<String, String[]> env = ImmutableMap.of(JMXConnector.CREDENTIALS, new String[]{"admin", "insecure-password"});
+        Map<String, String[]> env = ImmutableMap.of(JMXConnector.CREDENTIALS, new String[]{username, password});
 
         JMXConnector jmxConnector = JMXConnectorFactory.connect(serviceURL, env);
         return jmxConnector.getMBeanServerConnection();
@@ -39,7 +41,7 @@ public class CompatibilityTest {
     public void customMetricsFromVMS() throws JMException, IOException {
         final String guidPattern = "[a-f0-9]{8}-([a-f0-9]{4}-){3}[a-f0-9]{12}";
         final String ipv4Pattern = "(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])";
-        final String [] jobs= new String[] {"uaa", "diego_cell", "doppler", "nats", "router"};
+        final String [] jobs= new String[] {"uaa", "diego*cell", "doppler", "nats", "router"};
 
         String filter= "org.cloudfoundry:deployment=cf,job=%s,index=*,ip=*,*";
 
@@ -71,7 +73,7 @@ public class CompatibilityTest {
             // given a list of attributes
             String [] attributeNames = new String[]{
                     "opentsdb.nozzle.loggregator.metron.egress[metric_version=2.0]",
-                    "opentsdb.nozzle.loggregator.metron.average_envelope[loggregator=v1,metric_version=2.0]"
+                    "opentsdb.nozzle.loggregator.metron.average_envelope[loggregator=v2,metric_version=2.0]"
             };
 
             for(String attributeName: attributeNames) {
@@ -80,7 +82,7 @@ public class CompatibilityTest {
                         .as("attribute '%s' should not be null in job '%s'", attributeName, job)
                         .isNotNull();
                 assertThat((Double)attribute)
-                        .as("attribute '%s' should not be greater than zero in job '%s'", attributeName, job)
+                        .as("attribute '%s' should be greater than zero in job '%s'", attributeName, job)
                         .isGreaterThan(0d);
             }
         }
