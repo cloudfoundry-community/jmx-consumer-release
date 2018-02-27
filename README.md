@@ -27,7 +27,7 @@ bosh -d jmx-consumer deploy manifests/consumer.yml \
 bosh -d jmx-consumer vms #grab IP address of VM
 
 # since self signed certs are used, a truststore needs to be generated for `jconsole`
-bosh int vars.yml --path jmx_ssl.certificate > /tmp/jmx.crt
+bosh int vars.yml --path /jmx_ssl/certificate > /tmp/jmx.crt
 keytool -import -alias jconsole -file /tmp/jmx.crt -keystore /tmp/jconsole.truststore -storepass password -noprompt
 jconsole -J-Djavax.net.ssl.trustStore=/tmp/jconsole.truststore -J-Djavax.net.ssl.trustStorePassword=password
 

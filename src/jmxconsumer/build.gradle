@@ -107,7 +107,6 @@ task compatibilityTest(dependsOn: compileTestJava, type: JavaExec) {
     main 'org.junit.platform.console.ConsoleLauncher'
     systemProperties System.getProperties()
     args = [
-            //'--scan-class-path', sourceSets.test.output.classesDir.absolutePath,
-            '--select-class', 'integration.CompatibilityTest',
+            '--select-method', 'integration.CompatibilityTest#customMetricsFromVMS',
             ]
 }

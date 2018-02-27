@@ -19,9 +19,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Tag("compatibility")
 public class CompatibilityTest {
     private MBeanServerConnection createClient() throws IOException {
-//        System.setProperty("socksProxyHost", "localhost");
-//        System.setProperty("socksProxyPort", "5000");
-
         String hostName = System.getProperty("config.hostname", null);
         assertThat(hostName).describedAs("Provide hostname via system property config.hostname").isNotNull();
 
@@ -73,7 +70,6 @@ public class CompatibilityTest {
 
             // given a list of attributes
             String [] attributeNames = new String[]{
-                    "opentsdb.nozzle.MetronAgent.numCPUS",
                     "opentsdb.nozzle.loggregator.metron.egress[metric_version=2.0]",
                     "opentsdb.nozzle.loggregator.metron.average_envelope[loggregator=v1,metric_version=2.0]"
             };
