@@ -63,7 +63,7 @@ jobs:
           type: docker-image
           source:
             repository: relintdockerhubpushbot/cf-deployment-concourse-tasks
-            tag: v3
+            tag: v5
         run:
           path: bash
           args:
@@ -73,6 +73,12 @@ jobs:
               set -e
 
               workspace=$PWD
+
+              function kill_bbl_ssh {
+                pkill ssh || true
+              }
+
+              trap kill_bbl_ssh EXIT
 
               pushd ./tycho-env-bbl-state
                 vars_dir=$PWD
