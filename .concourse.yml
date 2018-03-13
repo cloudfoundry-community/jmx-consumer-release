@@ -83,8 +83,9 @@ jobs:
               pushd ./tycho-env-bbl-state
                 vars_dir=$PWD
                 source .envrc
-                bbl ssh-key > $workspace/jmx-consumer-vars/director-key
-                bbl director-address | cut -d/ -f 3 | cut -d: -f 1 > $workspace/jmx-consumer-vars/director-address
+                pushd bbl-state
+                  bbl director-address | cut -d/ -f 3 | cut -d: -f 1 > $workspace/jmx-consumer-vars/director-address
+                popd
               popd
 
               pushd ./jmx-consumer-release
