@@ -28,7 +28,6 @@ HealthEndpointTest {
     @BeforeEach
     public void setupTests() throws IOException {
         ProcessBuilder pb = new ProcessBuilder("java",
-//                "-Dlog4j.configurationFile=/Users/pivotal/workspace/jmx-nozzle-release/src/jmxconsumer/src/test/resources/logging.yml",
                 "-jar", "./build/libs/jmx-consumer-1.0-SNAPSHOT.jar"
         );
         process = pb.start();
