@@ -84,7 +84,8 @@ jobs:
                 vars_dir=$PWD
                 source .envrc
                 pushd bbl-state
-                  bbl director-address | cut -d/ -f 3 | cut -d: -f 1 > $workspace/jmx-consumer-vars/director-address
+                  bbl ssh-key > $workspace/jmx-consumer-vars/director-key
+                  bbl jumpbox-address | cut -d/ -f 3 | cut -d: -f 1 > $workspace/jmx-consumer-vars/jumpbox-address
                 popd
               popd
 
@@ -152,7 +153,7 @@ jobs:
               cd jmx-consumer-release/src/jmxconsumer
               # ./gradlew testClasses
 
-              ssh_host=$(cat $workspace/jmx-consumer-vars/director-address)
+              ssh_host=$(cat $workspace/jmx-consumer-vars/jumpbox-address)
               mkdir -p ~/.ssh
               ssh-keyscan $ssh_host >> ~/.ssh/known_hosts
               chmod 600 $workspace/jmx-consumer-vars/director-key
