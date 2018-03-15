@@ -95,18 +95,4 @@ test {
 
 junitPlatform {
     details 'verbose'
-    filters {
-        tags {
-            exclude 'compatibility'
-        }
-    }
-}
-
-task compatibilityTest(dependsOn: compileTestJava, type: JavaExec) {
-    classpath = sourceSets.test.runtimeClasspath
-    main 'org.junit.platform.console.ConsoleLauncher'
-    systemProperties System.getProperties()
-    args = [
-            '--select-method', 'integration.CompatibilityTest#customMetricsFromVMS',
-            ]
 }
