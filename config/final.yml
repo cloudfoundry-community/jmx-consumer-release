@@ -3,4 +3,3 @@ blobstore:
   provider: gcs
   options:
     bucket_name: jmx-consumer-release
-    credentials_source: static
