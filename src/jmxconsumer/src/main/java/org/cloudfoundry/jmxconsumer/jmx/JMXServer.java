@@ -120,13 +120,10 @@ public class JMXServer {
     }
 
     public void start() throws JMException, IOException {
-        InetAddress host = InetAddress.getByName(System.getProperty("java.rmi.server.hostname", "localhost"));
-        System.out.println("binding to: " + host.toString());
-
         registry = LocateRegistry.createRegistry(registryPort);
 
         jmxConnectorServer = JMXConnectorServerFactory.newJMXConnectorServer(
-                new JMXServiceURL(String.format("service:jmx:rmi://%s:%d/jndi/rmi://%s:%d/jmxrmi", host.getHostAddress(), serverPort, host.getHostAddress(), registryPort)),
+                new JMXServiceURL(String.format("service:jmx:rmi://localhost:%d/jndi/rmi://localhost:%d/jmxrmi", serverPort, registryPort)),
                 this.env,
                 ManagementFactory.getPlatformMBeanServer()
         );
