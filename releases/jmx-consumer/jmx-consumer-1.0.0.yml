@@ -1,0 +1,19 @@
+name: jmx-consumer
+version: 1.0.0
+commit_hash: cf578d8
+uncommitted_changes: false
+jobs:
+- name: jmx-consumer
+  version: bb6804950b669b5aac859eafe79b9c8bc27020dc
+  fingerprint: bb6804950b669b5aac859eafe79b9c8bc27020dc
+  sha1: b263330132f2099321f027daf19ca3280f177134
+packages:
+- name: jmx-consumer
+  version: 4ef099aa62ced3fec61a4ad7db6186035591f52a
+  fingerprint: 4ef099aa62ced3fec61a4ad7db6186035591f52a
+  sha1: 52df4eb7037a7b7554f8b22867e4da0bf1a9e764
+  dependencies: []
+license:
+  version: 0fbc9511a7e7f3a4d2f1af47f5ed327237b5f06c
+  fingerprint: 0fbc9511a7e7f3a4d2f1af47f5ed327237b5f06c
+  sha1: 80112b5a0a63ef3b4a6edce1186bb326cff5fe61
