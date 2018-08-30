@@ -1,8 +1,5 @@
 # JMX Consumer Release
 
-This is still under active development and not _production_ ready at all.
-
-## Development
 
 ### Requirements
 
